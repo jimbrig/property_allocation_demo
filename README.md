@@ -1,18 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-Property Allocation <img src='man/figures/logo.png' align="right" height="30.5" />
-==================================================================================
+# Property Allocation <img src='man/figures/logo.png' align="right" height="30.5" />
 
-**propalloc** is an R Package housing the codebase for the Oliver Wyman
-R Shiny Property Allocation Demo Application.
+**propalloc** is an R Package housing the codebase for the R Shiny
+Property Allocation Demo Application.
 
--   Date: 2020-10-01
--   Copyright 2020 [Oliver Wyman Actuarial,
-    Inc.](https://www.oliverwyman.com/index.html)
+-   Date: 2020-11-20
 
-Badges
-------
+## Badges
 
 <!-- badges: start -->
 
@@ -20,12 +16,10 @@ Badges
 [![lifecycle](https://img.shields.io/badge/Lifecycle-Maturing-darkgreen.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![package%20version](https://img.shields.io/badge/Package%20Version-1.1.0-orange.svg)](https://github.com/jimbrig/propalloc/blob/master/commits/master)
 [![github](https://img.shields.io/badge/Github-jimbrig/propalloc-black.svg)](https://github.com/jimbrig/propalloc)
-[![bitbucket](https://img.shields.io/badge/Bitbucket-owac/propalloc-blue.svg)](https://bitbucket.org/owac/propalloc/src/master/)
 <!-- [![R build status](https://github.com/jimbrig/propalloc/workflows/R-CMD-check/badge.svg)](https://github.com/jimbrig/propalloc/actions) -->
 <!-- badges: end -->
 
-Purpose
--------
+## Purpose
 
 The goal of this project is to create a model in R Shiny that allocates
 an insured’s prospective year property insurance costs in an equitable,
@@ -33,37 +27,25 @@ easily understood manner that saves the client time, provides the option
 to use an “actuarial” methodology, while still allowing for maximum
 flexibility and edits.
 
-Team
-----
-
--   Project Leader: [Adam Lewis](mailto:adam.lewis@oliverwyman.com)  
--   Developer: [Jimmy Briggs](mailto:jimmy.briggs@oliverwyman.com)
--   Support: [Jack Reardon](mailto:jack.readron@oliverwyman.com) and
-    [Reza Milani](mailto:reza.milani@oliverwyman.com)
--   Peer Reviewer: [Brian Settle](mailto:brian.settle@oliverwyman.com)
-
-Demo
-----
+## Demo
 
 To demo the app, you have a couple of options:
 
 -   If you want to run the application locally, simply install the
     package and run the code below:
 
-<!-- -->
-
-    library(propalloc)
-    propalloc::run_app()
+``` r
+library(propalloc)
+propalloc::run_app()
+```
 
 *Note that the run\_app function will automatically install package
 dependencies for you.*
 
 -   Or to view a live **test** version of the shiny application running
-    on the Oliver Wyman shiny server
-    [here](https://oliverwymanapps.mmc.com/actuarial/ow-innovations/test/property-allocation-test/).
+    on the shiny server [here]().
 
-Resources
----------
+## Resources
 
 View all package documentation by installing and running:
 
@@ -98,35 +80,13 @@ View all package documentation by installing and running:
 -   View the [Roadmap](inst/reports/roadmap.md) for schedule and planned
     future actions.
 
-Installation
-------------
+## Installation
 
 **propalloc** is setup as an R Package making it simple to house all the
 various dependencies that the final application relies on.
 
 Make sure you have the latest and stable version of
 [devtools](https://github.com/hadley/devtools).
-
-### BitBucket
-
-Install from [BitBucket](https://bitbucket.org) via:
-
-    library(devtools)
-    devtools::install_bitbucket("owac/property-allocation-shiny-app",
-                                "<username>", 
-                                "<password>")
-
-For example, if your username is `john.doe@oliverwyman.com` and your
-password is `password123` you’ll run this code:
-
-    devtools::install_bitbucket(
-      "owac/property-allocation-shiny-app", 
-      auth_user = "john.doe@oliverwyman.com", 
-      password = "password123"
-    )
-
-Your bitbucket password may be different than your windows password.
-Your username is probably your Oliver Wyman email address.
 
 ### GitHub
 
@@ -135,28 +95,29 @@ Install from [GitHub](https://github.com) via:
 For information on setting up your GitHub PAT (Personal Access Token)
 visit [this webpage](https://github.com/settings/tokens).
 
-    library(devtools)
+``` r
+library(devtools)
 
-    # using username/password
-    devtools::install_github("jimbrig2011/propalloc",
-                             "<username>", 
-                             "<password>")
+# using username/password
+devtools::install_github("jimbrig/propalloc",
+                         "<username>", 
+                         "<password>")
 
-    # using GitHub PAT
-    # library(usethis)
-    # usethis::browse_github_pat()
+# using GitHub PAT
+# library(usethis)
+# usethis::browse_github_pat()
 
-    devtools::install_github("jimbrig2011/propalloc",
-                             auth_token = github_pat(quiet))
+devtools::install_github("jimbrig/propalloc",
+                         auth_token = github_pat(quiet))
+```
 
 ------------------------------------------------------------------------
 
 If you have any trouble, contact [Jimmy
-Briggs](jimmy.briggs@oliverwyman.com) to make sure you have read access
-to the repository and for further troubleshooting.
+Briggs](jimmy.briggs@tychobra.com) to make sure you have read access to
+the repository and for further troubleshooting.
 
-Technical
----------
+## Technical
 
 This project is set up as an R Package. To view important details
 regarding the setup visit the [Technical API Vignette]().
@@ -164,8 +125,7 @@ regarding the setup visit the [Technical API Vignette]().
 It also utilized GIT LFS. To install run **git lfs install** in git
 bash.
 
-Scope of Services
------------------
+## Scope of Services
 
 Upon completion, this model will be used as a demo to sell future work,
 similar to the R Shiny casualty cost allocation model. Once sold, this
@@ -228,52 +188,3 @@ attributable to any of the following:
 -   manual “all other risk” adjustment, and/or
 -   cap placed on the increase in rate and the resulting off-balance
     associated with a cap.
-
-Company Policy
-==============
-
-Contributing
-------------
-
-Please note that the ‘propalloc’ project is released with a [Contributor
-Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project,
-you agree to abide by its terms.
-
-Circulation or Publication
---------------------------
-
-This model is not intended for general circulation or publication, nor
-is it to be used, quoted or distributed to others for any purpose other
-than those that may be set forth herein or in the written agreement
-pursuant to which this model has been issued without the prior written
-consent of [Oliver Wyman](https://www.oliverwyman.com/index.html).
-
-Third Party Reliance and Due Diligence
---------------------------------------
-
-Oliver Wyman’s consent to any distribution of this model (whether herein
-or in the written agreement pursuant to which this model has been
-issued) to parties other than CLIENT XYZ, does not constitute advice by
-Oliver Wyman to any such third parties and shall be solely for
-informational purposes and not for purposes of reliance by any such
-third parties. Oliver Wyman assumes no liability related to third party
-use of this model or any actions taken or decisions made as a
-consequence of the results, advice or recommendations set forth herein.
-This model should not replace the due diligence on behalf of any such
-third party.
-
-Public Dissemination
---------------------
-
-Neither all nor any part of the contents of this model, any opinions
-expressed herein, or the firm with which this model is connected, shall
-be disseminated to the public through advertising media, public
-relations, news media, sales media, mail, direct transmittal, or any
-other public means of communications, without the prior written consent
-of Oliver Wyman.
-
-### Avoiding Tax Penalty
-
-The actuarial findings contained in this model are not intended to be
-used, and cannot be used, by the taxpayer for the purpose of avoiding
-tax penalties that may be imposed on the taxpayer.
