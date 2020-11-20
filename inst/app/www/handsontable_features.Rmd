@@ -1,0 +1,49 @@
+---
+pagetitle: "rhandsontable_features"
+output: html_document
+---
+
+## TABLE FEATURES OVERVIEW <img src='img/ow_logo_new.png' align="right" height="35" />
+
+***
+
+The provided table comes with many handy features. Review the list below for 
+details on how to get the most out of the table.
+
+***
+
++ Change and edit cell values directly from table like in Excel:    
+  - Change the Cost Type utilizing the dropdown. Currently only Premium, Expense, and Excluded are possible categories. 
+  - Add a cost description. 
+  - Change the current or prior values.  
+<br>
++ Access the table's **context menu** by right clicking anywhere in the table. The context menu offers the following capabilities: 
+  - Insert Row Above 
+  - Insert Row Below 
+  - Remove a row 
+  - Undo/Redo 
+  - Cell Alignment 
+  - Export the table as CSV file. 
+  - Adding and editing cell comments (similar to excel)  
+<br>
++ Click a column header to sort the table by that column.  
+
++ Add a new to to the table via the **Add New** button above the table.  
+
++ Reset table to default state using the **Reset** button above the table.  
+
+
+***
+
+*Tables displayed using the [Handsontable javascript library](https://handsontable.com/).*
+
+***
+
+<center>
+
+![](img/handsontable.png)
+
+
+<center/>
+
+

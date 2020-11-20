@@ -1,0 +1,33 @@
+---
+pagetitle: "chart_features"
+output: html_document
+---
+
+## CHART FEATURES OVERVIEW <img src='img/ow_logo_new.png' align="right" height="35" /> {.tabset}
+
+***
+
+The provided charts come with many handy features. Review the list below for 
+details on how to get the most out of the charts.
+
+***
+
++ Legends can be clicked to include/exclude elements from the display. This is 
+especially useful when the chart's scale is skewed due to outliers. 
++ Hover over specific points on the chart for informative tooltips. 
++ Use the *Download Button* located in the top right of the chart to download the 
+chart or a data table with the data utilized by the chart. 
+
+***
+
+*Charts displayed using the [Highcharts Javascript Library](https://www.highcharts.com/)*
+
+
+***
+
+<center>
+
+![](img/highcharts.png)
+
+<center/>
+

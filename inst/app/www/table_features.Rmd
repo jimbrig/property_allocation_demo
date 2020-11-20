@@ -1,0 +1,42 @@
+---
+pagetitle: "table_features"
+output: html_document
+---
+
+## TABLE FEATURES OVERVIEW <img src='img/ow_logo_new.png' align="right" height="35" />
+
+***
+
+The provided data tables come with many handy features. Review the list below for 
+details on how to get the most out of the tables.
+
+***
+
++ The tables can be sorted by clicking the column name in the table header. 
++ The tables can be filtered (separately from the app’s filters) using the boxes 
+below the column names in the table's header. 
++ The number of records displayed can be changed using the page-length dropdown 
+located above the table. Current options are 10, 25, 50, and 100. 
++ Use the buttons above the table in order to: 
+  - Copy the table to your clipboard 
+  - Print the table 
+  - Download the table as a CSV, Excel, or PDF file 
+  - Edit Displayed Columns 
++ Utilize the search bar located in the top right to quickly navigate for specific 
+items in the table. 
++ When multiple pages are rendered, utilize the *Next/Previous* page navigation 
+buttons below the table to navigate between pages. 
+
+***
+
+*Tables displayed using the [Data Tables jQuery plugin](https://datatables.net/).*
+
+***
+
+<center>
+
+![](img/datatables.png)
+
+<center/>
+
+

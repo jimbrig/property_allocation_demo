@@ -1,0 +1,475 @@
+---
+title: "Allocation Walkthrough"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Allocation Walkthrough}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>",
+eval = FALSE,
+warning = FALSE,
+error = FALSE,
+message = FALSE,
+echo = TRUE
+)
+```
+
+```{r setup, echo=FALSE}
+# remove scientific notation
+options(scipen = 999)
+
+# library packages
+library(propalloc)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+
+#' Create a custom `kable` table.
+#'
+#' \code{kkable} builds off of [knitr::kable()] as well
+#' as [kableExtra::kable_styling()] to create a customized
+#' table for use in R Markdown.
+#'
+#' @param data An R object, typically a matrix or data frame.
+#' @param col_names column names to display - defaults to "auto" which attempts
+#'   to formalize the column names for you. Alternatively, you can insert a
+#'   character vector of column names.
+#' @param alignment mimics [knitr::kable()] align argument but with an "auto" option.
+#' @param currency_cols specify currency columns which will be formatted via [formattable::currency()].
+#' @param number_cols specify numeric columns which will be formatted via [formattable::comma()].
+#' @param decimal_cols specify decimal columns (i.e. numeric columns where you want to show decimal places).
+#' @param decimal_digits number of digits to show in decimal cols.
+#' @param percent_cols specify percent columns which will be formatted via [formattable::percent()].
+#' @param percent_digits number of digits to display for percent cols.
+#' @param add_totals Logical: whether to append a _totals_ row to the output. If
+#'   \code{TRUE} uses \code{janitor::adorn_totals(fill = " ")} to apply
+#'   the total row. See [janitor::adorn_totals()] for more information.
+#' @param format_header logical - if TRUE will style the tables header.
+#' @param format_totals logical - if TRUE will style the last row as a total row.
+#' @param ... Other arguments passed to [knitr::kable()].
+#'   (see ?knitr::kable's examples).
+#' @inheritDotParams knitr::kable
+#' @inheritParams kableExtra::kable_styling
+#'
+#' @note The tables for \code{format = 'markdown'} also work for Pandoc when the
+#'   \code{pipe_tables} extension is enabled (this is the default behavior for
+#'   Pandoc >= 1.10).
+#'
+#' @references See
+#'   \url{https://github.com/yihui/knitr-examples/blob/master/091-knitr-table.Rnw}
+#'    for some examples in LaTeX, but they also apply to other document formats.
+#'
+#' @return a customized table for display of class ""kableExtra" and/or "knitr_kable".
+#'
+#' @keywords internal
+#'
+#' @examples
+#' library(propalloc)
+#'
+#' initial_costs <- propalloc::renewal_costs
+#'
+#' propalloc:::kkable(
+#'  initial_costs,
+#'  caption = "Initial Costs Table",
+#'  proper_cols = c("cost_type", "description"),
+#'  currency_cols = c("prior", "current"),
+#'  digits = 0,
+#'  format_header = TRUE,
+#'  add_totals = TRUE,
+#'  format_totals = TRUE
+#' )
+#'
+kkable <- function(data,
+                   format = "html",
+                   col_names = "auto",
+                   alignment = "auto",
+                   proper_cols = NULL,
+                   currency_cols = NULL,
+                   number_cols = NULL,
+                   decimal_cols = NULL,
+                   decimal_digits = 2,
+                   percent_cols = NULL,
+                   percent_digits = 2,
+                   format_header = TRUE,
+                   add_totals = FALSE,
+                   format_totals = add_totals,
+                   digits = getOption("digits"),
+                   row.names = FALSE,
+                   caption = NULL,
+                   label = NULL,
+                   format.args = list(),
+                   escape = TRUE,
+                   bootstrap_options = c("striped", "bordered", "responsive"),
+                   full_width = NULL,
+                   position = "center",
+                   font_size = NULL,
+                   row_label_position = "l",
+                   repeat_header_text = "\\textit{(continued)}",
+                   repeat_header_method = c("append", "replace"),
+                   repeat_header_continued = FALSE,
+                   stripe_color = "gray!6",
+                   stripe_index = NULL,
+                   fixed_thead = FALSE,
+                   ...) {
+
+  if (length(col_names) == 1 && col_names == "auto") col_names <- names(data) %>% toproper()
+  if (alignment == "auto") {
+
+    classes <- get_col_classes(data)
+
+    alignment <- purrr::map_chr(classes, function(x) {
+      dplyr::case_when(
+        x == "numeric" ~ "r",
+        TRUE ~ "c"
+      )
+    }) %>%
+      paste(collapse = "")
+
+  }
+
+  if (add_totals) {
+    data <- data %>% janitor::adorn_totals(fill = " ")
+  }
+
+  if (!is.null(proper_cols)) {
+    # data <- data %>% dplyr::mutate_at(dplyr::vars(tidyselect::all_of(proper_cols)), toproper)
+    data <- data %>% dplyr::mutate_at(dplyr::vars(proper_cols), toproper)
+  }
+
+  if (!is.null(currency_cols)) {
+    # data <- data %>% dplyr::mutate_at(dplyr::vars(tidyselect::all_of(currency_cols)), formattable::currency, digits = 0)
+    data <- data %>% dplyr::mutate_at(dplyr::vars(currency_cols), formattable::currency, digits = 0)
+  }
+
+  if (!is.null(number_cols)) {
+    # data <- data %>% dplyr::mutate_at(dplyr::vars(tidyselect::all_of(number_cols)), formattable::comma, digits = 0)
+    data <- data %>% dplyr::mutate_at(dplyr::vars(number_cols), formattable::comma, digits = 0)
+  }
+
+  if (!is.null(percent_cols)) {
+    # data <- data %>% dplyr::mutate_at(dplyr::vars(tidyselect::all_of(percent_cols)), formattable::percent, digits = percent_digits)
+    data <- data %>% dplyr::mutate_at(dplyr::vars(percent_cols), formattable::percent, digits = percent_digits)
+  }
+
+  if (!is.null(decimal_cols)) {
+    # data <- data %>% dplyr::mutate_at(dplyr::vars(tidyselect::all_of(decimal_cols)), formattable::comma, digits = decimal_digits)
+    data <- data %>% dplyr::mutate_at(dplyr::vars(decimal_cols), formattable::comma, digits = decimal_digits)
+  }
+
+  hold <- knitr::kable(data,
+                       format = format,
+                       digits = digits,
+                       row.names = row.names,
+                       col.names = col_names,
+                       align = alignment,
+                       caption = caption,
+                       label = label,
+                       format.args = format.args,
+                       escape = escape
+  ) %>%
+    kableExtra::kable_styling(position = position,
+                              bootstrap_options = bootstrap_options,
+                              full_width = full_width,
+                              font_size = font_size,
+                              row_label_position = row_label_position,
+                              repeat_header_text = repeat_header_text,
+                              repeat_header_method = repeat_header_method,
+                              repeat_header_continued = repeat_header_continued,
+                              stripe_color = stripe_color,
+                              stripe_index = stripe_index,
+                              fixed_thead = fixed_thead)
+
+  if (format_header) hold <- hold %>% kableExtra::row_spec(row = 0, bold = TRUE, align = "center")
+  if (format_totals) hold <- hold %>% kableExtra::row_spec(row = nrow(data), bold = TRUE, background = "lightgrey")
+
+  return(hold)
+
+}
+```
+
+## Overview
+
+The purpose of this report is to walk through the various allocation procedures 
+utilized in the shiny application. 
+
+In order to provide knowledgeable insights from this report, we have supplied 
+reasonable inputs that mimic the *user-driven* aspects of the allocation 
+procedures. 
+
+## Setup
+
+The first step is to ingest all of the various user-driven inputs and demo-data to form a dataset to perform the allocation with. 
+
+```{r load_demo_data}
+load_demo_data()
+```
+
+Specify various 'user-defined' inputs: 
+
+- Experience Period for Loss Run 
+- Capping Threshold (%)
+- Budget guidance increase factor (a % applied to prior rates which are then used to allocate premiums)
+
+```{r user-inputs}
+# specify experience period based on loss run
+min_year <- min(loss_run$year)
+max_year <- max(loss_run$year)
+experience_period <- c(min_year:max_year)
+
+experience_period_display <- paste0(
+  lubridate::ymd(paste0(min_year, "-01-01")) %>% format("%B %d, %Y"), " to ",
+  lubridate::ymd(paste0(max_year, "-12-31")) %>% format("%B %d, %Y")
+)
+
+# specify percent change capping threshold
+cap_threshold <- .25
+
+# A 5% budget guidance increase factor
+budget_guidance_percent <- 0.05
+```
+
+### Costs to be Allocated
+
+we need to extract the ***costs to be allocated*** in the model, specifically: 
+
+1. The Total Cost Including Expenses  
+1. The Risk Transfer Cost  
+1. The All Risk Cost  
+1. The Sum of Expenses  
+
+To do this, I utilize an internal, custom utility function `extract_costs_for_allocation()`.
+
+The resulting ***Costs for Allocation*** are:
+
+```{r extract_costs}
+# extract costs from renewal cost table
+costs <- extract_costs(renewal_costs)
+
+# derive current and prior overall rates and percent change
+curr_rate <- costs$risk_transfer / sum(sov$tiv)
+prior_rate <- sum(priors$prior_risk_transfer_premium) /
+  sum(priors$prior_tiv)
+pct_change <- (curr_rate / prior_rate) - 1
+
+tibble::as_tibble(costs) %>%
+  as.matrix() %>%
+  t() %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "Cost Type") %>%
+  dplyr::rename("Dollar Amount" = V1) %>%
+  tibble::as_tibble() %>%
+  kkable(currency_cols = "Dollar Amount",
+         proper_cols = "Cost Type",
+         caption = "Extracted Costs for Allocation:")
+```
+
+
+### Derive Relativity Adjusted TIVs 
+
+This step involves taking the user-defined relativity's and multiplying them by 
+the initial *Total Insured Values* defined in the Schedule of Values (SOV). 
+
+Specifically, we take the user-input *Relativity Table* and apply a custom utility 
+function `derive_relativity_adjusted_tivs()` to derive our final relativity 
+adjusted TIVs. 
+
+First, lets look at the input relativities: 
+
+```{r preview_relativities, results='asis'}
+rel_tables <- list(bu_rels, combustible_rels, sprinkler_tier_rels) %>%
+  purrr::set_names(c("Business Unit Relativity",
+                     "AOP Combustible Relativity",
+                     "AOP Sprinkler Tier Relativity")) %>%
+  purrr::map(apply_labels, dict = dictionary, dataset_name = "rels") %>%
+  purrr::map(tibble::as_tibble)
+
+purrr::map2(rel_tables, names(rel_tables), function(x, y) {
+  kkable(data = x, caption = y, col_names = NULL, digits = 3, add_digits = TRUE)
+})
+```
+
+### Apply relativity factors to TIVs
+
+Relativities are then applied directly to each entity's TIV. For each
+relativity type, a separate relativity-adjusted TIV is calculated and
+used as required in eithe catastrophy allocation, All Other Peril allocation,
+or terrorism allocation.
+
+```{r rel_adj, results='asis'}
+rels_list <- list(
+    relativity_data = list(
+      bu_rels[, c(1, 2)], bu_rels[, c(1, 3)], bu_rels[, c(1, 4)], bu_rels[, c(1, 5)],
+      bu_rels[, c(1, 6)], sprinkler_tier_rels, combustible_rels
+    ),
+    coverage = list(
+      "aop", "cat_eq", "cat_wind", "cat_flood", "terrorism", "aop", "aop"
+    ),
+    sov_linker = list(
+      "bu", "bu", "bu", "bu", "bu", "aop_sprinkler_tier", "aop_combustible"
+    )
+  )
+
+rel_adjusted_tivs <- ingest_relativities(rels_list, sov = sov)
+
+kkable(head(rel_adjusted_tivs),
+       proper_cols = "entity_id", 
+       currency_cols = names(rel_adjusted_tivs[2:ncol(rel_adjusted_tivs)]))
+```
+
+### Prepare claim surcharges
+
+For entities that have experienced claims, the client may wish to increase
+their allocated premium. The rules for doing so are limited in this application
+to: applying a % surcharge to the TIV for each claim made by the entity in a
+certain time period, or adding a $ surcharge to the allocated premium (at this
+stage in the calculation) for each claim made in a certain time period.
+
+The demo data, `count_buckets`, sets out a typical specification for such
+functionality.
+
+```{r count_buckets, results='asis'}
+count_buckets %>%
+  select(name:dollar_surcharge) %>%
+  kkable(
+    col_names = c("Label", "Minimum", "Maximum", "Percent Surcharge", "Dollar Surcharge"),
+    caption = "User-Defined Claim Count Bucket Surcharges",
+    currency_cols = c("min", "max", "dollar_surcharge"),
+    percent_cols = c("percent_surcharge")
+  )
+```
+
+Here, `count_buckets` are applied to the loss run ready for surcharging
+the premiums calculated in the main part of the model:
+
+```{r derive_count_buckets_by_entity}
+entity_loss_data <- entity_loss_summary(loss_run, count_buckets, experience_period)
+
+col_names <- c("Entity ID", 
+               count_buckets$name,
+               "Total Counts", "Total Incurred")
+
+kkable(entity_loss_data %>%
+         # dplyr::mutate(entity_id = toproper(entity_id)) %>%
+         dplyr::arrange(dplyr::desc(total_incurred)) %>%
+         head(10), 
+       col_names = col_names,
+       proper_cols = "entity_id",
+       currency_cols = length(col_names),
+       caption = "Summarized Loss Data by Entity (Top 10 Entities by Total Incurred)")
+```
+
+### Putting it all together
+
+The steps involved are:
+
+1. `merge_entity_data()`:
+  - Apply `rates` to `relativity_adjusted_tivs` and
+    also to `priors` (to simultaneously obtain an allocation of
+    prior premiums)
+  - Apply `entity_loss_data` to surcharge the resulting premiums
+    pased on `count_buckets` and the loss run experience
+
+2. `preliminary_allocation()`:
+  - Determine a preliminary allocation of premiums (post claim surcharges)
+    by calibrating the total allocated premium to match those indicated
+    in `costs`
+  - Also, apply `budget_guidance_percent` to prior premium rates
+    to perform this allocation scenario
+    
+3. `apply_threshold()`:
+  - Take the preliminary allocation of premiums and enforce a threshold upon
+    them which prevents premiums allocated in the current period deviating
+    too far from premium allocations of the prior period. For example, if the
+    threshold is set to 25% (`threshold <- 0.25`), and if the prior
+    premium allocated for a particular entity was 1m USD, then roughly
+    the current premium allocation would be between 750k USD, and 1.25m USD.
+    
+4. Perform final calculations to include expenses in the allocation.
+    
+
+```{r allocate}
+# merge entity data (sov, rel adjusted tivs, loss data, market and model rates,
+# and priors)
+
+allocation_data <- merge_entity_data(
+  sov,
+  rel_adjusted_tivs,
+  entity_loss_data,
+  rates,
+  priors
+) %>%
+  # perform initial preliminary allocation (CAT first, back into AOP, terror)
+  # this is uncapped. before surcharges, and excluding expenses
+  preliminary_allocation(costs, budget_guidance_percent) %>%
+  # apply surcharges
+  apply_surcharges(count_buckets) %>%
+  # adjust column names for apply threshold function
+  # TODO: add arguments to apply threshold functions for specifying column
+  # so don't have to add this step.
+  mutate(
+    prior_allocated = prior_risk_transfer_premium,
+    prior_allocated_rate = prior_allocated / prior_tiv,
+    uncapped_allocated = surcharged_premium
+  ) %>%
+  # apply capping using a default 25% threshold
+  # TODO: add argument to apply threshold for whether or not to net the
+  # total pct change or not - currently it does this
+  apply_threshold(
+    total_pct_chg = pct_change,
+    threshold = cap_threshold
+  ) %>%
+  # final rebalancing and allocate expenses
+  allocate_expenses(costs, weight_variable = "tiv")
+
+```
+
+And the result is:
+
+```{r cleanup, results='asis'}
+# declutter results and output
+allocation_data %>%
+  mutate(current_allocated_rate = rebalanced_allocated / tiv) %>% # excl expense
+  select(
+    entity_id,
+    tiv,
+    prior_tiv,
+    aop_adj_tiv:terrorism_adj_tiv,
+    model_aop_rate,
+    model_cat_eq_rate,
+    model_cat_wind_rate,
+    model_cat_flood_rate,
+    model_terrorism_rate,
+    prior_risk_transfer_premium,
+    preliminary_model_premium = total_model_premium_adj,
+    surcharge,
+    surcharged_premium,
+    prior_allocated,
+    prior_allocated_rate,
+    uncapped_allocated,
+    capped_allocated = allocated,
+    final_allocated = rebalanced_allocated,
+    current_allocated_rate,
+    rate_percent_change = capped_rate_percent_change,
+    allocated_expenses,
+    final_allocated_w_expense
+  ) %>%
+  kkable()
+```
+
+
+### Driver Summary
+
+`propalloc` comes with functionality to split out the effects of
+each of the stages of premium allocation as they contribute to its change
+between prior and current premium allocations. This function uses argument
+`filter_vector` to show such a split for a subset of entities if desired.
+
+```{r driver_summary}
+driver_summary <- prepare_driver_summary(allocation_data, filter_vector = c())
+driver_summary_bu_b_only <- prepare_driver_summary(allocation_data, filter_vector = c(bu = "bu_b"))
+```

@@ -1,0 +1,49 @@
+# Property Allocation App License
+
+Copyright (c) 2020 Oliver Wyman Actuarial Consulting, Inc.
+
+## Company Policy
+
+### Circulation or Publication
+
+This model is not intended for general circulation or publication, nor is it to 
+be used, quoted or distributed to others for any purpose other than those that 
+may be set forth herein or in the written agreement pursuant to which this model 
+has been issued without the prior written consent of 
+[Oliver Wyman](https://www.oliverwyman.com/index.html).
+
+### Third Party Reliance and Due Diligence
+
+Oliver Wyman’s consent to any distribution of this model (whether herein or in 
+the written agreement pursuant to which this model has been issued) to parties 
+other than CLIENT XYZ, does not constitute advice by Oliver Wyman to any such
+third parties and shall be solely for informational purposes and not for 
+purposes of reliance by any such third parties.  Oliver Wyman assumes no 
+liability related to third party use of this model or any actions taken or 
+decisions made as a consequence of the results, advice or recommendations set 
+forth herein. This model should not replace the due diligence on behalf of any 
+such third party.  
+
+### Public Dissemination
+
+Neither all nor any part of the contents of this model, any opinions expressed 
+herein, or the firm with which this model is connected, shall be disseminated 
+to the public through advertising media, public relations, news media, sales 
+media, mail, direct transmittal, or any other public means of communications, 
+without the prior written consent of Oliver Wyman. 
+
+### Avoiding Tax Penalty
+
+The actuarial findings contained in this model are not intended to be used, 
+and cannot be used, by the taxpayer for the purpose of avoiding tax penalties
+that may be imposed on the taxpayer.
+
+### Contributing
+
+Please note that the 'propalloc' project is released with a
+[Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.
+
+
+
+

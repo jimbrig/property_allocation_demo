@@ -1,0 +1,71 @@
+Package: propalloc
+Title: Oliver Wyman RShiny Property Allocation App
+Version: 1.1.0
+Authors@R: 
+    c(person(given = "Jimmy",
+             family = "Briggs",
+             role = c("aut", "cre"),
+             email = "jimmy.briggs@oliverwyman.com"),
+      person(given = "Jack",
+             family = "Reardon",
+             role = "ctb",
+             email = "jack.reardon@oliverwyman.com"),
+      person(given = "Adam",
+             family = "Lewis",
+             role = "rev",
+             email = "adam.lewis@oliverwyman.com"),
+      person(given = "Oliver Wyman Actuarial Consulting",
+             role = "fnd"))
+Description: Property Allocation model in R Shiny that allocates
+    an insured's prospective year property insurance costs.
+License: LICENSE
+URL: https://github.com/jimbrig/propalloc
+BugReports: https://github.com/jimbrig/propalloc/issues
+Imports: 
+    cli,
+    dplyr,
+    DT,
+    fs,
+    highcharter,
+    htmltools,
+    htmlwidgets,
+    lubridate,
+    magrittr,
+    matchmaker,
+    purrr,
+    rhandsontable,
+    rintrojs,
+    rlang (>= 0.1.2),
+    scales,
+    shiny,
+    shinycustomloader,
+    shinydashboard,
+    shinyjs,
+    shinyWidgets,
+    stats,
+    stringr,
+    tibble,
+    tidyr,
+    tidyselect,
+    utils,
+    writexl,
+    pkgload
+Suggests: 
+    formattable,
+    janitor,
+    kableExtra,
+    knitr,
+    remotes,
+    rmarkdown,
+    testthat (>= 2.1.0),
+    tidyverse,
+    usethis
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends: 
+    R (>= 2.10)

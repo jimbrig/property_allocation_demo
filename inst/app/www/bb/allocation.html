@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>allocation</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+border-bottom: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic tfoot tr td {
+border: 0;
+}
+.lightable-classic tfoot tr:first-child td {
+border-top: 0.14em solid #111111;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+border-bottom: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 tfoot tr td {
+border: 0;
+}
+.lightable-classic-2 tfoot tr:first-child td {
+border-top: 3px double #111111;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material tfoot tr td {
+border: 0;
+}
+.lightable-material tfoot tr:first-child td {
+border-top: 1px solid #EEE;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark tfoot tr td {
+border: 0;
+}
+.lightable-material-dark tfoot tr:first-child td {
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper tfoot tr td {
+border: 0;
+}
+.lightable-paper tfoot tr:first-child td {
+border-top: 1px solid #00000020;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+
+
+
+<style type="text/css">
+h1.title {
+  font-size: 38px;
+  color: Black;
+  text-align: center;
+  padding: 15px 5px 10px 5px
+}
+img {
+  border: none
+}
+</style>
+<p> </p>
+<h1 class="title toc-ignore">
+<div class="line-block">
+<p>Property Allocation Model <br /> Tychobra</p>
+</div>
+</h1>
+<p>
+<center>
+<img src="data:image/png;base64,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" width="50%" />
+</center>
+</p>
+<center>
+<p>
+<strong>Author:</strong> Jimmy Briggs <a href="mailto:jimmy.briggs@tychobra.com" class="email">jimmy.briggs@tychobra.com</a>
+</p>
+<strong>Date:</strong> Last Compiled on March 24, 2020
+</center>
+<p> </p>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The purpose of this report is to walk through the various allocation procedures utilized in the shiny application.</p>
+<p>In order to provide knowledgeable insights from this report, we have supplied reasonable inputs that mimic the <em>user-driven</em> aspects of the allocation procedures.</p>
+<div id="setup" class="section level3">
+<h3>Setup</h3>
+<ul>
+<li>Set Options and Configurations</li>
+<li>Library Packages</li>
+</ul>
+<p>See <a href="#appendix-b-session-info">Appendix B: Session Info</a> for all packages utilized in this document.</p>
+</div>
+<div id="initial-data" class="section level3">
+<h3>Initial Data</h3>
+<p>The data utilized in the model is broken down into the following:</p>
+<ol style="list-style-type: decimal">
+<li>Schedule of Values (SOV)</li>
+<li>Loss Run</li>
+<li>Priors</li>
+<li>Renewal Costs</li>
+<li>Count Bucket Definitions</li>
+<li>Market Rates</li>
+<li>Model Rates</li>
+<li>Relativity</li>
+<li>User-Defined Experience Period</li>
+<li>User-Defined Percent Capping Threshold</li>
+</ol>
+<p>For more detailed information on each of these data inputs, please see the <a href="data_documentation.html">Data Documentation Vignette</a>.</p>
+</div>
+</div>
+<div id="ingest-data" class="section level2">
+<h2>Ingest Data</h2>
+<p>This step involves merging each user-defined input table into a single, unified <em>Entity Data</em> database. In no particular order the steps undertaken here are:</p>
+<ul>
+<li>Derive costs to be allocated from the renewal costs table</li>
+<li>Derive relativity adjusted TIVs from relativity table</li>
+<li>Merge data into a unified entity database before pushing into the model</li>
+</ul>
+<div id="renewal-costs-overview" class="section level3">
+<h3>Renewal Costs Overview</h3>
+<p>Let’s take a look at our initial renewal costs table.</p>
+<p>Note that in the actual shiny application, this will be a dynamic user-input table that the user can edit and make changes to.</p>
+<table class="table table-striped table-bordered table-responsive" style="margin-left: auto; margin-right: auto;">
+<caption>
+Initial Costs Table
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;font-weight: bold;text-align: center;">
+Cost Type
+</th>
+<th style="text-align:center;font-weight: bold;text-align: center;">
+Description
+</th>
+<th style="text-align:right;font-weight: bold;text-align: center;">
+Prior
+</th>
+<th style="text-align:right;font-weight: bold;text-align: center;">
+Current
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+Premium
+</td>
+<td style="text-align:center;">
+All Risk
+</td>
+<td style="text-align:right;">
+$63,301,745
+</td>
+<td style="text-align:right;">
+$65,200,798
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Premium
+</td>
+<td style="text-align:center;">
+Terrorism
+</td>
+<td style="text-align:right;">
+$3,909,519
+</td>
+<td style="text-align:right;">
+$4,026,804
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Expense
+</td>
+<td style="text-align:center;">
+Taxes
+</td>
+<td style="text-align:right;">
+$602,831
+</td>
+<td style="text-align:right;">
+$620,916
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Expense
+</td>
+<td style="text-align:center;">
+Fees
+</td>
+<td style="text-align:right;">
+$4,645,560
+</td>
+<td style="text-align:right;">
+$4,784,927
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Expense
+</td>
+<td style="text-align:center;">
+Program
+</td>
+<td style="text-align:right;">
+$1,435,010
+</td>
+<td style="text-align:right;">
+$1,478,060
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-weight: bold;background-color: lightgrey !important;">
+Total
+</td>
+<td style="text-align:center;font-weight: bold;background-color: lightgrey !important;">
+</td>
+<td style="text-align:right;font-weight: bold;background-color: lightgrey !important;">
+$73,894,665
+</td>
+<td style="text-align:right;font-weight: bold;background-color: lightgrey !important;">
+$76,111,505
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that for the above initial costs table, only the <em>Premium</em> amounts will be allocated using our model methods, while expenses are allocated based on the TIV distribution by entity.</p>
+<p>The Cost Group <strong>All Risk</strong> is composed of AOP and CAT Premiums.</p>
+<p>Using the initial costs table, we want to extract the following values for use in the model:</p>
+<ul>
+<li><strong>Terrorism Premium</strong></li>
+<li><strong>All Risk Cost</strong></li>
+<li><strong>Risk Transfer Cost</strong><br />
+</li>
+<li><strong>Expenses</strong></li>
+</ul>
+<hr />
+<p><strong><em>Formulas:</em></strong></p>
+<p><span class="math display">\[Risk\ Transfer\ Cost = All\ Risk\ Cost + Terrorism\ Premium\]</span><br />
+<span class="math display">\[All\ Risk\ Cost\ = \ AOP\ Premium + CAT\ Premium\]</span><br />
+<span class="math display">\[CAT\ Premium = \sum_i{CAT\ Premium_i}\\\ (where\ i = CAT\ EQ,\ CAT\ Wind,\ and\ CAT\ Flood)\]</span><br />
+<span class="math display">\[Expenses = \sum_i{Expenses_i}\]</span><br />
+</p>
+<hr />
+<p><strong><em>Notes:</em></strong></p>
+<ul>
+<li><p>For Terrorism Premium, if not directly input by user, can be backed into by subtracting the <em>All Risk Cost</em> from the <em>Risk Transfer Cost</em>.</p></li>
+<li><p>For expenses, we take the sum of all non-premium related costs. If there are any expenses that should not be allocated in the model they should be excluded.</p></li>
+</ul>
+<hr />
+</div>
+<div id="derive-costs-to-be-allocated" class="section level3">
+<h3>Derive Costs to be Allocated</h3>
+<p>Now, we need to extract the <strong><em>costs to be allocated</em></strong> in the model, specifically:</p>
+<ol style="list-style-type: decimal">
+<li>The Total Cost Including Expenses<br />
+</li>
+<li>The Risk Transfer Cost<br />
+</li>
+<li>The All Risk Cost<br />
+</li>
+<li>The Sum of Expenses</li>
+</ol>
+<p>To do this, I utilize an internal, custom utility function .</p>
+<p>The resulting <strong><em>Costs for Allocation</em></strong> are:</p>
+<pre><code>#&gt; Error in extract_costs_for_allocation(initial_costs): could not find function &quot;extract_costs_for_allocation&quot;
+#&gt; Error in tibble::as_tibble(costs): object &#39;costs&#39; not found</code></pre>
+</div>
+<div id="derive-relativity-adjusted-tivs" class="section level3">
+<h3>Derive Relativity Adjusted TIVs</h3>
+<p>This step involves taking the user-defined relativity’s and multiplying them by the initial <em>Total Insured Values</em> defined in the Schedule of Values (SOV).</p>
+<p>Specifically, we take the user-input <em>Relativity Table</em> and apply a custom utility function <code>derive_relativity_adjusted_tivs()</code> to derive our final relativity adjusted TIVs.</p>
+<p>First, lets look at the input relativities:</p>
+<pre><code>#&gt; Error in tbl_vars_dispatch(x): object &#39;initial_relativities&#39; not found</code></pre>
+<p>Now using <code>derive_relativity_adjusted_tivs()</code>, we get our resulting adjusted TIVs:</p>
+<pre><code>#&gt; Error in derive_relativity_adjusted_tivs(bu_relativites, sprinkler_tier_relativities, : could not find function &quot;derive_relativity_adjusted_tivs&quot;
+#&gt; Error in dplyr::mutate(., entity_id = toproper(entity_id)): object &#39;relativity_adjusted_tivs&#39; not found</code></pre>
+<p><strong><em>NOTE: For display purposes I will only show the first 10 rows here:</em></strong></p>
+</div>
+<div id="ingest-count-buckets-and-loss-run" class="section level3">
+<h3>Ingest Count Buckets and Loss Run</h3>
+<p>The purpose of this step is to ingest the user-defined count buckets, defined in the count bucket surcharge table in order to set the <strong>Entity Data</strong> database up to properly flow into the allocation model before applying the percent and dollar surcharges to the allocated amounts.</p>
+<p>In the end, we will derive final surcharge amounts by entity based off of their historical loss experience, but in order to apply these we first need our preliminary allocated premium amounts (in order to apply the percent surcharges). However, for now we need to shape the data so this process is streamlined later on.</p>
+<p>The user-driven inputs utilized are:</p>
+<ul>
+<li>The Loss Run</li>
+<li>The Count Bucket Surcharge Table’s Defined Bucket Minimum and Maximum Values<br />
+</li>
+<li>The User-Defined Experience Period</li>
+</ul>
+<p>From these we do the following to derive our desired results:</p>
+<ol style="list-style-type: decimal">
+<li><p>Filter the loss run to only include dates of loss within the user-defined experience period interval.</p></li>
+<li><p>Filter out any claims with incurred values below the minimum specified value or above the maximum specified amount (for the first and last defined buckets, respectively).</p></li>
+<li><p>Summarize the loss run into a table displaying the number of claims within<br />
+each user-defined claim count severity <em>bucket</em>.</p></li>
+<li><p>Derive total <strong>dollar</strong> surcharge amounts by entity (cannot apply the <strong>percent surcharges yet</strong>), by taking results from step 2 and applying the dollar amount surcharges to each entity.</p></li>
+</ol>
+<p>For this example I assume an experience period of: <strong>January 01, 2015 to December 31, 2019</strong>.</p>
+<p>Also, I assume the following user-defined surcharge inputs:</p>
+<pre><code>#&gt; Error in select(., name:dollar_surcharge): object &#39;initial_count_buckets&#39; not found</code></pre>
+<p><strong>NOTES:</strong></p>
+<ul>
+<li><p>$0 claims are included in the first bucket, this can be changed by specifying a min value of $1 instead of $0 in the table. This will filter out $0 claims.</p></li>
+<li><p>I have arranged the table in decreasing order of total incurred amount, and am only displaying the top 10 rows by entity.</p></li>
+</ul>
+<p>Now, lets derive and preview the aforementioned table summarizing the results by entity to be ingested into the final <strong>Entity Data</strong> database.</p>
+<pre><code>#&gt; Error in derive_entity_loss_data(loss_run, initial_count_buckets, experience_period): could not find function &quot;derive_entity_loss_data&quot;
+#&gt; Error in eval(expr, envir, enclos): object &#39;initial_count_buckets&#39; not found
+#&gt; Error in kkable(entity_loss_data %&gt;% dplyr::mutate(entity_id = toproper(entity_id)) %&gt;% : object &#39;col_names&#39; not found</code></pre>
+</div>
+<div id="ingest-rates" class="section level3">
+<h3>Ingest Rates</h3>
+<p>This step takes the market rates, user-defined model rates, and prior rates and merges them with the entities via their respective <em>Rate ID’s</em> defined in the SOV.</p>
+<p>Once we have mapped rates, relativity adjusted TIVs, and costs for allocation we are ready to begin the process of allocating premiums to individual entities.</p>
+<p>Let’s preview out indicated prior rates, market rates, and the user-defined model rates for each coverage and subcoverage split:</p>
+<pre><code>#&gt; Error in dplyr::mutate(., rate_type = dplyr::case_when(rate_type == &quot;aop&quot; ~ : object &#39;initial_rates&#39; not found
+#&gt; Error in purrr::map2(rate_tables, names(rate_tables), function(x, y) {: object &#39;rate_tables&#39; not found</code></pre>
+<p>Now we can move onto the final <strong><em>data ingestion</em></strong> process which is to form our preliminary <strong>Entity Data</strong> database to push into the model.</p>
+</div>
+<div id="form-entity-database" class="section level3">
+<h3>Form Entity Database</h3>
+<p>This step merges all previous derived data into a single unified database for use in the model. In particular it merges:</p>
+<ol style="list-style-type: decimal">
+<li>The SOV</li>
+<li>Market Rates by Key</li>
+<li>Relativity Adjusted TIVs</li>
+<li>The Loss Data and Count Buckets</li>
+<li>The Selected Model Rates</li>
+<li>Prior Rates and Premiums</li>
+</ol>
+<pre><code>#&gt; Error in derive_entity_data(sov, relativity_adjusted_tivs, entity_loss_data, : could not find function &quot;derive_entity_data&quot;</code></pre>
+</div>
+</div>
+<div id="perform-allocation" class="section level2">
+<h2>Perform Allocation</h2>
+<p>Now that we have ingested all of the relevant data we can begin allocating out premiums.</p>
+<p>The steps are as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>Derive (Relativity Adjusted) Preliminary Market Premiums for each coverage group.</p></li>
+<li><p>Derive (Relativity Adjusted) Preliminary Model Premiums for each coverage group.</p></li>
+<li><p>Sum together all <strong><em>CAT</em></strong> premiums to get a total CAT premium across EQ, Wind, and Flood.</p></li>
+<li><p>Subtract the Total CAT Premium from the <strong><em>All Risk Premium</em></strong> to derive our total <strong><em>AOP</em></strong> amount to allocate.</p></li>
+<li><p>Re-balance the <em>preliminary</em> <strong><em>AOP</em></strong> derived premiums to force the total to equal the necessary amount from the previous step.</p></li>
+<li><p>Sum together the Rebalanced AOP Premium, the total CAT premium, and the Terrorism Premium to get a total model premium.</p></li>
+<li><p>Add the percentage and dollar surcharges by claim count bucket to the total preliminary premium.</p></li>
+<li><p>Allocate expenses using the derived total expenses amount from the costs table via the percentage distribution of TIV (unadjusted) by entity.</p></li>
+<li><p>Apply capping on percentage <strong><em>rate</em></strong> changes since prior.</p></li>
+<li><p>Re-balance capped premiums to equal the desired cost inputs.</p></li>
+<li><p>Validate Results</p></li>
+<li><p>Summarize Results</p></li>
+</ol>
+<hr />
+<p><strong><em>Formulas:</em></strong></p>
+<p><span class="math display">\[Market\ Premium_c = Market\ Rate_c\ * Adjusted\ TIV_c\]</span></p>
+<p><span class="math display">\[Where\ Subscript_c\ stands\ for\ coverage.\]</span></p>
+<hr />
+<div id="derive-preliminary-premiums-by-coverage-group" class="section level3">
+<h3>Derive Preliminary Premiums by Coverage Group</h3>
+<pre><code>#&gt; Error in dplyr::mutate(., market_cat_eq_premium = market_cat_eq_rate * : object &#39;entity_data&#39; not found
+#&gt; Error in eval(expr, envir, enclos): object &#39;preliminary_allocation_data&#39; not found
+#&gt; Error in eval(expr, envir, enclos): object &#39;preliminary_allocation_data&#39; not found
+#&gt; Error in eval(expr, envir, enclos): object &#39;preliminary_allocation_data&#39; not found</code></pre>
+</div>
+<div id="apply-claim-count-surcharges" class="section level3">
+<h3>Apply Claim Count Surcharges</h3>
+<pre><code>#&gt; Error in dplyr::select(., entity_id, premium = total_model_premium_adj, : object &#39;preliminary_allocation_data&#39; not found</code></pre>
+<pre><code>#&gt; Error in dplyr::left_join(., priors, by = &quot;entity_id&quot;): object &#39;surcharged_allocation_data&#39; not found</code></pre>
+</div>
+<div id="apply-rate-capping" class="section level3">
+<h3>Apply Rate Capping</h3>
+<pre><code>#&gt; Error in eval(expr, envir, enclos): object &#39;costs&#39; not found
+#&gt; Error in eval(expr, envir, enclos): object &#39;curr_rate&#39; not found
+#&gt; Error in filter(., new == 1): object &#39;allocation_data&#39; not found
+#&gt; Error in filter(., new == 0): object &#39;allocation_data&#39; not found
+#&gt; Error in mutate(., prior_allocated = prior_total_premium_excl_expense, : object &#39;allocation_data_nonnew&#39; not found
+#&gt; Error in eval(expr, envir, enclos): object &#39;allocation_capped&#39; not found
+#&gt; Error in eval(expr, envir, enclos): object &#39;allocation_capped&#39; not found</code></pre>
+</div>
+<div id="summarize-results" class="section level3">
+<h3>Summarize Results</h3>
+</div>
+</div>
+<div id="output" class="section level2">
+<h2>Output</h2>
+<p>And finally lets output to Excel for review:</p>
+<hr />
+<div id="appendix-a-code" class="section level4">
+<h4>Appendix A: Code</h4>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">comment =</span> <span class="st">&quot;#&gt;&quot;</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">eval =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">warning =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">error =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">message =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">echo =</span> <span class="cn">FALSE</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">load_demo_data</span>()</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>initial_costs <span class="ot">&lt;-</span> renewal_costs</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">kkable</span>(</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> initial_costs,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;Initial Costs Table&quot;</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">proper_cols =</span> <span class="fu">c</span>(<span class="st">&quot;cost_type&quot;</span>, <span class="st">&quot;description&quot;</span>),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">currency_cols =</span> <span class="fu">c</span>(<span class="st">&quot;prior&quot;</span>, <span class="st">&quot;current&quot;</span>),</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">0</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">format_header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">add_totals =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">format_totals =</span> <span class="cn">TRUE</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>costs <span class="ot">&lt;-</span> <span class="fu">extract_costs_for_allocation</span>(initial_costs)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">as_tibble</span>(costs) <span class="sc">%&gt;%</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">&quot;Cost Type&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="st">&quot;Dollar Amount&quot;</span> <span class="ot">=</span> V1) <span class="sc">%&gt;%</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kkable</span>(<span class="at">currency_cols =</span> <span class="st">&quot;Dollar Amount&quot;</span>,</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">proper_cols =</span> <span class="st">&quot;Cost Type&quot;</span>,</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">caption =</span> <span class="st">&quot;Extracted Costs for Allocation:&quot;</span>)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>initial_relativities <span class="sc">%&gt;%</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate_at</span>(dplyr<span class="sc">::</span><span class="fu">vars</span>(rate_type, relativity_type), toproper, </span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>                   <span class="at">underscore_replacement =</span> <span class="st">&quot;-&quot;</span>, <span class="at">return_as =</span> <span class="st">&quot;uppercase&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">relativity_type =</span> stringr<span class="sc">::</span><span class="fu">str_to_title</span>(relativity_type),</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">relativity_type =</span> stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(relativity_type, <span class="st">&quot;Bu&quot;</span>, <span class="st">&quot;Business Unit&quot;</span>),</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(level, <span class="st">&quot;bu_&quot;</span>, <span class="st">&quot;Business Unit &quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>      stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(<span class="st">&quot; a&quot;</span>, <span class="st">&quot; A&quot;</span>) <span class="sc">%&gt;%</span> stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(<span class="st">&quot; b&quot;</span>, <span class="st">&quot; B&quot;</span>)</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kkable</span>(</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">&quot;Rate Type&quot;</span>, <span class="st">&quot;Relativity Type&quot;</span>, <span class="st">&quot;Level&quot;</span>, <span class="st">&quot;Relativity Factor&quot;</span>), </span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;User-Defined Relativities&quot;</span>,</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimal_cols =</span> <span class="fu">c</span>(<span class="fu">ncol</span>(initial_relativities)),</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimal_digits =</span> <span class="dv">3</span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="co"># derive relativity adjusted TIVs</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>relativity_adjusted_tivs <span class="ot">&lt;-</span> <span class="fu">derive_relativity_adjusted_tivs</span>(</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>  bu_relativites,</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>  sprinkler_tier_relativities,</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>  combustible_relativities,</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>  sov</span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>relativity_adjusted_tivs <span class="sc">%&gt;%</span> </span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">entity_id =</span> <span class="fu">toproper</span>(entity_id)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kkable</span>(</span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Resulting Relativty Adjusted Total Insured Values by Entity and Coverage: &quot;</span>,</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">&quot;Entity ID&quot;</span>, <span class="st">&quot;TIV&quot;</span>, <span class="st">&quot;AOP&quot;</span>, <span class="st">&quot;CAT-EQ&quot;</span>, <span class="st">&quot;CAT-Wind&quot;</span>, <span class="st">&quot;CAT-Flood&quot;</span>, <span class="st">&quot;Terrorism&quot;</span>),</span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">currency_cols =</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(relativity_adjusted_tivs))</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">add_header_above</span>(</span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">header =</span> <span class="fu">c</span>(<span class="st">&quot; &quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;Relativity Adjusted Total Insured Values&quot;</span> <span class="ot">=</span> <span class="dv">5</span>), </span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">bold =</span> <span class="cn">TRUE</span></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>min_year <span class="ot">&lt;-</span> <span class="fu">min</span>(loss_run<span class="sc">$</span>year)</span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>max_year <span class="ot">&lt;-</span> <span class="fu">max</span>(loss_run<span class="sc">$</span>year)</span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>experience_period <span class="ot">&lt;-</span> <span class="fu">c</span>(min_year<span class="sc">:</span>max_year)</span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>experience_period_display <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>   lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">paste0</span>(min_year, <span class="st">&quot;-01-01&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">format</span>(<span class="st">&quot;%B %d, %Y&quot;</span>), <span class="st">&quot; to &quot;</span>,</span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>   lubridate<span class="sc">::</span><span class="fu">ymd</span>(<span class="fu">paste0</span>(max_year, <span class="st">&quot;-12-31&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">format</span>(<span class="st">&quot;%B %d, %Y&quot;</span>)</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a><span class="co"># min_value &lt;- min(initial_count_buckets$min)</span></span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="co"># max_value &lt;- max(initial_count_buckets$max)</span></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>initial_count_buckets <span class="sc">%&gt;%</span></span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name<span class="sc">:</span>dollar_surcharge) <span class="sc">%&gt;%</span></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kkable</span>(</span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">&quot;Label&quot;</span>, <span class="st">&quot;Minimum&quot;</span>, <span class="st">&quot;Maximum&quot;</span>, <span class="st">&quot;Percent Surcharge&quot;</span>, <span class="st">&quot;Dollar Surcharge&quot;</span>),</span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>     <span class="at">caption =</span> <span class="st">&quot;User-Defined Claim Count Bucket Surcharges&quot;</span>,</span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">currency_cols =</span> <span class="fu">c</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;dollar_surcharge&quot;</span>),</span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_cols =</span> <span class="fu">c</span>(<span class="st">&quot;percent_surcharge&quot;</span>)</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>entity_loss_data <span class="ot">&lt;-</span> <span class="fu">derive_entity_loss_data</span>(loss_run, initial_count_buckets, experience_period)</span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>col_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Entity ID&quot;</span>, </span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>               initial_count_buckets<span class="sc">$</span>name,</span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>               <span class="st">&quot;Total Counts&quot;</span>, <span class="st">&quot;Total Incurred&quot;</span>)</span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a><span class="fu">kkable</span>(entity_loss_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>         dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">entity_id =</span> <span class="fu">toproper</span>(entity_id)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>         dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(total_incurred)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>         <span class="fu">head</span>(<span class="dv">10</span>), </span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>       <span class="at">col_names =</span> col_names,</span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>       <span class="at">currency_cols =</span> <span class="fu">length</span>(col_names),</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Summarized Loss Data by Entity (Top 10 Entities by Total Incurred)&quot;</span>)</span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>rate_tables <span class="ot">&lt;-</span> initial_rates <span class="sc">%&gt;%</span></span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rate_type =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>    rate_type <span class="sc">==</span> <span class="st">&quot;aop&quot;</span> <span class="sc">~</span> <span class="st">&quot;AOP&quot;</span>,</span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>    rate_type <span class="sc">==</span> <span class="st">&quot;cat_eq&quot;</span> <span class="sc">~</span> <span class="st">&quot;CAT-EQ&quot;</span>,</span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a>    rate_type <span class="sc">==</span> <span class="st">&quot;cat_wind&quot;</span> <span class="sc">~</span> <span class="st">&quot;CAT-Wind&quot;</span>,</span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>    rate_type <span class="sc">==</span> <span class="st">&quot;cat_flood&quot;</span> <span class="sc">~</span> <span class="st">&quot;CAT-Flood&quot;</span>,</span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>    rate_type <span class="sc">==</span> <span class="st">&quot;terror&quot;</span> <span class="sc">~</span> <span class="st">&quot;Terrorism&quot;</span></span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">split</span>(initial_rates<span class="sc">$</span>rate_type) <span class="sc">%&gt;%</span></span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">set_names</span>(<span class="fu">c</span>(<span class="st">&quot;All Other Peril (AOP)&quot;</span>,</span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;Catastrophe - Earthquake (CAT-EQ)&quot;</span>,</span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;Catastrophe - Wind (CAT-Wind)&quot;</span>,</span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;Catastrophe - Flood (CAT-Flood)&quot;</span>,</span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;Terrorism&quot;</span>))</span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map2</span>(rate_tables, <span class="fu">names</span>(rate_tables), <span class="cf">function</span>(x, y) {</span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kable</span>(</span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>     x,</span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>     <span class="at">row.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>     <span class="at">digits =</span> <span class="dv">3</span>, </span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>     <span class="at">align =</span> <span class="st">&quot;crrrcc&quot;</span>,</span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>     <span class="at">col.names =</span> snakecase<span class="sc">::</span><span class="fu">to_mixed_case</span>(<span class="fu">names</span>(x), <span class="at">sep_out =</span> <span class="st">&quot; &quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>       stringr<span class="sc">::</span><span class="fu">str_to_title</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a>       stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(<span class="st">&quot;Tiv&quot;</span>, <span class="st">&quot;TIV&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a>       stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(<span class="st">&quot;Id&quot;</span>, <span class="st">&quot;ID&quot;</span>),</span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a>     <span class="at">caption =</span> <span class="fu">paste0</span>(y, <span class="st">&quot; - Rates&quot;</span>),</span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>     <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>     kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>(<span class="at">position =</span> <span class="st">&quot;center&quot;</span>,</span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>                               <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;bordered&quot;</span>, <span class="st">&quot;condensed&quot;</span>, <span class="st">&quot;responsive&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>     kableExtra<span class="sc">::</span><span class="fu">row_spec</span>(<span class="at">row =</span> <span class="dv">0</span>, <span class="at">bold =</span> <span class="cn">TRUE</span>, <span class="at">align =</span> <span class="st">&quot;center&quot;</span>)</span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a> }) <span class="sc">%&gt;%</span> <span class="fu">set_names</span>(<span class="cn">NULL</span>) <span class="sc">%&gt;%</span> purrr<span class="sc">::</span><span class="fu">walk</span>(print)</span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>entity_data <span class="ot">&lt;-</span> <span class="fu">derive_entity_data</span>(sov, relativity_adjusted_tivs, entity_loss_data, initial_rates)</span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a><span class="co"># names(entity_data)</span></span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>preliminary_allocation_data <span class="ot">&lt;-</span> <span class="fu">preliminary_allocation</span>(entity_data)</span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a><span class="co"># checks</span></span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(preliminary_allocation_data<span class="sc">$</span>rebalanced_model_terrorism_premium_adj) <span class="sc">==</span> costs<span class="sc">$</span>terrorism</span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(preliminary_allocation_data<span class="sc">$</span>total_model_premium_adj) <span class="sc">==</span> costs<span class="sc">$</span>risk_transfer</span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(preliminary_allocation_data<span class="sc">$</span>rebalanced_model_aop_premium_adj, preliminary_allocation_data<span class="sc">$</span>total_model_cat_premium_adj) <span class="sc">==</span> costs<span class="sc">$</span>all_risk</span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>surcharged_allocation_data <span class="ot">&lt;-</span> <span class="fu">apply_surcharges</span>(preliminary_allocation_data, initial_count_buckets)</span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>allocation_data <span class="ot">&lt;-</span> surcharged_allocation_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">left_join</span>(priors, <span class="at">by =</span> <span class="st">&quot;entity_id&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">new =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(prior_tiv) <span class="sc">|</span> prior_tiv <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a>curr_rate <span class="ot">&lt;-</span> costs<span class="sc">$</span>risk_transfer <span class="sc">/</span> <span class="fu">sum</span>(sov<span class="sc">$</span>tiv)</span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>prior_rate <span class="ot">&lt;-</span> <span class="fu">sum</span>(priors<span class="sc">$</span>prior_total_premium_excl_expense) <span class="sc">/</span> </span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(priors<span class="sc">$</span>prior_tiv)</span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>pct_change <span class="ot">&lt;-</span> (curr_rate <span class="sc">/</span> prior_rate) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>new_ents <span class="ot">&lt;-</span> allocation_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(new <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>allocation_data_nonnew <span class="ot">&lt;-</span> allocation_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(new <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>allocation_capped <span class="ot">&lt;-</span> allocation_data_nonnew <span class="sc">%&gt;%</span></span>
+<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prior_allocated =</span> prior_total_premium_excl_expense,</span>
+<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a>         <span class="at">prior_allocated_rate =</span> prior_allocated <span class="sc">/</span> prior_tiv,</span>
+<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>         <span class="at">uncapped_allocated =</span> surcharged_premium) <span class="sc">%&gt;%</span></span>
+<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_threshold</span>(<span class="at">total_pct_chg =</span> pct_change,</span>
+<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>                  <span class="at">threshold =</span> .<span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(new_ents) <span class="sc">%&gt;%</span></span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a>    <span class="at">allocated =</span> <span class="fu">coalesce</span>(allocated, surcharged_premium),</span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_tiv =</span> tiv <span class="sc">/</span> <span class="fu">sum</span>(tiv),</span>
+<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a>    <span class="at">allocated_pct =</span> allocated <span class="sc">/</span> <span class="fu">sum</span>(allocated, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a>    <span class="at">rebalanced_allocated =</span> allocated_pct <span class="sc">*</span> costs<span class="sc">$</span>risk_transfer,</span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a>    <span class="co"># allocated_expenses = percent_tiv * curr_expenses,</span></span>
+<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">final_allocated_w_expense =</span> rebalanced_allocated <span class="sc">+</span> allocated_expense</span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(allocation_capped<span class="sc">$</span>final_allocated_w_expense) <span class="sc">==</span> costs<span class="sc">$</span>risk_transfer <span class="sc">+</span> costs<span class="sc">$</span>expenses</span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(allocation_capped<span class="sc">$</span>final_allocated_w_expense) <span class="sc">==</span> costs<span class="sc">$</span>total_incl_expense</span>
+<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a><span class="co"># allocation_summary &lt;- allocation_capped %&gt;%</span></span>
+<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a><span class="co">#   dplyr::transmute(</span></span>
+<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a><span class="co">#     entity_id = entity_id,</span></span>
+<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a><span class="co">#     bu = bu,</span></span>
+<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a><span class="co">#     region = region,</span></span>
+<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a><span class="co">#     country = country,</span></span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a><span class="co">#     division = division,</span></span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a><span class="co">#     location = location,</span></span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a><span class="co">#     department = department,</span></span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a><span class="co">#     tiv = tiv,</span></span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_aop_rate = model_aop_rate,</span></span>
+<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_cat_rate = total_model_cat_premium_adj / tiv,</span></span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_all_risk_rate = initial_aop_rate + initial_cat_rate,</span></span>
+<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_all_risk_premium = tiv * initial_all_risk_rate,</span></span>
+<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_terrorism_rate = model_terrorism_rate,</span></span>
+<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_terrorism_premium = initial_terrorism_rate * tiv,</span></span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_premium_excl_expenses = initial_all_risk_premium + initial_terrorism_premium,</span></span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a><span class="co">#     market_premium_rate = market_aop_rate + market_cat_eq_rate + market_cat_flood_rate + market_cat_wind_rate + market_terrorism_rate,</span></span>
+<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a><span class="co">#     market_premium_excl_expense = market_premium_rate * tiv,</span></span>
+<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a><span class="co">#     prior_premium_excl_expense = prior_total_premium_excl_expense,</span></span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_pct_change_from_market_premium_excl_expense = ifelse(</span></span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a><span class="co">#       is.na(market_premium_excl_expense) | market_premium_excl_expense == 0, </span></span>
+<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a><span class="co">#       NA, (initial_premium_excl_expenses / market_premium_excl_expense) - 1),</span></span>
+<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a><span class="co">#     initial_pct_change_from_prior_premium_excl_expense = ifelse(</span></span>
+<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a><span class="co">#       is.na(prior_total_premium_excl_expense) | </span></span>
+<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a><span class="co">#         prior_total_premium_excl_expense == 0, </span></span>
+<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a><span class="co">#       NA, (initial_premium_excl_expenses / prior_total_premium_excl_expense) - 1),</span></span>
+<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a><span class="co">#     surcharged_premium,</span></span>
+<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a><span class="co">#     capped_surcharged_premium = rebalanced_allocated,</span></span>
+<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_premium_w_expense = final_allocated_w_expense,</span></span>
+<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_market_premium_w_expense = market_premium_excl_expense + allocated_expense,</span></span>
+<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_pct_change_from_market = (final_premium_w_expense / final_market_premium_w_expense) - 1,</span></span>
+<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_dollar_change_from_market = final_premium_w_expense - final_market_premium_w_expense,</span></span>
+<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_prior_premium_w_expense = prior_total_premium_incl_expense,</span></span>
+<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_pct_change_from_prior = (final_premium_w_expense / final_prior_premium_w_expense) - 1,</span></span>
+<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_dollar_change_from_market = final_premium_w_expense - final_prior_premium_w_expense,</span></span>
+<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_pct_change_from_initial_premium = (final_premium_w_expense / initial_premium_excl_expenses) - 1,</span></span>
+<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a><span class="co">#     final_dollar_change_from_initial_premium = final_premium_w_expense - initial_premium_excl_expenses,</span></span>
+<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a><span class="co">#     model_aop_id = model_aop_id,</span></span>
+<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a><span class="co">#     aop_sprinkler_tier = aop_sprinkler_tier,</span></span>
+<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a><span class="co">#     aop_combustible = aop_combustible,</span></span>
+<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a><span class="co">#     aop_relativity = aop_adj_tiv / tiv,</span></span>
+<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a><span class="co">#     aop_adj_tiv = aop_adj_tiv,</span></span>
+<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a><span class="co">#     model_cat_eq_id = model_cat_eq_id,</span></span>
+<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_eq_adj_tiv = cat_eq_adj_tiv,</span></span>
+<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_eq_relativity = cat_eq_adj_tiv / tiv,</span></span>
+<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_eq_adj_tiv = cat_eq_adj_tiv,</span></span>
+<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a><span class="co">#     model_cat_wind_id = model_cat_wind_id,</span></span>
+<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_wind_adj_tiv = cat_wind_adj_tiv,</span></span>
+<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_wind_relativity = cat_eq_adj_tiv / tiv,</span></span>
+<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_wind_adj_tiv = cat_wind_adj_tiv,</span></span>
+<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a><span class="co">#     model_cat_flood_id = model_cat_flood_id,</span></span>
+<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_flood_adj_tiv = cat_flood_adj_tiv,</span></span>
+<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_flood_relativity = cat_flood_adj_tiv / tiv,</span></span>
+<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a><span class="co">#     cat_flood_adj_tiv = cat_flood_adj_tiv,</span></span>
+<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a><span class="co">#     model_terrorism_id = model_terrorism_id,</span></span>
+<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a><span class="co">#     terrorism_adj_tiv = terrorism_adj_tiv,</span></span>
+<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a><span class="co">#     terrorism_relativity = terrorism_adj_tiv / tiv,</span></span>
+<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a><span class="co">#     terrorism_adj_tiv = terrorism_adj_tiv</span></span>
+<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a><span class="co">#   )</span></span>
+<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a><span class="co"># output_dir &lt;- fs::path(here::here(), &quot;outputs&quot;)</span></span>
+<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a><span class="co"># fs::dir_create(output_dir)</span></span>
+<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a><span class="co"># writexl::write_xlsx(allocation_summary, fs::path(output_dir, &quot;Allocation-Summary-v2.xlsx&quot;))</span></span>
+<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a><span class="co"># outputs &lt;- list(</span></span>
+<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;Allocation Working&quot; = allocation_capped,</span></span>
+<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a><span class="co">#   # premium_tables,</span></span>
+<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;AOP&quot; = aop_premiums %&gt;% select(-entities),</span></span>
+<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;CAT&quot; = cat_premiums %&gt;% select(-entities),</span></span>
+<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;Terror&quot; = terror_premiums %&gt;% select(-entities),</span></span>
+<span id="cb12-243"><a href="#cb12-243" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;Count Bucket Surcharges&quot; = bucket_summary,</span></span>
+<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;Initial Costs&quot; = initial_costs,</span></span>
+<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;Initial Entity Data&quot; = entity_data,</span></span>
+<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;Initial Rates&quot; = initial_rates,</span></span>
+<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;Initial Premiums&quot; = initial_premiums,</span></span>
+<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;SOV&quot; = sov,</span></span>
+<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a><span class="co">#   &quot;Priors&quot; = priors</span></span>
+<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a><span class="co"># writexl::write_xlsx(outputs, fs::path(output_dir, &quot;Results.xlsx&quot;))</span></span>
+<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<hr />
+</div>
+<div id="appendix-b-session-info" class="section level4">
+<h4>Appendix B: Session Info</h4>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R version 4.0.3 (2020-10-10)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Running under: Windows 10 x64 (build 20262)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Matrix products: default</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; locale:</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] LC_COLLATE=English_United States.1252 </span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] LC_CTYPE=English_United States.1252   </span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] LC_MONETARY=English_United States.1252</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] LC_NUMERIC=C                          </span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] LC_TIME=English_United States.1252    </span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attached base packages:</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] lubridate_1.7.9.2   readr_1.4.0         tidyr_1.1.2        </span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] tidyselect_1.1.0    rlang_0.4.8         stringr_1.4.0      </span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] formattable_0.2.0.1 kableExtra_1.3.1    janitor_2.0.1      </span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] rmarkdown_2.5       knitr_1.30          dplyr_1.0.2        </span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] purrr_0.3.4         fs_1.5.0            qs_0.23.3          </span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] propalloc_1.1.0    </span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] xts_0.12.1              usethis_1.6.3           webshot_0.5.2          </span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] httr_1.4.2              rprojroot_2.0.2         tools_4.0.3            </span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] backports_1.2.0         R6_2.5.0                DT_0.16                </span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] colorspace_2.0-0        shinycustomloader_0.9.0 withr_2.3.0            </span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] curl_4.3                compiler_4.0.3          cli_2.1.0              </span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] rvest_0.3.6             xml2_1.3.2              shinyjs_2.0.0          </span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [19] desc_1.2.0              rhandsontable_0.3.7     stringfish_0.14.2      </span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [22] matchmaker_0.1.1        scales_1.1.1            digest_0.6.27          </span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] pkgconfig_2.0.3         htmltools_0.5.0         highcharter_0.8.2      </span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [28] attempt_0.3.1           highr_0.8               fastmap_1.0.1          </span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [31] htmlwidgets_1.5.2       TTR_0.24.2              rstudioapi_0.13        </span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [34] quantmod_0.4.17         shiny_1.5.0             generics_0.1.0         </span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [37] RApiSerialize_0.1.0     zoo_1.8-8               jsonlite_1.7.1         </span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [40] config_0.3              magrittr_2.0.1          rlist_0.4.6.1          </span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [43] Rcpp_1.0.5              munsell_0.5.0           fansi_0.4.1            </span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [46] lifecycle_0.2.0         stringi_1.5.3           yaml_2.2.1             </span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [49] rintrojs_0.2.2          snakecase_0.11.0        grid_4.0.3             </span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [52] promises_1.1.1          shinydashboard_0.7.1    forcats_0.5.0          </span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [55] crayon_1.3.4            lattice_0.20-41         hms_0.5.3              </span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [58] pillar_1.4.6            igraph_1.2.6            pkgload_1.1.0          </span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] glue_1.4.2              evaluate_0.14           golem_0.2.1            </span></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [64] data.table_1.13.2       remotes_2.2.0           RcppParallel_5.0.2     </span></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [67] vctrs_0.3.5             httpuv_1.5.4            testthat_3.0.0         </span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [70] assertthat_0.2.1        xfun_0.19               mime_0.9               </span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [73] xtable_1.8-4            broom_0.7.2             roxygen2_7.1.1         </span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [76] later_1.1.0.1           viridisLite_0.3.0       dockerfiler_0.1.3      </span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [79] tibble_3.0.4            writexl_1.3.1           shinyWidgets_0.5.4     </span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [82] ellipsis_0.3.1</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

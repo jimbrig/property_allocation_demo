@@ -1,0 +1,87 @@
+---
+title: "Oliver Wyman R-Shiny Property Allocation Application"
+author: "Jimmy Briggs"
+date: "4/16/2020"
+output: html_document
+---
+
+## Purpose
+
+The goal of this project is to create a model in R Shiny that allocates an 
+insured’s prospective year property insurance costs in an equitable, easily 
+understood manner that saves the client time, provides the option to use an 
+“actuarial” methodology, while still allowing for maximum flexibility and edits.
+
+## Team
+
++ Project Leader: Adam Lewis
++ Developer: Jimmy Briggs
++ Support: Jack Reardon
++ Peer Reviewer: Brian Settle
+
+## Scope of Services
+
+Upon completion, this model will be used as a demo to sell future work, similar
+to the R Shiny casualty cost allocation model. Once sold, this model will provide
+a template for billable projects.
+
+Specifically, the property allocation model will allocate the premium, taxes,
+fees, surcharges and any related costs (collectively, the “property insurance costs”)
+to the desired level. This level can include up to six hierarchies (e.g. Country,
+Business Unit, Division, Region, Location, and Intra-location Department). 
+
+The tool will enable the client to incorporate the following criteria into its
+allocation process:
+
+- Total Insured Value (TIV)
+- Market AOP Rates (provided by Marsh or Client)
+- Market CAT Rates
++ Wind Tier
++ Earthquake Exposure
++ Flood Exposure
+- Terrorism Rates
+- Claim Frequency
+- Claim Severity
+- Risk Engineering Credits/Surcharges
+- Other Manual Adjustments
+- Relativity Adjustments
++ Combustible vs. Non-Combustible
++ Sprinkler Type/Status
++ Business Unit (BU)
+
+In addition, the model will allow a client to select various thresholds and 
+caps on premium/rate changes.
+
+The tool will also provide multiple summaries, facilitating the comparison of 
+the resulting allocation in up to three different scenarios. For example, 
+the client can compare the resulting to allocation based upon: proposed market 
+rates without adjustment, rates used in the prior year allocation, proposed
+increases for budget guidance applied to the rates used in the prior year.
+
+The tool will also give the user the ability to:
+
+- Edit the TIV, properties, or other aspects of the exposures in the 
+statement of values (SOV) between the scenarios outlined above
+(this is of importance as information often changes throughout the allocation process)
+- Force the final allocation for a specific or a set of specific locations to be a fixed number
+- Change the different loss severity buckets considered in the model
+- Add extra fees after the allocation is complete, while still maintaining the 
+allocation of the other property insurance costs
+
+Lastly, the tool will provide a summary by any combination of the six hierarchies
+that will calculate the dollar change in premium attributable to any of the following:
+
+- change in TIV,
+- change in the initial implied rates,
+- claims charges,
+- manual “all other risk” adjustment, and/or
+- cap placed on the increase in rate and the resulting off-balance associated with a cap.
+
+## Resources
+
++ Browse source code from the 
+[BitBucket Repository](https://bitbucket.org/owac/property-allocation-shiny-app/src/master/) 
+or the [GitHub Repository](https://github.com/jimbrig2011/propalloc)  
++ Browse various reference material on the [GoogleDrive Project Folder](https://drive.google.com/drive/u/1/folders/1m-HPRYoyQ2kehT03javhLEOsfS4gaw0H)  
++ Track Project's progress from [GitKraken Glo Board](https://app.gitkraken.com/glo/board/XpZXjYmFCQARJGOT)  
+

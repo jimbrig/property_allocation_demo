@@ -1,0 +1,212 @@
+---
+pagetitle: "welcome"
+output: html_document
+---
+
+## Property Allocation Application <img src='img/logo.png' align="right" height="35" />
+
+***
+
+**Welcome to the Property Allocation R Shiny Application!**
+
+This dynamic application brings simplicity to the complex realm of risk allocation for Property Insurance. It allows users to test various allocation procedures 
+and methodologies in real time with real data.  
+
+*Please review the below information before proceeding to the application.* 
+
+***
+
+## About this Project
+
+This project is setup as an R Package to aid developers by creating an infrastructure 
+meant for collaboration, reproducibility, transparency, and thorough testing and 
+documentation. Additionally, all dependencies are stored within the package 
+making it portable, environment independent, and properly managed for distribution.  
+
+To see the main documentation site click on the **Documentation** action link in the 
+sidebar and the package will automatically launch it locally for you.   
+
+***
+
+## Purpose
+
+The goal of this project is to create a model in R Shiny that allocates an 
+insured’s prospective year property insurance costs in an equitable, easily 
+understood manner that saves the client time, provides the option to use an 
+“actuarial” methodology, while still allowing for maximum flexibility and edits.
+
+## Resources
+
++ Browse source code from the 
+[BitBucket Repository](https://bitbucket.org/owac/property-allocation-shiny-app/src/master/) 
+or the [GitHub Repository](https://github.com/jimbrig2011/propalloc)  
++ Browse various reference material on the [GoogleDrive Project Folder](https://drive.google.com/drive/u/1/folders/1m-HPRYoyQ2kehT03javhLEOsfS4gaw0H)  
++ Track Project's progress from [GitKraken Glo Board](https://app.gitkraken.com/glo/board/XpZXjYmFCQARJGOT)  
+
+# propalloc - The Package
+
+**propalloc** is an R Package housing the codebase for the R Shiny
+Property Allocation Demo Application.
+
++ Date: `r Sys.Date()`
++ Copyright 2020
+
+View all package documentation by installing and running `open_docs()`
+
+## Badges
+
+<!-- badges: start -->
+[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Project Status:
+WIP](https://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
+[![license](https://img.shields.io/badge/license-MIT%20+%20file%20LICENSE-lightgrey.svg)](https://choosealicense.com/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2020--07--17-yellowgreen.svg)](/commits/master)
+[![minimal R
+version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.0.8-orange.svg?style=flat-square)](commits/master)
+<!-- badges: end -->
+
++ Released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md)  
+
+## Installation
+
+**propalloc** is setup as an R Package making it simple to house all the various
+dependencies that the final application relies on.
+
+Make sure you have the latest and stable version of [devtools](https://github.com/hadley/devtools).
+
+### BitBucket
+
+Install from [BitBucket](https://bitbucket.org) via:
+
+```{r, eval=FALSE}
+library(devtools)
+devtools::install_bitbucket("owac/property-allocation-shiny-app",
+                            "<username>", 
+                            "<password>")
+```
+
+For example, if your username is `john.doe@tychobra.com` and your
+password is `password123` you’ll run this code:
+
+```{r, eval=FALSE}
+devtools::install_bitbucket(
+  "owac/property-allocation-shiny-app", 
+  auth_user = "john.doe@tychobra.com", 
+  password = "password123"
+)
+```
+
+Your bitbucket password may be different than your windows password.
+Your username is probably your Oliver Wyman email address.
+
+### GitHub
+
+Install from [GitHub](https://github.com) via:
+
+For information on setting up your GitHub PAT (Personal Access Token) visit 
+[this webpage](https://github.com/settings/tokens).
+
+```{r, eval=FALSE}
+library(devtools)
+
+# using username/password
+devtools::install_github("jimbrig2011/propalloc",
+                         "<username>", 
+                         "<password>")
+
+# using GitHub PAT
+# library(usethis)
+# usethis::browse_github_pat()
+
+devtools::install_github("jimbrig2011/propalloc",
+                         auth_token = github_pat(quiet))
+```
+
+***
+
+If you have any trouble, contact [Jimmy Briggs](jimmy.briggs@tychobra.com) 
+to make sure you have read access to the repository and for further troubleshooting.
+
+## Demo
+
+To demo the app, simply install the package and run the code below:
+
+```{r, eval=FALSE}
+propalloc::run_app()
+```
+
+*Note that the run_app function will automatically install package dependencies for you.*
+
+## Technical
+
+This project is set up as an R Package.
+
+It also utilized GIT LFS. To install run **git lfs install** in git bash.
+
+## Scope of Services
+
+Upon completion, this model will be used as a demo to sell future work, similar
+to the R Shiny casualty cost allocation model. Once sold, this model will provide
+a template for billable projects.
+
+Specifically, the property allocation model will allocate the premium, taxes,
+fees, surcharges and any related costs (collectively, the “property insurance costs”)
+to the desired level. This level can include up to six hierarchies (e.g. Country,
+Business Unit, Division, Region, Location, and Intra-location Department). 
+
+The tool will enable the client to incorporate the following criteria into its
+allocation process:
+
+- Total Insured Value (TIV)
+- Market AOP Rates (provided by Marsh or Client)
+- Market CAT Rates
++ Wind Tier
++ Earthquake Exposure
++ Flood Exposure
+- Terrorism Rates
+- Claim Frequency
+- Claim Severity
+- Risk Engineering Credits/Surcharges
+- Other Manual Adjustments
+- Relativity Adjustments
++ Combustible vs. Non-Combustible
++ Sprinkler Type/Status
++ Business Unit (BU)
+
+In addition, the model will allow a client to select various thresholds and 
+caps on premium/rate changes.
+
+The tool will also provide multiple summaries, facilitating the comparison of 
+the resulting allocation in up to three different scenarios. For example, 
+the client can compare the resulting to allocation based upon: proposed market 
+rates without adjustment, rates used in the prior year allocation, proposed
+increases for budget guidance applied to the rates used in the prior year.
+
+The tool will also give the user the ability to:
+
+- Edit the TIV, properties, or other aspects of the exposures in the 
+statement of values (SOV) between the scenarios outlined above
+(this is of importance as information often changes throughout the allocation process)
+- Force the final allocation for a specific or a set of specific locations to be a fixed number
+- Change the different loss severity buckets considered in the model
+- Add extra fees after the allocation is complete, while still maintaining the 
+allocation of the other property insurance costs
+
+Lastly, the tool will provide a summary by any combination of the six hierarchies
+that will calculate the dollar change in premium attributable to any of the following:
+
+- change in TIV,
+- change in the initial implied rates,
+- claims charges,
+- manual “all other risk” adjustment, and/or
+- cap placed on the increase in rate and the resulting off-balance associated with a cap.
+
+## Contributing
+
+Please note that the 'propalloc' project is released with a
+[Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.
+
+

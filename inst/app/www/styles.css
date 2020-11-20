@@ -1,0 +1,27 @@
+/* Hide default login box */
+.shiny-server-account {
+  display: none;
+}
+
+.datatables th {
+  text-align: center !important;
+}
+
+.dt-col {
+  min-width: 85px;
+}
+
+.dataTables_length {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: right;
+  float: right;
+}
+
+.dataTables_filter {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: right;
+  padding-right: 50px;
+}
+

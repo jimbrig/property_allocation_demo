@@ -1,0 +1,617 @@
+---
+pagetitle: allocation
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+    keep_html: yes
+    keep_md: yes
+    includes: 
+      in_header: header.html
+vignette: >
+  %\VignetteIndexEntry{allocation}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE,
+  warning = FALSE,
+  error = TRUE,
+  message = FALSE,
+  echo = FALSE
+)
+```
+
+## Overview
+
+The purpose of this report is to walk through the various allocation procedures 
+utilized in the shiny application. 
+
+In order to provide knowledgeable insights from this report, we have supplied 
+reasonable inputs that mimic the *user-driven* aspects of the allocation 
+procedures. 
+
+### Setup 
+
++ Set Options and Configurations 
++ Library Packages 
+
+See [Appendix B: Session Info] for all packages utilized in this document.
+
+```{r setup, eval=TRUE}
+# remove scientific notation
+options(scipen = 999)
+
+# library packages
+library(propalloc)
+library(qs)
+library(fs)
+library(purrr)
+library(dplyr)
+library(knitr)
+library(rmarkdown)
+library(janitor)
+library(kableExtra)
+library(formattable)
+library(stringr)
+library(rlang)
+library(tidyselect)
+library(tidyr)
+library(readr)
+library(lubridate)
+```
+
+### Initial Data
+
+The data utilized in the model is broken down into the following: 
+
+1. Schedule of Values (SOV) 
+1. Loss Run 
+1. Priors 
+1. Renewal Costs 
+1. Count Bucket Definitions 
+1. Market Rates 
+1. Model Rates 
+1. Relativity
+1. User-Defined Experience Period 
+1. User-Defined Percent Capping Threshold 
+
+For more detailed information on each of these data inputs, please see the 
+[Data Documentation Vignette](data_documentation.html).  
+
+```{r load_data, eval=TRUE}
+load_demo_data()
+```
+
+## Ingest Data
+
+This step involves merging each user-defined input table into a single, unified 
+*Entity Data* database. In no particular order the steps undertaken here are: 
+
++ Derive costs to be allocated from the renewal costs table 
++ Derive relativity adjusted TIVs from relativity table 
++ Merge data into a unified entity database before pushing into the model 
+  
+### Renewal Costs Overview  
+
+Let's take a look at our initial renewal costs table. 
+
+Note that in the actual shiny application, this will be a dynamic user-input 
+table that the user can edit and make changes to. 
+
+```{r preview costs, eval=TRUE, results='asis'}
+kkable(
+  data = initial_costs,
+  caption = "Initial Costs Table",
+  proper_cols = c("cost_type", "description"),
+  currency_cols = c("actual_2019", "actual_2020", "projected_2021"),
+  digits = 0,
+  format_header = TRUE,
+  add_totals = TRUE,
+  format_totals = TRUE
+ )
+```
+
+
+Note that for the above initial costs table, only the *Premium* amounts
+will be allocated using our model methods, while expenses are allocated based on 
+the TIV distribution by entity. 
+
+The Cost Group **All Risk** is composed of AOP and CAT Premiums. 
+
+Using the initial costs table, we want to extract the following values for use
+in the model:
+
+- **Terrorism Premium** 
+- **All Risk Cost** 
+- **Risk Transfer Cost**  
+- **Expenses** 
+
+***
+
+***Formulas:*** 
+
+$$Risk\ Transfer\ Cost = All\ Risk\ Cost + Terrorism\ Premium$$\
+$$All\ Risk\ Cost\ = \ AOP\ Premium + CAT\ Premium$$\
+$$CAT\ Premium = \sum_i{CAT\ Premium_i}\\\ (where\ i = CAT\ EQ,\ CAT\ Wind,\ and\ CAT\ Flood)$$\
+$$Expenses = \sum_i{Expenses_i}$$\
+
+***
+
+***Notes:***
+
+- For Terrorism Premium, if not directly input by user, can be backed into by 
+  subtracting the *All Risk Cost* from the *Risk Transfer Cost*.
+  
+- For expenses, we take the sum of all non-premium related costs. If there are 
+  any expenses that should not be allocated in the model they should be excluded. 
+  
+***
+
+### Derive Costs to be Allocated 
+
+Now, we need to extract the ***costs to be allocated*** in the model, specifically: 
+
+1. The Total Cost Including Expenses  
+1. The Risk Transfer Cost  
+1. The All Risk Cost  
+1. The Sum of Expenses  
+
+To do this, I utilize an internal, custom utility function \code{extract_costs_for_allocation()}.  
+
+The resulting ***Costs for Allocation*** are:
+
+```{r extract_costs, eval=TRUE}
+costs <- extract_costs_for_allocation(initial_costs)
+
+tibble::as_tibble(costs) %>%
+  as.matrix() %>%
+  t() %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "Cost Type") %>%
+  dplyr::rename("Dollar Amount" = V1) %>%
+  kkable(currency_cols = "Dollar Amount",
+         proper_cols = "Cost Type",
+         caption = "Extracted Costs for Allocation:")
+```
+
+### Derive Relativity Adjusted TIVs 
+
+This step involves taking the user-defined relativity's and multiplying them by 
+the initial *Total Insured Values* defined in the Schedule of Values (SOV). 
+
+Specifically, we take the user-input *Relativity Table* and apply a custom utility 
+function `derive_relativity_adjusted_tivs()` to derive our final relativity 
+adjusted TIVs. 
+
+First, lets look at the input relativities: 
+
+```{r preview_relativities, eval=TRUE}
+initial_relativities %>%
+  dplyr::mutate_at(dplyr::vars(rate_type, relativity_type), toproper, 
+                   underscore_replacement = "-", return_as = "uppercase") %>%
+  dplyr::mutate(
+    relativity_type = stringr::str_to_title(relativity_type),
+    relativity_type = stringr::str_replace_all(relativity_type, "Bu", "Business Unit"),
+    level = stringr::str_replace_all(level, "bu_", "Business Unit ") %>% 
+      stringr::str_replace_all(" a", " A") %>% stringr::str_replace_all(" b", " B")
+  ) %>%
+  kkable(
+    col_names = c("Rate Type", "Relativity Type", "Level", "Relativity Factor"), 
+    caption = "User-Defined Relativities",
+    decimal_cols = c(ncol(initial_relativities)),
+    decimal_digits = 3
+  )
+```
+
+Now using `derive_relativity_adjusted_tivs()`, we get our resulting adjusted
+TIVs: 
+
+```{r apply_relativities, eval=TRUE, echo=FALSE}
+# derive relativity adjusted TIVs
+relativity_adjusted_tivs <- derive_relativity_adjusted_tivs(
+  bu_relativites,
+  sprinkler_tier_relativities,
+  combustible_relativities,
+  sov
+)
+
+relativity_adjusted_tivs %>% 
+  dplyr::mutate(entity_id = toproper(entity_id)) %>%
+  head(10) %>% 
+  kkable(
+    caption = "Resulting Relativty Adjusted Total Insured Values by Entity and Coverage: ",
+    col_names = c("Entity ID", "TIV", "AOP", "CAT-EQ", "CAT-Wind", "CAT-Flood", "Terrorism"),
+    currency_cols = c(2:ncol(relativity_adjusted_tivs))
+    ) %>%
+  kableExtra::add_header_above(
+    header = c(" " = 2, "Relativity Adjusted Total Insured Values" = 5), 
+    bold = TRUE
+  )
+```
+
+***NOTE: For display purposes I will only show the first 10 rows here:***
+
+### Ingest Count Buckets and Loss Run
+
+```{r count_surcharge_setup, eval=TRUE}
+min_year <- min(loss_run$year)
+max_year <- max(loss_run$year)
+experience_period <- c(min_year:max_year)
+experience_period_display <- paste0(
+   lubridate::ymd(paste0(min_year, "-01-01")) %>% format("%B %d, %Y"), " to ",
+   lubridate::ymd(paste0(max_year, "-12-31")) %>% format("%B %d, %Y")
+)
+# min_value <- min(initial_count_buckets$min)
+# max_value <- max(initial_count_buckets$max)
+```
+
+The purpose of this step is to ingest the user-defined count buckets, defined in
+the count bucket surcharge table in order to set the **Entity Data** database up 
+to properly flow into the allocation model before applying the percent and dollar 
+surcharges to the allocated amounts. 
+
+In the end, we will derive final surcharge amounts by entity based off of their
+historical loss experience, but in order to apply these we first need our 
+preliminary allocated premium amounts (in order to apply the percent surcharges). 
+However, for now we need to shape the data so this process is streamlined later on. 
+
+The user-driven inputs utilized are: 
+
++ The Loss Run 
++ The Count Bucket Surcharge Table's Defined Bucket Minimum and Maximum Values   
++ The User-Defined Experience Period 
+
+From these we do the following to derive our desired results: 
+
+1. Filter the loss run to only include dates of loss within the user-defined 
+   experience period interval. 
+   
+1. Filter out any claims with incurred values below the minimum specified value 
+   or above the maximum specified amount (for the first and last defined buckets,
+   respectively).
+
+2. Summarize the loss run into a table displaying the number of claims within  
+   each user-defined claim count severity *bucket*.
+   
+3. Derive total **dollar** surcharge amounts by entity (cannot apply 
+   the **percent surcharges yet**), by taking results from step 2 and 
+   applying the dollar amount surcharges to each entity.  
+   
+For this example I assume an experience period of: **`r experience_period_display`**. 
+
+Also, I assume the following user-defined surcharge inputs: 
+
+```{r preview_count_bucket_surcharge_input_table, eval=TRUE, results='asis'}
+initial_count_buckets %>%
+  select(name:dollar_surcharge) %>%
+  kkable(
+    col_names = c("Label", "Minimum", "Maximum", "Percent Surcharge", "Dollar Surcharge"),
+     caption = "User-Defined Claim Count Bucket Surcharges",
+    currency_cols = c("min", "max", "dollar_surcharge"),
+    percent_cols = c("percent_surcharge")
+  )
+```
+
+**NOTES:** 
+
+- $0 claims are included in the first bucket, this can be changed by specifying a 
+min value of \$1 instead of \$0 in the table. This will filter out $0 claims. 
+
+- I have arranged the table in decreasing order of total incurred amount,
+and am only displaying the top 10 rows by entity. 
+
+Now, lets derive and preview the aforementioned table summarizing the 
+results by entity to be ingested into the final **Entity Data** database.
+
+```{r derive_count_buckets_by_entity, eval=TRUE}
+entity_loss_data <- derive_entity_loss_data(loss_run, initial_count_buckets, experience_period)
+
+col_names <- c("Entity ID", 
+               initial_count_buckets$name,
+               "Total Counts", "Total Incurred")
+
+kkable(entity_loss_data %>%
+         dplyr::mutate(entity_id = toproper(entity_id)) %>%
+         dplyr::arrange(desc(total_incurred)) %>%
+         head(10), 
+       col_names = col_names,
+       currency_cols = length(col_names),
+       caption = "Summarized Loss Data by Entity (Top 10 Entities by Total Incurred)")
+```
+
+### Ingest Rates 
+
+This step takes the market rates, user-defined model rates, and prior rates and 
+merges them with the entities via their respective *Rate ID's* defined in the 
+SOV. 
+
+Once we have mapped rates, relativity adjusted TIVs, and costs for allocation we 
+are ready to begin the process of allocating premiums to individual entities. 
+
+Let's preview out indicated prior rates, market rates, and the user-defined 
+model rates for each coverage and subcoverage split: 
+
+```{r rate_tables, eval=TRUE, results='asis'}
+rate_tables <- initial_rates %>%
+  dplyr::mutate(rate_type = dplyr::case_when(
+    rate_type == "aop" ~ "AOP",
+    rate_type == "cat_eq" ~ "CAT-EQ",
+    rate_type == "cat_wind" ~ "CAT-Wind",
+    rate_type == "cat_flood" ~ "CAT-Flood",
+    rate_type == "terror" ~ "Terrorism"
+  )) %>%
+  split(initial_rates$rate_type) %>%
+  purrr::set_names(c("All Other Peril (AOP)",
+                     "Catastrophe - Earthquake (CAT-EQ)",
+                     "Catastrophe - Wind (CAT-Wind)",
+                     "Catastrophe - Flood (CAT-Flood)",
+                     "Terrorism"))
+
+purrr::map2(rate_tables, names(rate_tables), function(x, y) {
+   kable(
+     x,
+     row.names = FALSE,
+     digits = 3, 
+     align = "crrrcc",
+     col.names = snakecase::to_mixed_case(names(x), sep_out = " ") %>% 
+       stringr::str_to_title() %>%
+       stringr::str_replace_all("Tiv", "TIV") %>%
+       stringr::str_replace_all("Id", "ID"),
+     caption = paste0(y, " - Rates"),
+     format.args = list(big.mark = ",")
+   ) %>%
+     kableExtra::kable_styling(position = "center",
+                               bootstrap_options = c("striped", "bordered", "condensed", "responsive")) %>%
+     kableExtra::row_spec(row = 0, bold = TRUE, align = "center")
+ }) %>% set_names(NULL) %>% purrr::walk(print)
+```
+
+Now we can move onto the final ***data ingestion*** process which is to form our 
+preliminary **Entity Data** database to push into the model. 
+
+### Form Entity Database
+
+This step merges all previous derived data into a single unified database for
+use in the model. In particular it merges: 
+
+1. The SOV 
+1. Market Rates by Key 
+1. Relativity Adjusted TIVs 
+1. The Loss Data and Count Buckets 
+1. The Selected Model Rates 
+1. Prior Rates and Premiums  
+
+```{r derive_entity_data, eval=TRUE}
+entity_data <- derive_entity_data(sov, relativity_adjusted_tivs, entity_loss_data, initial_rates)
+# names(entity_data)
+```
+
+## Perform Allocation
+
+Now that we have ingested all of the relevant data we can begin allocating out 
+premiums.
+
+The steps are as follows:  
+
+1. Derive (Relativity Adjusted) Preliminary Market Premiums for each coverage group.  
+
+1. Derive (Relativity Adjusted) Preliminary Model Premiums for each coverage group.  
+
+1. Sum together all ***CAT*** premiums to get a total CAT premium across EQ, Wind, and Flood.  
+
+1. Subtract the Total CAT Premium from the ***All Risk Premium*** to derive our 
+   total ***AOP*** amount to allocate.  
+   
+1. Re-balance the *preliminary* ***AOP*** derived premiums to force the total to 
+   equal the necessary amount from the previous step.  
+   
+1. Sum together the Rebalanced AOP Premium, the total CAT premium, and the Terrorism
+   Premium to get a total model premium.  
+   
+1. Add the percentage and dollar surcharges by claim count bucket to the total 
+   preliminary premium. 
+   
+1. Allocate expenses using the derived total expenses amount from the costs table 
+   via the percentage distribution of TIV (unadjusted) by entity. 
+   
+1. Apply capping on percentage ***rate*** changes since prior. 
+
+1. Re-balance capped premiums to equal the desired cost inputs. 
+
+1. Validate Results 
+
+1. Summarize Results 
+
+***
+
+***Formulas:***
+
+$$Market\ Premium_c = Market\ Rate_c\ * Adjusted\ TIV_c$$
+
+$$Where\ Subscript_c\ stands\ for\ coverage.$$
+
+***
+
+
+### Derive Preliminary Premiums by Coverage Group 
+
+```{r preliminary_premiums, eval=TRUE, results='hide'}
+preliminary_allocation_data <- preliminary_allocation(entity_data)
+
+# checks
+sum(preliminary_allocation_data$rebalanced_model_terrorism_premium_adj) == costs$terrorism
+sum(preliminary_allocation_data$total_model_premium_adj) == costs$risk_transfer
+sum(preliminary_allocation_data$rebalanced_model_aop_premium_adj, preliminary_allocation_data$total_model_cat_premium_adj) == costs$all_risk
+```
+
+### Apply Claim Count Surcharges 
+
+```{r apply_surcharges, eval=TRUE}
+surcharged_allocation_data <- apply_surcharges(preliminary_allocation_data, initial_count_buckets)
+```
+
+```{r add_priors, eval=TRUE}
+allocation_data <- surcharged_allocation_data %>%
+    dplyr::left_join(priors, by = "entity_id") %>%
+    dplyr::mutate(new = dplyr::if_else(is.na(prior_tiv) | prior_tiv == 0, 1, 0))
+
+```
+
+
+
+### Apply Rate Capping
+
+```{r rate_capping, eval=TRUE, results='hide'}
+curr_rate <- costs$risk_transfer / sum(sov$tiv)
+prior_rate <- sum(priors$prior_total_premium_excl_expense) / 
+  sum(priors$prior_tiv)
+
+pct_change <- (curr_rate / prior_rate) - 1
+
+new_ents <- allocation_data %>%
+  filter(new == 1)
+
+allocation_data_nonnew <- allocation_data %>%
+  filter(new == 0)
+
+allocation_capped <- allocation_data_nonnew %>%
+  mutate(prior_allocated = prior_total_premium_excl_expense,
+         prior_allocated_rate = prior_allocated / prior_tiv,
+         uncapped_allocated = surcharged_premium) %>%
+  apply_threshold(total_pct_chg = pct_change,
+                  threshold = .25) %>%
+  bind_rows(new_ents) %>%
+  mutate(
+    allocated = coalesce(allocated, surcharged_premium),
+    percent_tiv = tiv / sum(tiv),
+    allocated_pct = allocated / sum(allocated, na.rm = TRUE),
+    rebalanced_allocated = allocated_pct * costs$risk_transfer,
+    # allocated_expenses = percent_tiv * curr_expenses,
+    final_allocated_w_expense = rebalanced_allocated + allocated_expense
+    )
+  
+sum(allocation_capped$final_allocated_w_expense) == costs$risk_transfer + costs$expenses
+sum(allocation_capped$final_allocated_w_expense) == costs$total_incl_expense
+```
+
+### Summarize Results
+
+```{r summary, eval=TRUE}
+# allocation_summary <- allocation_capped %>%
+#   dplyr::transmute(
+#     entity_id = entity_id,
+#     bu = bu,
+#     region = region,
+#     country = country,
+#     division = division,
+#     location = location,
+#     department = department,
+#     tiv = tiv,
+#     initial_aop_rate = model_aop_rate,
+#     initial_cat_rate = total_model_cat_premium_adj / tiv,
+#     initial_all_risk_rate = initial_aop_rate + initial_cat_rate,
+#     initial_all_risk_premium = tiv * initial_all_risk_rate,
+#     initial_terrorism_rate = model_terrorism_rate,
+#     initial_terrorism_premium = initial_terrorism_rate * tiv,
+#     initial_premium_excl_expenses = initial_all_risk_premium + initial_terrorism_premium,
+#     market_premium_rate = market_aop_rate + market_cat_eq_rate + market_cat_flood_rate + market_cat_wind_rate + market_terrorism_rate,
+#     market_premium_excl_expense = market_premium_rate * tiv,
+#     prior_premium_excl_expense = prior_total_premium_excl_expense,
+#     initial_pct_change_from_market_premium_excl_expense = ifelse(
+#       is.na(market_premium_excl_expense) | market_premium_excl_expense == 0, 
+#       NA, (initial_premium_excl_expenses / market_premium_excl_expense) - 1),
+#     initial_pct_change_from_prior_premium_excl_expense = ifelse(
+#       is.na(prior_total_premium_excl_expense) | 
+#         prior_total_premium_excl_expense == 0, 
+#       NA, (initial_premium_excl_expenses / prior_total_premium_excl_expense) - 1),
+#     surcharged_premium,
+#     capped_surcharged_premium = rebalanced_allocated,
+#     final_premium_w_expense = final_allocated_w_expense,
+#     final_market_premium_w_expense = market_premium_excl_expense + allocated_expense,
+#     final_pct_change_from_market = (final_premium_w_expense / final_market_premium_w_expense) - 1,
+#     final_dollar_change_from_market = final_premium_w_expense - final_market_premium_w_expense,
+#     final_prior_premium_w_expense = prior_total_premium_incl_expense,
+#     final_pct_change_from_prior = (final_premium_w_expense / final_prior_premium_w_expense) - 1,
+#     final_dollar_change_from_market = final_premium_w_expense - final_prior_premium_w_expense,
+#     final_pct_change_from_initial_premium = (final_premium_w_expense / initial_premium_excl_expenses) - 1,
+#     final_dollar_change_from_initial_premium = final_premium_w_expense - initial_premium_excl_expenses,
+#     model_aop_id = model_aop_id,
+#     aop_sprinkler_tier = aop_sprinkler_tier,
+#     aop_combustible = aop_combustible,
+#     aop_relativity = aop_adj_tiv / tiv,
+#     aop_adj_tiv = aop_adj_tiv,
+#     model_cat_eq_id = model_cat_eq_id,
+#     cat_eq_adj_tiv = cat_eq_adj_tiv,
+#     cat_eq_relativity = cat_eq_adj_tiv / tiv,
+#     cat_eq_adj_tiv = cat_eq_adj_tiv,
+#     model_cat_wind_id = model_cat_wind_id,
+#     cat_wind_adj_tiv = cat_wind_adj_tiv,
+#     cat_wind_relativity = cat_eq_adj_tiv / tiv,
+#     cat_wind_adj_tiv = cat_wind_adj_tiv,
+#     model_cat_flood_id = model_cat_flood_id,
+#     cat_flood_adj_tiv = cat_flood_adj_tiv,
+#     cat_flood_relativity = cat_flood_adj_tiv / tiv,
+#     cat_flood_adj_tiv = cat_flood_adj_tiv,
+#     model_terrorism_id = model_terrorism_id,
+#     terrorism_adj_tiv = terrorism_adj_tiv,
+#     terrorism_relativity = terrorism_adj_tiv / tiv,
+#     terrorism_adj_tiv = terrorism_adj_tiv
+#   )
+```
+
+## Output
+
+And finally lets output to Excel for review:
+
+```{r output}
+# output_dir <- fs::path(here::here(), "outputs")
+# fs::dir_create(output_dir)
+# writexl::write_xlsx(allocation_summary, fs::path(output_dir, "Allocation-Summary-v2.xlsx"))
+```
+
+
+```{r output_results}
+# outputs <- list(
+#   "Allocation Working" = allocation_capped,
+#   # premium_tables,
+#   "AOP" = aop_premiums %>% select(-entities),
+#   "CAT" = cat_premiums %>% select(-entities),
+#   "Terror" = terror_premiums %>% select(-entities),
+#   "Count Bucket Surcharges" = bucket_summary,
+#   "Initial Costs" = initial_costs,
+#   "Initial Entity Data" = entity_data,
+#   "Initial Rates" = initial_rates,
+#   "Initial Premiums" = initial_premiums,
+#   "SOV" = sov,
+#   "Priors" = priors
+# )
+# 
+# writexl::write_xlsx(outputs, fs::path(output_dir, "Results.xlsx"))
+```
+
+***
+
+#### Appendix A: Code
+
+```{r get_labels, echo=FALSE, eval=TRUE}
+labs = knitr::all_labels()
+labs = setdiff(labs, c("setup", "get_labels"))
+```
+
+```{r all_code, ref.label=labs, eval=FALSE, echo=TRUE}
+```
+
+***
+
+#### Appendix B: Session Info
+
+```{r session_info, echo=TRUE, eval=TRUE}
+sessionInfo()
+```
+

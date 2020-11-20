@@ -1,0 +1,55 @@
+---
+title: "Package API"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Package API}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Purpose
+
+This vignette provides useful technical documentation regarding the 
+\code{propalloc} package's internal API nomenclature as well as its 
+technical design practices. 
+
+## Functions
+
+Functions are housed in the "R" directory and are organized into separate, 
+distinguishable files utilizing the follwing naming procedures: 
+
++ All functions should be named using an **object_verb** approach.
+
++ Functions are split into groups based on their usage and should fall into one
+of the following function groups:  
+
+1. **utils_**: General utility/helper functions not related to shiny app 
+  
+1. **app_**: High-Level shiny app specific functions 
+  
+1. **app_utils_**: Utility functions specific to the shiny app 
+  
+1. **mod_**: App modules 
+  
+1. **alloc**: fundamental functions used in the allocation process  
+  
+1. **meta_**: package metadata 
+  
+1. **data_**: exported datasets 
+  
+1. **dev_**: internal package development functions 
+  
+Note that additional *ui* and *server* prefixes/suffixes are added to filenames
+when a function is a combination of one of the above listings but relevant only
+to the user-interface or server logic of the shiny app. This helps distinguish 
+lower-level application specific functions not directly related to a module nor 
+relevant to both the UI and Server (i.e. *app_utils_ui* houses utility functions 
+used solely in the UI such as *flucol* or *icon_text*).
+
