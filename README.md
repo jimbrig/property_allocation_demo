@@ -6,7 +6,7 @@
 **propalloc** is an R Package housing the codebase for the R Shiny
 Property Allocation Demo Application.
 
--   Date: 2020-11-20
+-   Date: 2021-01-12
 
 ## Badges
 
