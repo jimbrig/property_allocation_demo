@@ -4,12 +4,12 @@
 \name{propalloc-package}
 \alias{propalloc}
 \alias{propalloc-package}
-\title{propalloc: Oliver Wyman RShiny Property Allocation App}
+\title{propalloc: Property Allocation App}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Property Allocation model in R Shiny that allocates
-    an insured's prospective year property insurance costs.
+Property Allocation model in R Shiny that allocates an
+    insured's prospective year property insurance costs.
 }
 \seealso{
 Useful links:
@@ -21,13 +21,6 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Jimmy Briggs \email{jimmy.briggs@oliverwyman.com}
-
-Other contributors:
-\itemize{
-  \item Jack Reardon \email{jack.reardon@oliverwyman.com} [contributor]
-  \item Adam Lewis \email{adam.lewis@oliverwyman.com} [reviewer]
-  \item Oliver Wyman Actuarial Consulting [funder]
-}
 
 }
 \keyword{internal}

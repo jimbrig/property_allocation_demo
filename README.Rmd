@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 Property Allocation Demo Application.
 
 + Date: `r Sys.Date()`
++ Demo: https://propalloc.jimbrig.com/
 
 ## Badges
 

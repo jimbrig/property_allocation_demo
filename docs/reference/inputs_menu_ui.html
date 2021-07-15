@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>prepare_rhandsontable — prepare_rhandsontable • propalloc</title>
+<title>Inputs Tab Module UI — inputs_menu_ui • propalloc</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="prepare_rhandsontable — prepare_rhandsontable" />
-<meta property="og:description" content="prepare_rhandsontable" />
+<meta property="og:title" content="Inputs Tab Module UI — inputs_menu_ui" />
+<meta property="og:description" content="Inputs Tab Module UI" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">propalloc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -113,14 +113,11 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jimbrig/propalloc/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -137,91 +134,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>prepare_rhandsontable</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jimbrig/propalloc/blob/master/R/utils_tables.R'><code>R/utils_tables.R</code></a></small>
-    <div class="hidden name"><code>prepare_rhandsontable.Rd</code></div>
+    <h1>Inputs Tab Module UI</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jimbrig/propalloc/blob/master/R/1-mod_inputs_menu.R'><code>R/1-mod_inputs_menu.R</code></a></small>
+    <div class="hidden name"><code>inputs_menu_ui.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>prepare_rhandsontable</p>
+    <p>Inputs Tab Module UI</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prepare_rhandsontable</span>(
-  <span class='no'>r_data</span>,
-  <span class='no'>dictionary</span>,
-  <span class='no'>dataset_name</span>,
-  <span class='kw'>add_total_row</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>currency_cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>percent_cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>percent_digits</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>center_cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>stretch</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
-  <span class='kw'>search</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>inputs_menu_ui</span><span class='op'>(</span><span class='va'>id</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>r_data</th>
-      <td><p>data</p></td>
-    </tr>
-    <tr>
-      <th>dictionary</th>
-      <td><p>dict</p></td>
-    </tr>
-    <tr>
-      <th>dataset_name</th>
-      <td><p>name</p></td>
-    </tr>
-    <tr>
-      <th>add_total_row</th>
-      <td><p>logical</p></td>
-    </tr>
-    <tr>
-      <th>digits</th>
-      <td><p>number</p></td>
-    </tr>
-    <tr>
-      <th>currency_cols</th>
-      <td><p>character vector</p></td>
-    </tr>
-    <tr>
-      <th>percent_cols</th>
-      <td><p>character vector</p></td>
-    </tr>
-    <tr>
-      <th>percent_digits</th>
-      <td><p>number</p></td>
-    </tr>
-    <tr>
-      <th>center_cols</th>
-      <td><p>character vector</p></td>
-    </tr>
-    <tr>
-      <th>stretch</th>
-      <td><p>logical</p></td>
-    </tr>
-    <tr>
-      <th>search</th>
-      <td><p>search</p></td>
-    </tr>
-    <tr>
-      <th>height</th>
-      <td><p>height</p></td>
-    </tr>
-    <tr>
-      <th>width</th>
-      <td><p>width</p></td>
+      <th>id</th>
+      <td><p>namespace ID</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/rhandsontable/man/hot_table.html'>rhandsontable::hot_table()</a></code></p>
+    <p><code><a href='https://rdrr.io/pkg/shinydashboard/man/tabItem.html'>shinydashboard::tabItem()</a></code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -234,11 +169,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jimmy Briggs, Oliver Wyman Actuarial Consulting.</p>
+  <p>Developed by Jimmy Briggs.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
