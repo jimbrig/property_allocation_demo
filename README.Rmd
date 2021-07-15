@@ -58,79 +58,6 @@ propalloc::run_app()
 
 *Note that the run_app function will automatically install package dependencies for you.*
 
-+ Or to view a live **test** version of the shiny application running on the 
-shiny server [here](). 
-
-
-## Resources
-
-View all package documentation by installing and running:
-
-```
-propalloc::open_docs()
-```
-
-#### Links
-
-+ Browse source code from the [BitBucket Repository](https://bitbucket.org/owac/property-allocation-shiny-app/src/master/) 
-or the [GitHub Repository](https://github.com/jimbrig2011/propalloc). 
-+ Browse various reference material on the [GoogleDrive Project Folder](https://drive.google.com/drive/u/1/folders/1m-HPRYoyQ2kehT03javhLEOsfS4gaw0H). 
-+ Track Project's progress from [GitKraken Glo Board](https://app.gitkraken.com/glo/board/XpZXjYmFCQARJGOT) or 
-  the [GitHub Project Board](https://github.com/jimbrig/propalloc/projects/1#card-44700781). 
-+ Visit the [Package Documentation Website](https://jimbrig.github.io/propalloc/) for R-Package specific information. 
-+ Scan the [Github Project Wiki](https://github.com/jimbrig/propalloc/wiki) for useful material. 
-
-
-#### Documents
-
-+ [Changelog](inst/reports/changelog.md)
-+ [Contributor Code of Conduct](CODE_OF_CONDUCT.md) 
-+ [License](LICENSE.md) 
-+ View the [Contributing](inst/reports/contributing.md) document for on-boarding resource.  
-+ View the [Roadmap](inst/reports/roadmap.md) for schedule and planned future actions. 
-
-## Installation
-
-**propalloc** is setup as an R Package making it simple to house all the various
-dependencies that the final application relies on.
-
-Make sure you have the latest and stable version of [devtools](https://github.com/hadley/devtools).
-
-### GitHub
-
-Install from [GitHub](https://github.com) via:
-
-For information on setting up your GitHub PAT (Personal Access Token) visit 
-[this webpage](https://github.com/settings/tokens).
-
-```{r, eval=FALSE}
-library(devtools)
-
-# using username/password
-devtools::install_github("jimbrig/propalloc",
-                         "<username>", 
-                         "<password>")
-
-# using GitHub PAT
-# library(usethis)
-# usethis::browse_github_pat()
-
-devtools::install_github("jimbrig/propalloc",
-                         auth_token = github_pat(quiet))
-```
-
-***
-
-If you have any trouble, contact [Jimmy Briggs](jimbrig1993@outlook.com) 
-to make sure you have read access to the repository and for further troubleshooting.
-
-## Technical
-
-This project is set up as an R Package. To view important details regarding the 
-setup visit the [Technical API Vignette]().
-
-It also utilized GIT LFS. To install run **git lfs install** in git bash.
-
 ## Scope of Services
 
 Upon completion, this model will be used as a demo to sell future work, similar
@@ -188,4 +115,65 @@ that will calculate the dollar change in premium attributable to any of the foll
 - claims charges,
 - manual “all other risk” adjustment, and/or
 - cap placed on the increase in rate and the resulting off-balance associated with a cap.
+
+## Resources
+
+View all package documentation by installing and running:
+
+```
+propalloc::open_docs()
+```
+
+
+#### Documents
+
++ [Changelog](inst/reports/changelog.md)
++ [Contributor Code of Conduct](CODE_OF_CONDUCT.md) 
++ [License](LICENSE.md) 
++ View the [Contributing](inst/reports/contributing.md) document for on-boarding resource.  
++ View the [Roadmap](inst/reports/roadmap.md) for schedule and planned future actions. 
+
+## Installation
+
+**propalloc** is setup as an R Package making it simple to house all the various
+dependencies that the final application relies on.
+
+Make sure you have the latest and stable version of [devtools](https://github.com/hadley/devtools).
+
+### GitHub
+
+Install from [GitHub](https://github.com) via:
+
+For information on setting up your GitHub PAT (Personal Access Token) visit 
+[this webpage](https://github.com/settings/tokens).
+
+```{r, eval=FALSE}
+library(devtools)
+
+# using username/password
+devtools::install_github("jimbrig/propalloc",
+                         "<username>", 
+                         "<password>")
+
+# using GitHub PAT
+# library(usethis)
+# usethis::browse_github_pat()
+
+devtools::install_github("jimbrig/propalloc",
+                         auth_token = github_pat(quiet))
+```
+
+***
+
+If you have any trouble, contact [Jimmy Briggs](jimbrig1993@outlook.com) 
+to make sure you have read access to the repository and for further troubleshooting.
+
+## Technical
+
+This project is set up as an R Package. To view important details regarding the 
+setup visit the [Technical API Vignette]().
+
+It also utilized GIT LFS. To install run **git lfs install** in git bash.
+
+
 
