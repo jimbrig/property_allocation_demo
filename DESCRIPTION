@@ -1,21 +1,11 @@
 Package: propalloc
-Title: Oliver Wyman RShiny Property Allocation App
+Title: Property Allocation App
 Version: 1.1.0
 Authors@R: 
     c(person(given = "Jimmy",
              family = "Briggs",
              role = c("aut", "cre"),
-             email = "jimmy.briggs@oliverwyman.com"),
-      person(given = "Jack",
-             family = "Reardon",
-             role = "ctb",
-             email = "jack.reardon@oliverwyman.com"),
-      person(given = "Adam",
-             family = "Lewis",
-             role = "rev",
-             email = "adam.lewis@oliverwyman.com"),
-      person(given = "Oliver Wyman Actuarial Consulting",
-             role = "fnd"))
+             email = "jimmy.briggs@oliverwyman.com"))
 Description: Property Allocation model in R Shiny that allocates
     an insured's prospective year property insurance costs.
 License: LICENSE
