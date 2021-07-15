@@ -121,7 +121,7 @@ devtools::install_github("jimbrig/propalloc",
 
 ***
 
-If you have any trouble, contact [Jimmy Briggs](jimmy.briggs@tychobra.com) 
+If you have any trouble, contact [Jimmy Briggs](jimbrig1993@outlook.com) 
 to make sure you have read access to the repository and for further troubleshooting.
 
 ## Technical

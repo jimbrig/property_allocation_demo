@@ -33,7 +33,7 @@ img {
 <div class="line-block">
 Property Allocation Model
 <br/>
-Tychobra
+Jimmy Briggs
 </div>
 </h1>
 
@@ -44,7 +44,7 @@ Tychobra
 </center>
 </p>
 <center>
-<p><strong>Author:</strong> Jimmy Briggs <a href="mailto:jimmy.briggs@tychobra.com" class="email">jimmy.briggs@tychobra.com</a></p>
+<p><strong>Author:</strong> Jimmy Briggs <a href="mailto:jimbrig1993@outlook.com" class="email">jimbrig1993@outlook.com</a></p>
 <strong>Date:</strong> Last Compiled on March 24, 2020
 </center>
 

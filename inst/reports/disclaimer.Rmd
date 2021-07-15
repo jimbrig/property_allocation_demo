@@ -12,16 +12,15 @@ output: html_document
 This model is not intended for general circulation or publication, nor is it to 
 be used, quoted or distributed to others for any purpose other than those that 
 may be set forth herein or in the written agreement pursuant to which this model 
-has been issued without the prior written consent of 
-[Oliver Wyman](https://www.oliverwyman.com/index.html).
+has been issued without the prior written consent of [Jimmy Briggs](https://github.com/jimbrig).
 
 #### Third Party Reliance and Due Diligence
 
-Oliver Wyman’s consent to any distribution of this model (whether herein or in 
+Consent to any distribution of this model (whether herein or in 
 the written agreement pursuant to which this model has been issued) to parties 
-other than CLIENT XYZ, does not constitute advice by Oliver Wyman to any such
+other than CLIENT XYZ, does not constitute advice by Jimmy Briggs to any such
 third parties and shall be solely for informational purposes and not for 
-purposes of reliance by any such third parties.  Oliver Wyman assumes no 
+purposes of reliance by any such third parties.  Jimmy Briggs assumes no 
 liability related to third party use of this model or any actions taken or 
 decisions made as a consequence of the results, advice or recommendations set 
 forth herein. This model should not replace the due diligence on behalf of any 
@@ -33,7 +32,7 @@ Neither all nor any part of the contents of this model, any opinions expressed
 herein, or the firm with which this model is connected, shall be disseminated 
 to the public through advertising media, public relations, news media, sales 
 media, mail, direct transmittal, or any other public means of communications, 
-without the prior written consent of Oliver Wyman. 
+without the prior written consent of Jimmy Briggs. 
 
 #### Avoiding Tax Penalty
 

@@ -1,5 +1,5 @@
 ---
-title: "Oliver Wyman R-Shiny Property Allocation Application"
+title: "R-Shiny Dynamic Property Allocation Application"
 author: "Jimmy Briggs"
 date: "4/16/2020"
 output: html_document
@@ -11,13 +11,6 @@ The goal of this project is to create a model in R Shiny that allocates an
 insured’s prospective year property insurance costs in an equitable, easily 
 understood manner that saves the client time, provides the option to use an 
 “actuarial” methodology, while still allowing for maximum flexibility and edits.
-
-## Team
-
-+ Project Leader: Adam Lewis
-+ Developer: Jimmy Briggs
-+ Support: Jack Reardon
-+ Peer Reviewer: Brian Settle
 
 ## Scope of Services
 
@@ -76,12 +69,4 @@ that will calculate the dollar change in premium attributable to any of the foll
 - claims charges,
 - manual “all other risk” adjustment, and/or
 - cap placed on the increase in rate and the resulting off-balance associated with a cap.
-
-## Resources
-
-+ Browse source code from the 
-[BitBucket Repository](https://bitbucket.org/owac/property-allocation-shiny-app/src/master/) 
-or the [GitHub Repository](https://github.com/jimbrig2011/propalloc)  
-+ Browse various reference material on the [GoogleDrive Project Folder](https://drive.google.com/drive/u/1/folders/1m-HPRYoyQ2kehT03javhLEOsfS4gaw0H)  
-+ Track Project's progress from [GitKraken Glo Board](https://app.gitkraken.com/glo/board/XpZXjYmFCQARJGOT)  
 
