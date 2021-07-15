@@ -2,17 +2,20 @@ Package: propalloc
 Title: Property Allocation App
 Version: 1.1.0
 Authors@R: 
-    c(person(given = "Jimmy",
-             family = "Briggs",
-             role = c("aut", "cre"),
-             email = "jimmy.briggs@oliverwyman.com"))
-Description: Property Allocation model in R Shiny that allocates
-    an insured's prospective year property insurance costs.
+    person(given = "Jimmy",
+           family = "Briggs",
+           role = c("aut", "cre"),
+           email = "jimmy.briggs@oliverwyman.com")
+Description: Property Allocation model in R Shiny that allocates an
+    insured's prospective year property insurance costs.
 License: LICENSE
 URL: https://github.com/jimbrig/propalloc
 BugReports: https://github.com/jimbrig/propalloc/issues
+Depends: 
+    R (>= 2.10)
 Imports: 
     cli,
+    config,
     dplyr,
     DT,
     fs,
@@ -38,15 +41,17 @@ Imports:
     tidyr,
     tidyselect,
     utils,
-    writexl,
-    pkgload
+    writexl
 Suggests: 
+    attachment,
+    devtools,
     formattable,
     janitor,
     kableExtra,
     knitr,
     remotes,
     rmarkdown,
+    roxygen2,
     testthat (>= 2.1.0),
     tidyverse,
     usethis
@@ -57,5 +62,3 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Depends: 
-    R (>= 2.10)
