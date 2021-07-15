@@ -98,7 +98,7 @@
 </h1></div>
 <p><strong>propalloc</strong> is an R Package housing the codebase for the R Shiny Property Allocation Demo Application.</p>
 <ul>
-<li>Date: 2021-01-12</li>
+<li>Date: 2021-07-15</li>
 </ul>
 <div id="purpose" class="section level2">
 <h2 class="hasAnchor">
@@ -116,72 +116,6 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jimbrig/propalloc">propalloc</a></span><span class="op">)</span>
 <span class="fu">propalloc</span><span class="fu">::</span><span class="fu"><a href="reference/run_app.html">run_app</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><em>Note that the run_app function will automatically install package dependencies for you.</em></p>
-<ul>
-<li>Or to view a live <strong>test</strong> version of the shiny application running on the shiny server <a href="">here</a>.</li>
-</ul>
-</div>
-<div id="resources" class="section level2">
-<h2 class="hasAnchor">
-<a href="#resources" class="anchor"></a>Resources</h2>
-<p>View all package documentation by installing and running:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>propalloc<span class="op">::</span><span class="kw">open_docs</span>()</span></code></pre></div>
-<div id="links" class="section level4">
-<h4 class="hasAnchor">
-<a href="#links" class="anchor"></a>Links</h4>
-<ul>
-<li>Browse source code from the <a href="https://bitbucket.org/owac/property-allocation-shiny-app/src/master/">BitBucket Repository</a> or the <a href="https://github.com/jimbrig2011/propalloc">GitHub Repository</a>.</li>
-<li>Browse various reference material on the <a href="https://drive.google.com/drive/u/1/folders/1m-HPRYoyQ2kehT03javhLEOsfS4gaw0H">GoogleDrive Project Folder</a>.</li>
-<li>Track Project’s progress from <a href="https://app.gitkraken.com/glo/board/XpZXjYmFCQARJGOT">GitKraken Glo Board</a> or the <a href="https://github.com/jimbrig/propalloc/projects/1#card-44700781">GitHub Project Board</a>.</li>
-<li>Visit the <a href="https://jimbrig.github.io/propalloc/">Package Documentation Website</a> for R-Package specific information.</li>
-<li>Scan the <a href="https://github.com/jimbrig/propalloc/wiki">Github Project Wiki</a> for useful material.</li>
-</ul>
-</div>
-<div id="documents" class="section level4">
-<h4 class="hasAnchor">
-<a href="#documents" class="anchor"></a>Documents</h4>
-<ul>
-<li><a href="inst/reports/changelog.html">Changelog</a></li>
-<li><a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a></li>
-<li><a href="LICENSE.html">License</a></li>
-<li>View the <a href="inst/reports/contributing.html">Contributing</a> document for on-boarding resource.<br>
-</li>
-<li>View the <a href="inst/reports/roadmap.html">Roadmap</a> for schedule and planned future actions.</li>
-</ul>
-</div>
-</div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p><strong>propalloc</strong> is setup as an R Package making it simple to house all the various dependencies that the final application relies on.</p>
-<p>Make sure you have the latest and stable version of <a href="https://github.com/hadley/devtools">devtools</a>.</p>
-<div id="github" class="section level3">
-<h3 class="hasAnchor">
-<a href="#github" class="anchor"></a>GitHub</h3>
-<p>Install from <a href="https://github.com">GitHub</a> via:</p>
-<p>For information on setting up your GitHub PAT (Personal Access Token) visit <a href="https://github.com/settings/tokens">this webpage</a>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
-
-<span class="co"># using username/password</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>,
-                         <span class="st">"&lt;username&gt;"</span>, 
-                         <span class="st">"&lt;password&gt;"</span><span class="op">)</span>
-
-<span class="co"># using GitHub PAT</span>
-<span class="co"># library(usethis)</span>
-<span class="co"># usethis::browse_github_pat()</span>
-
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>,
-                         auth_token <span class="op">=</span> <span class="fu"><a href="https://devtools.r-lib.org//reference/github_pat.html">github_pat</a></span><span class="op">(</span><span class="va">quiet</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<hr>
-<p>If you have any trouble, contact <a href="jimmy.briggs@tychobra.com">Jimmy Briggs</a> to make sure you have read access to the repository and for further troubleshooting.</p>
-</div>
-</div>
-<div id="technical" class="section level2">
-<h2 class="hasAnchor">
-<a href="#technical" class="anchor"></a>Technical</h2>
-<p>This project is set up as an R Package. To view important details regarding the setup visit the <a href="">Technical API Vignette</a>.</p>
-<p>It also utilized GIT LFS. To install run <strong>git lfs install</strong> in git bash.</p>
 </div>
 <div id="scope-of-services" class="section level2">
 <h2 class="hasAnchor">
@@ -223,6 +157,58 @@
 <li>manual “all other risk” adjustment, and/or</li>
 <li>cap placed on the increase in rate and the resulting off-balance associated with a cap.</li>
 </ul>
+</div>
+<div id="resources" class="section level2">
+<h2 class="hasAnchor">
+<a href="#resources" class="anchor"></a>Resources</h2>
+<p>View all package documentation by installing and running:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>propalloc<span class="op">::</span><span class="kw">open_docs</span>()</span></code></pre></div>
+<div id="documents" class="section level4">
+<h4 class="hasAnchor">
+<a href="#documents" class="anchor"></a>Documents</h4>
+<ul>
+<li><a href="inst/reports/changelog.html">Changelog</a></li>
+<li><a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a></li>
+<li><a href="LICENSE.html">License</a></li>
+<li>View the <a href="inst/reports/contributing.html">Contributing</a> document for on-boarding resource.<br>
+</li>
+<li>View the <a href="inst/reports/roadmap.html">Roadmap</a> for schedule and planned future actions.</li>
+</ul>
+</div>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p><strong>propalloc</strong> is setup as an R Package making it simple to house all the various dependencies that the final application relies on.</p>
+<p>Make sure you have the latest and stable version of <a href="https://github.com/hadley/devtools">devtools</a>.</p>
+<div id="github" class="section level3">
+<h3 class="hasAnchor">
+<a href="#github" class="anchor"></a>GitHub</h3>
+<p>Install from <a href="https://github.com">GitHub</a> via:</p>
+<p>For information on setting up your GitHub PAT (Personal Access Token) visit <a href="https://github.com/settings/tokens">this webpage</a>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
+
+<span class="co"># using username/password</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>,
+                         <span class="st">"&lt;username&gt;"</span>, 
+                         <span class="st">"&lt;password&gt;"</span><span class="op">)</span>
+
+<span class="co"># using GitHub PAT</span>
+<span class="co"># library(usethis)</span>
+<span class="co"># usethis::browse_github_pat()</span>
+
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>,
+                         auth_token <span class="op">=</span> <span class="fu"><a href="https://devtools.r-lib.org//reference/github_pat.html">github_pat</a></span><span class="op">(</span><span class="va">quiet</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<hr>
+<p>If you have any trouble, contact <a href="jimbrig1993@outlook.com">Jimmy Briggs</a> to make sure you have read access to the repository and for further troubleshooting.</p>
+</div>
+</div>
+<div id="technical" class="section level2">
+<h2 class="hasAnchor">
+<a href="#technical" class="anchor"></a>Technical</h2>
+<p>This project is set up as an R Package. To view important details regarding the setup visit the <a href="">Technical API Vignette</a>.</p>
+<p>It also utilized GIT LFS. To install run <strong>git lfs install</strong> in git bash.</p>
 </div>
 </div>
   </div>
