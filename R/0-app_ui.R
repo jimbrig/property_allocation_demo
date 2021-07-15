@@ -38,10 +38,10 @@ app_header_ui <- function() {
 
     title = htmltools::tags$a(
       htmltools::tags$img(
-        src = "www/logo.png",
+        src = "www/resized.png",
         width = 200
       ),
-      href = "https://tychobra.com"
+      href = "#"
     ),
 
     .list = header_buttons_ui("header", include_tour = FALSE, contacts = contacts())
@@ -66,7 +66,7 @@ app_sidebar_ui <- function() {
     htmltools::tags$div(
       htmltools::hr(),
       htmltools::h5(
-        "Tychobra\nProperty Allocation\nShiny Application\n",
+        "Property Allocation\nShiny Application\n",
         htmltools::br(),
         shiny::actionLink("docs", "Documentation", icon = shiny::icon("file"))
       ),
