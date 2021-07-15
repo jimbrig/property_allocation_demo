@@ -19,3 +19,4 @@
 ^Dockerfile$
 ^app\.R$
 ^rsconnect$
+^\.dockerignore$
