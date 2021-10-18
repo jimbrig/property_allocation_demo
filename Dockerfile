@@ -1,7 +1,28 @@
 FROM rocker/r-ver:latest
-RUN apt-get update && apt-get install -y  git-core imagemagick libcurl4-openssl-dev libgit2-dev libglpk-dev libgmp-dev libicu-dev libpng-dev libssl-dev libxml2-dev make pandoc pandoc-citeproc zlib1g-dev && rm -rf /var/lib/apt/lists/*
+
+EXPOSE 8080
+
+RUN apt-get update -qq && apt-get -y --no-install-recommends install \
+    git-core \
+    imagemagick \
+    libcurl4-openssl-dev \
+    libgit2-dev \
+    libglpk-dev \
+    libgmp-dev \ 
+    libicu-dev \
+    libpng-dev \
+    libssl-dev \
+    libxml2-dev \
+    make \
+    pandoc \
+    pandoc-citeproc \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl', Ncpus = 4)" >> /usr/local/lib/R/etc/Rprofile.site
+
 RUN R -e 'install.packages("remotes")'
+
 RUN Rscript -e 'remotes::install_version("cli",upgrade="never", version = "3.0.0")'
 RUN Rscript -e 'remotes::install_version("magrittr",upgrade="never", version = "2.0.1")'
 RUN Rscript -e 'remotes::install_version("htmltools",upgrade="never", version = "0.5.1.1")'
@@ -37,10 +58,12 @@ RUN Rscript -e 'remotes::install_version("rhandsontable",upgrade="never", versio
 RUN Rscript -e 'remotes::install_version("matchmaker",upgrade="never", version = "0.1.1")'
 RUN Rscript -e 'remotes::install_version("highcharter",upgrade="never", version = "0.8.2")'
 RUN Rscript -e 'remotes::install_version("DT",upgrade="never", version = "0.18")'
+
 RUN mkdir /build_zone
 ADD . /build_zone
 WORKDIR /build_zone
 RUN R -e 'remotes::install_local(upgrade="never")'
+WORKDIR /
 RUN rm -rf /build_zone
-EXPOSE 80
-CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0');propalloc::run_app()"
+
+CMD ["Rscript", "-e", "options('shiny.port'=8080,'shiny.host'='0.0.0.0'); propalloc::run_app(launch_browser = FALSE)"]

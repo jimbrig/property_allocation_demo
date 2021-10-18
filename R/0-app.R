@@ -2,16 +2,17 @@
 #'
 #' @param install_dependencies logical-install package/app dependencies?
 #'   Defaults to FALSE.
+#' @param launch_browser,shiny_port,shiny_host Shiny options
 #'
 #' @keywords app
 #'
 #' @export
 #' @importFrom shiny shinyApp
-run_app <- function(install_dependencies = FALSE) {
+run_app <- function(install_dependencies = FALSE, launch_browser = TRUE, shiny_port = 8080, shiny_host = "0.0.0.0") {
 
   if (install_dependencies) install_app_dependencies()
 
-  shiny::shinyApp(ui = app_ui(), server = app_server, options = list(launch.browser = TRUE))
+  shiny::shinyApp(ui = app_ui(), server = app_server, options = list(launch.browser = launch_browser, shiny.port = shiny_port, shiny.host = shiny_host))
 
 }
 
