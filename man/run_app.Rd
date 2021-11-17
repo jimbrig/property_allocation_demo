@@ -4,11 +4,18 @@
 \alias{run_app}
 \title{Run the Shiny Application}
 \usage{
-run_app(install_dependencies = FALSE)
+run_app(
+  install_dependencies = FALSE,
+  launch_browser = TRUE,
+  shiny_port = 8080,
+  shiny_host = "0.0.0.0"
+)
 }
 \arguments{
 \item{install_dependencies}{logical-install package/app dependencies?
 Defaults to FALSE.}
+
+\item{launch_browser, shiny_port, shiny_host}{Shiny options}
 }
 \description{
 Run the Shiny Application
