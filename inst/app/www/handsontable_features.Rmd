@@ -3,7 +3,7 @@ pagetitle: "rhandsontable_features"
 output: html_document
 ---
 
-## TABLE FEATURES OVERVIEW <img src='img/ow_logo_new.png' align="right" height="35" />
+## TABLE FEATURES OVERVIEW <img src='img/logo.png' align="right" height="100" />
 
 ***
 
