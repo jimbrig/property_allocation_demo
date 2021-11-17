@@ -3,7 +3,7 @@ pagetitle: "chart_features"
 output: html_document
 ---
 
-## CHART FEATURES OVERVIEW <img src='img/ow_logo_new.png' align="right" height="35" /> {.tabset}
+## CHART FEATURES OVERVIEW <img src='img/logo.png' align="right" height="100" /> {.tabset}
 
 ***
 
