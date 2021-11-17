@@ -7,7 +7,7 @@
 Property Allocation Demo Application.
 
 -   Date: 2021-07-15
--   Demo: <https://propalloc.jimbrig.com/>
+-   Demo: <https://propertyallocation.jimbrig.com/>
 
 ## Badges
 
