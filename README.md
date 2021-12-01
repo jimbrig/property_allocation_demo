@@ -1,18 +1,24 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
 
 # Property Allocation <img src='man/figures/logo.png' align="right" height="30.5" />
 
 **propalloc** is an R Package housing the codebase for the R Shiny
 Property Allocation Demo Application.
 
--   Date: 2021-07-15
--   Demo: <https://propalloc.jimbrig.com/>
++ Date: 2021-12-01
++ Demo: https://propallocation.jimbrig.com/
 
 ## Badges
 
-<!-- badges: start -->
 
+
+<!-- badges: start -->
 ![pkgdown](https://github.com/jimbrig/propalloc/workflows/pkgdown/badge.svg)
 [![lifecycle](https://img.shields.io/badge/Lifecycle-Maturing-darkgreen.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![package%20version](https://img.shields.io/badge/Package%20Version-1.1.0-orange.svg)](https://github.com/jimbrig/propalloc/blob/master/commits/master)
@@ -22,123 +28,117 @@ Property Allocation Demo Application.
 
 ## Purpose
 
-The goal of this project is to create a model in R Shiny that allocates
-an insured’s prospective year property insurance costs in an equitable,
-easily understood manner that saves the client time, provides the option
-to use an “actuarial” methodology, while still allowing for maximum
-flexibility and edits.
+The goal of this project is to create a model in R Shiny that allocates an 
+insured’s prospective year property insurance costs in an equitable, easily 
+understood manner that saves the client time, provides the option to use an 
+“actuarial” methodology, while still allowing for maximum flexibility and edits.
+
 
 ## Demo
 
 To demo the app, you have a couple of options:
 
--   If you want to run the application locally, simply install the
-    package and run the code below:
++ If you want to run the application locally, simply install the package and run the code below:
 
-``` r
+
+```r
 library(propalloc)
 propalloc::run_app()
 ```
 
-*Note that the run_app function will automatically install package
-dependencies for you.*
+*Note that the run_app function will automatically install package dependencies for you.*
 
 ## Scope of Services
 
-Upon completion, this model will be used as a demo to sell future work,
-similar to the R Shiny casualty cost allocation model. Once sold, this
-model will provide a template for billable projects.
+Upon completion, this model will be used as a demo to sell future work, similar
+to the R Shiny casualty cost allocation model. Once sold, this model will provide
+a template for billable projects.
 
-Specifically, the property allocation model will allocate the premium,
-taxes, fees, surcharges and any related costs (collectively, the
-“property insurance costs”) to the desired level. This level can include
-up to six hierarchies (e.g. Country, Business Unit, Division, Region,
-Location, and Intra-location Department).
+Specifically, the property allocation model will allocate the premium, taxes,
+fees, surcharges and any related costs (collectively, the “property insurance costs”)
+to the desired level. This level can include up to six hierarchies (e.g. Country,
+Business Unit, Division, Region, Location, and Intra-location Department). 
 
-The tool will enable the client to incorporate the following criteria
-into its allocation process:
+The tool will enable the client to incorporate the following criteria into its
+allocation process:
 
--   Total Insured Value (TIV)
--   Market AOP Rates (provided by Marsh or Client)
--   Market CAT Rates
--   Wind Tier
--   Earthquake Exposure
--   Flood Exposure
--   Terrorism Rates
--   Claim Frequency
--   Claim Severity
--   Risk Engineering Credits/Surcharges
--   Other Manual Adjustments
--   Relativity Adjustments
--   Combustible vs. Non-Combustible
--   Sprinkler Type/Status
--   Business Unit (BU)
+- Total Insured Value (TIV)
+- Market AOP Rates (provided by Marsh or Client)
+- Market CAT Rates
++ Wind Tier
++ Earthquake Exposure
++ Flood Exposure
+- Terrorism Rates
+- Claim Frequency
+- Claim Severity
+- Risk Engineering Credits/Surcharges
+- Other Manual Adjustments
+- Relativity Adjustments
++ Combustible vs. Non-Combustible
++ Sprinkler Type/Status
++ Business Unit (BU)
 
-In addition, the model will allow a client to select various thresholds
-and caps on premium/rate changes.
+In addition, the model will allow a client to select various thresholds and 
+caps on premium/rate changes.
 
-The tool will also provide multiple summaries, facilitating the
-comparison of the resulting allocation in up to three different
-scenarios. For example, the client can compare the resulting to
-allocation based upon: proposed market rates without adjustment, rates
-used in the prior year allocation, proposed increases for budget
-guidance applied to the rates used in the prior year.
+The tool will also provide multiple summaries, facilitating the comparison of 
+the resulting allocation in up to three different scenarios. For example, 
+the client can compare the resulting to allocation based upon: proposed market 
+rates without adjustment, rates used in the prior year allocation, proposed
+increases for budget guidance applied to the rates used in the prior year.
 
 The tool will also give the user the ability to:
 
--   Edit the TIV, properties, or other aspects of the exposures in the
-    statement of values (SOV) between the scenarios outlined above (this
-    is of importance as information often changes throughout the
-    allocation process)
--   Force the final allocation for a specific or a set of specific
-    locations to be a fixed number
--   Change the different loss severity buckets considered in the model
--   Add extra fees after the allocation is complete, while still
-    maintaining the allocation of the other property insurance costs
+- Edit the TIV, properties, or other aspects of the exposures in the 
+statement of values (SOV) between the scenarios outlined above
+(this is of importance as information often changes throughout the allocation process)
+- Force the final allocation for a specific or a set of specific locations to be a fixed number
+- Change the different loss severity buckets considered in the model
+- Add extra fees after the allocation is complete, while still maintaining the 
+allocation of the other property insurance costs
 
-Lastly, the tool will provide a summary by any combination of the six
-hierarchies that will calculate the dollar change in premium
-attributable to any of the following:
+Lastly, the tool will provide a summary by any combination of the six hierarchies
+that will calculate the dollar change in premium attributable to any of the following:
 
--   change in TIV,
--   change in the initial implied rates,
--   claims charges,
--   manual “all other risk” adjustment, and/or
--   cap placed on the increase in rate and the resulting off-balance
-    associated with a cap.
+- change in TIV,
+- change in the initial implied rates,
+- claims charges,
+- manual “all other risk” adjustment, and/or
+- cap placed on the increase in rate and the resulting off-balance associated with a cap.
 
 ## Resources
 
 View all package documentation by installing and running:
 
-    propalloc::open_docs()
+```
+propalloc::open_docs()
+```
+
 
 #### Documents
 
--   [Changelog](inst/reports/changelog.md)
--   [Contributor Code of Conduct](CODE_OF_CONDUCT.md)
--   [License](LICENSE.md)
--   View the [Contributing](inst/reports/contributing.md) document for
-    on-boarding resource.  
--   View the [Roadmap](inst/reports/roadmap.md) for schedule and planned
-    future actions.
++ [Changelog](inst/reports/changelog.md)
++ [Contributor Code of Conduct](CODE_OF_CONDUCT.md) 
++ [License](LICENSE.md) 
++ View the [Contributing](inst/reports/contributing.md) document for on-boarding resource.  
++ View the [Roadmap](inst/reports/roadmap.md) for schedule and planned future actions. 
 
 ## Installation
 
-**propalloc** is setup as an R Package making it simple to house all the
-various dependencies that the final application relies on.
+**propalloc** is setup as an R Package making it simple to house all the various
+dependencies that the final application relies on.
 
-Make sure you have the latest and stable version of
-[devtools](https://github.com/hadley/devtools).
+Make sure you have the latest and stable version of [devtools](https://github.com/hadley/devtools).
 
 ### GitHub
 
 Install from [GitHub](https://github.com) via:
 
-For information on setting up your GitHub PAT (Personal Access Token)
-visit [this webpage](https://github.com/settings/tokens).
+For information on setting up your GitHub PAT (Personal Access Token) visit 
+[this webpage](https://github.com/settings/tokens).
 
-``` r
+
+```r
 library(devtools)
 
 # using username/password
@@ -154,16 +154,17 @@ devtools::install_github("jimbrig/propalloc",
                          auth_token = github_pat(quiet))
 ```
 
-------------------------------------------------------------------------
+***
 
-If you have any trouble, contact [Jimmy Briggs](jimbrig1993@outlook.com)
-to make sure you have read access to the repository and for further
-troubleshooting.
+If you have any trouble, contact [Jimmy Briggs](jimbrig1993@outlook.com) 
+to make sure you have read access to the repository and for further troubleshooting.
 
 ## Technical
 
-This project is set up as an R Package. To view important details
-regarding the setup visit the [Technical API Vignette]().
+This project is set up as an R Package. To view important details regarding the 
+setup visit the [Technical API Vignette]().
 
-It also utilized GIT LFS. To install run **git lfs install** in git
-bash.
+It also utilized GIT LFS. To install run **git lfs install** in git bash.
+
+
+
