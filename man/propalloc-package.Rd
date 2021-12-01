@@ -8,8 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Property Allocation model in R Shiny that allocates an
-    insured's prospective year property insurance costs.
+Property Allocation model in R Shiny that allocates an insured's prospective year property insurance costs.
 }
 \seealso{
 Useful links:

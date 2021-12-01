@@ -3,7 +3,11 @@ pagetitle: "chart_features"
 output: html_document
 ---
 
+<<<<<<< HEAD
 ## CHART FEATURES OVERVIEW
+=======
+## CHART FEATURES OVERVIEW <img src='img/logo.png' align="right" height="100" /> {.tabset}
+>>>>>>> db1a242fbcb926e155954133e7f456329aaf871e
 
 ***
 
