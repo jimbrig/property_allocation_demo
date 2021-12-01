@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">propalloc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -74,7 +70,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jimbrig/propalloc/">
+  <a href="https://github.com/jimbrig/propalloc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -93,48 +89,48 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Property Allocation Shiny App Setup Guide</h1>
-                        <h4 class="author">Jimmy Briggs</h4>
+                        <h4 data-toc-skip class="author">Jimmy Briggs</h4>
             
-            <h4 class="date">June 12, 2020</h4>
+            <h4 data-toc-skip class="date">June 12, 2020</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/jimbrig/propalloc/blob/master/vignettes/setup.Rmd"><code>vignettes/setup.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jimbrig/propalloc/blob/HEAD/vignettes/setup.Rmd" class="external-link"><code>vignettes/setup.Rmd</code></a></small>
       <div class="hidden name"><code>setup.Rmd</code></div>
 
     </div>
 
     
     
-<div id="setting-up-github" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setting-up-github" class="anchor"></a>Setting up GitHub</h2>
+<div class="section level2">
+<h2 id="setting-up-github">Setting up GitHub<a class="anchor" aria-label="anchor" href="#setting-up-github"></a>
+</h2>
 <p>In order to run the application locally, you will first need to install the <code>propalloc</code> R package and all of its dependencies on you machine first.</p>
 <p>Because <code>propalloc</code> is a private Github repository, this means an additional step is necessary to access the repo for installation. This is done via the <strong>Githun Personal Access Token (PAT)</strong>.</p>
-<div id="creating-and-storing-your-github-pat" class="section level3">
-<h3 class="hasAnchor">
-<a href="#creating-and-storing-your-github-pat" class="anchor"></a>Creating and Storing your GitHub PAT</h3>
+<div class="section level3">
+<h3 id="creating-and-storing-your-github-pat">Creating and Storing your GitHub PAT<a class="anchor" aria-label="anchor" href="#creating-and-storing-your-github-pat"></a>
+</h3>
 <p>Get and store a PAT:</p>
 <ol style="list-style-type: decimal">
 <li><p>Sign up for a free GitHub.com account and sign in if you do not already have an account setup.</p></li>
-<li><p>Call <code><a href="https://usethis.r-lib.org/reference/usethis-defunct.html">usethis::browse_github_token()</a></code>.</p></li>
+<li><p>Call <code><a href="https://usethis.r-lib.org/reference/usethis-defunct.html" class="external-link">usethis::browse_github_token()</a></code>.</p></li>
 <li><p>Verify the scopes and click “Generate token”.</p></li>
 <li><p>Copy the token right away!</p></li>
-<li><p>Store the copied token in your <code>.Renviron</code> as the GITHUB_PAT environment variable. <code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code> opens this file for editing.</p></li>
+<li><p>Store the copied token in your <code>.Renviron</code> as the GITHUB_PAT environment variable. <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> opens this file for editing.</p></li>
 </ol>
 <p>Step-by-step:</p>
 <p>First, install the <code>usethis</code> package via:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"usethis"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"usethis"</span><span class="op">)</span></code></pre></div>
 <p>To setup the PAT run the code below which simply checks for a PAT already on your machine, and if you do not have one, it opens the web-browser for you to set one up.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/usethis-defunct.html">github_token</a></span><span class="op">(</span><span class="op">)</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/usethis-defunct.html">browse_github_pat</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/usethis-defunct.html" class="external-link">github_token</a></span><span class="op">(</span><span class="op">)</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/usethis-defunct.html" class="external-link">browse_github_pat</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>On the webpage, first be sure to copy the token to your clipboard.</p>
 <p>Next, simply scroll down and select “Generate Token”.</p>
 <p><img src="img/gh-token-screenshot.png"></p>
 <p>Now, move back into RStudio and run the code:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>In the opened file, store the Github PAT as a system environment variable by assigning it the the key “GITHUB_PAT”. Here’s a screenshot of my <code>Renviron</code>:</p>
 <p><img src="img/gh-pat.png"></p>
 <p>Your’s should look the same but with the copied token after ‘GITHUB_PAT=’, for example:</p>
@@ -142,21 +138,21 @@
 <p>Then save the .Renviron file (Ctrl + S) and restart RStudio (Ctrl+Shift+F10).</p>
 </div>
 </div>
-<div id="install-propalloc" class="section level2">
-<h2 class="hasAnchor">
-<a href="#install-propalloc" class="anchor"></a>Install propalloc</h2>
+<div class="section level2">
+<h2 id="install-propalloc">Install propalloc<a class="anchor" aria-label="anchor" href="#install-propalloc"></a>
+</h2>
 <p>Now that you have Github setup its time to install the R package.</p>
 <p>You can install the production version of the app from the <code>master</code> branch, or a development version from the <code>develop</code> branch.</p>
 <p>Code to install the package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># for master branch</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># for develop branch</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>, ref <span class="op">=</span> <span class="st">"develop"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>, ref <span class="op">=</span> <span class="st">"develop"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>If you get an error related to the <code>auth_token</code> then add this argument to the call:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>, 
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>, 
                         dependencies <span class="op">=</span> <span class="cn">TRUE</span>, 
                         auth_token <span class="op">=</span> <span class="st">"&lt;your Github PAT&gt;"</span><span class="op">)</span></code></pre></div>
 <p>If this works you should see something similar to this after running the command:</p>
@@ -182,11 +178,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Jimmy Briggs.</p>
+  <p></p>
+<p>Developed by Jimmy Briggs.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -194,6 +192,8 @@
 
   
 
+
+  
 
   </body>
 </html>

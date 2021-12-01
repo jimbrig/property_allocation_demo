@@ -27,6 +27,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,18 +41,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">propalloc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -75,7 +71,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jimbrig/propalloc/">
+  <a href="https://github.com/jimbrig/propalloc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -92,36 +88,41 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="property-allocation-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#property-allocation-" class="anchor"></a>Property Allocation <img src="reference/figures/logo.png" align="right" height="30.5">
+<div class="section level1">
+<div class="page-header"><h1 id="property-allocation-">Property Allocation <img src="reference/figures/logo.png" align="right" height="30.5"><a class="anchor" aria-label="anchor" href="#property-allocation-"></a>
 </h1></div>
 <p><strong>propalloc</strong> is an R Package housing the codebase for the R Shiny Property Allocation Demo Application.</p>
 <ul>
-<li>Date: 2021-07-15</li>
-<li>Demo: <a href="https://propalloc.jimbrig.com/" class="uri">https://propalloc.jimbrig.com/</a>
+<li>Date: 2021-12-01</li>
+<li>Demo: <a href="https://propallocation.jimbrig.com/" class="external-link uri">https://propallocation.jimbrig.com/</a>
 </li>
 </ul>
-<div id="purpose" class="section level2">
-<h2 class="hasAnchor">
-<a href="#purpose" class="anchor"></a>Purpose</h2>
+<div class="section level2">
+<h2 id="badges">Badges<a class="anchor" aria-label="anchor" href="#badges"></a>
+</h2>
+<!-- badges: start -->
+
+</div>
+<div class="section level2">
+<h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
+</h2>
 <p>The goal of this project is to create a model in R Shiny that allocates an insured’s prospective year property insurance costs in an equitable, easily understood manner that saves the client time, provides the option to use an “actuarial” methodology, while still allowing for maximum flexibility and edits.</p>
 </div>
-<div id="demo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#demo" class="anchor"></a>Demo</h2>
+<div class="section level2">
+<h2 id="demo">Demo<a class="anchor" aria-label="anchor" href="#demo"></a>
+</h2>
 <p>To demo the app, you have a couple of options:</p>
 <ul>
 <li>If you want to run the application locally, simply install the package and run the code below:</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jimbrig/propalloc">propalloc</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jimbrig/propalloc" class="external-link">propalloc</a></span><span class="op">)</span>
 <span class="fu">propalloc</span><span class="fu">::</span><span class="fu"><a href="reference/run_app.html">run_app</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><em>Note that the run_app function will automatically install package dependencies for you.</em></p>
 </div>
-<div id="scope-of-services" class="section level2">
-<h2 class="hasAnchor">
-<a href="#scope-of-services" class="anchor"></a>Scope of Services</h2>
+<div class="section level2">
+<h2 id="scope-of-services">Scope of Services<a class="anchor" aria-label="anchor" href="#scope-of-services"></a>
+</h2>
 <p>Upon completion, this model will be used as a demo to sell future work, similar to the R Shiny casualty cost allocation model. Once sold, this model will provide a template for billable projects.</p>
 <p>Specifically, the property allocation model will allocate the premium, taxes, fees, surcharges and any related costs (collectively, the “property insurance costs”) to the desired level. This level can include up to six hierarchies (e.g. Country, Business Unit, Division, Region, Location, and Intra-location Department).</p>
 <p>The tool will enable the client to incorporate the following criteria into its allocation process:</p>
@@ -160,14 +161,14 @@
 <li>cap placed on the increase in rate and the resulting off-balance associated with a cap.</li>
 </ul>
 </div>
-<div id="resources" class="section level2">
-<h2 class="hasAnchor">
-<a href="#resources" class="anchor"></a>Resources</h2>
+<div class="section level2">
+<h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
+</h2>
 <p>View all package documentation by installing and running:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>propalloc<span class="op">::</span><span class="kw">open_docs</span>()</span></code></pre></div>
-<div id="documents" class="section level4">
-<h4 class="hasAnchor">
-<a href="#documents" class="anchor"></a>Documents</h4>
+<pre><code><span class="fu">propalloc</span><span class="fu">::</span><span class="fu"><a href="reference/open_docs.html">open_docs</a></span><span class="op">(</span><span class="op">)</span></code></pre>
+<div class="section level4">
+<h4 id="documents">Documents<a class="anchor" aria-label="anchor" href="#documents"></a>
+</h4>
 <ul>
 <li><a href="inst/reports/changelog.html">Changelog</a></li>
 <li><a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a></li>
@@ -178,21 +179,21 @@
 </ul>
 </div>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p><strong>propalloc</strong> is setup as an R Package making it simple to house all the various dependencies that the final application relies on.</p>
-<p>Make sure you have the latest and stable version of <a href="https://github.com/hadley/devtools">devtools</a>.</p>
-<div id="github" class="section level3">
-<h3 class="hasAnchor">
-<a href="#github" class="anchor"></a>GitHub</h3>
-<p>Install from <a href="https://github.com">GitHub</a> via:</p>
-<p>For information on setting up your GitHub PAT (Personal Access Token) visit <a href="https://github.com/settings/tokens">this webpage</a>.</p>
+<p>Make sure you have the latest and stable version of <a href="https://github.com/hadley/devtools" class="external-link">devtools</a>.</p>
+<div class="section level3">
+<h3 id="github">GitHub<a class="anchor" aria-label="anchor" href="#github"></a>
+</h3>
+<p>Install from <a href="https://github.com" class="external-link">GitHub</a> via:</p>
+<p>For information on setting up your GitHub PAT (Personal Access Token) visit <a href="https://github.com/settings/tokens" class="external-link">this webpage</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>
 
 <span class="co"># using username/password</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>,
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>,
                          <span class="st">"&lt;username&gt;"</span>, 
                          <span class="st">"&lt;password&gt;"</span><span class="op">)</span>
 
@@ -200,15 +201,15 @@
 <span class="co"># library(usethis)</span>
 <span class="co"># usethis::browse_github_pat()</span>
 
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>,
-                         auth_token <span class="op">=</span> <span class="fu"><a href="https://devtools.r-lib.org//reference/github_pat.html">github_pat</a></span><span class="op">(</span><span class="va">quiet</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jimbrig/propalloc"</span>,
+                         auth_token <span class="op">=</span> <span class="fu">github_pat</span><span class="op">(</span><span class="va">quiet</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <hr>
 <p>If you have any trouble, contact <a href="jimbrig1993@outlook.com">Jimmy Briggs</a> to make sure you have read access to the repository and for further troubleshooting.</p>
 </div>
 </div>
-<div id="technical" class="section level2">
-<h2 class="hasAnchor">
-<a href="#technical" class="anchor"></a>Technical</h2>
+<div class="section level2">
+<h2 id="technical">Technical<a class="anchor" aria-label="anchor" href="#technical"></a>
+</h2>
 <p>This project is set up as an R Package. To view important details regarding the setup visit the <a href="">Technical API Vignette</a>.</p>
 <p>It also utilized GIT LFS. To install run <strong>git lfs install</strong> in git bash.</p>
 </div>
@@ -217,45 +218,56 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/jimbrig/propalloc/">https://​github.com/​jimbrig/​propalloc/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/jimbrig/propalloc/issues">https://​github.com/​jimbrig/​propalloc/​issues</a>
-</li>
+<li><a href="https://github.com/jimbrig/propalloc/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/jimbrig/propalloc/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE-text.html">LICENSE</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing propalloc</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Jimmy Briggs <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/Lifecycle-Maturing-darkgreen.svg" alt="lifecycle"></a></li>
-<li><a href="https://github.com/jimbrig/propalloc/blob/master/commits/master"><img src="https://img.shields.io/badge/Package%20Version-1.1.0-orange.svg" alt="package%20version"></a></li>
-<li><a href="https://github.com/jimbrig/propalloc"><img src="https://img.shields.io/badge/Github-jimbrig/propalloc-black.svg" alt="github"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#maturing" class="external-link"><img src="https://img.shields.io/badge/Lifecycle-Maturing-darkgreen.svg" alt="lifecycle"></a></li>
+<li><a href="https://github.com/jimbrig/propalloc/blob/master/commits/master" class="external-link"><img src="https://img.shields.io/badge/Package%20Version-1.1.0-orange.svg" alt="package%20version"></a></li>
+<li><a href="https://github.com/jimbrig/propalloc" class="external-link"><img src="https://img.shields.io/badge/Github-jimbrig/propalloc-black.svg" alt="github"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Jimmy Briggs.</p>
+  <p></p>
+<p>Developed by Jimmy Briggs.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -263,6 +275,8 @@
 
   
 
+
+  
 
   </body>
 </html>
