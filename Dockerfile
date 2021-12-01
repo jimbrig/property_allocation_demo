@@ -58,6 +58,7 @@ RUN Rscript -e 'remotes::install_version("rhandsontable",upgrade="never", versio
 RUN Rscript -e 'remotes::install_version("matchmaker",upgrade="never", version = "0.1.1")'
 RUN Rscript -e 'remotes::install_version("highcharter",upgrade="never", version = "0.8.2")'
 RUN Rscript -e 'remotes::install_version("DT",upgrade="never", version = "0.18")'
+RUN Rscript -e 'remotes::install_version("openmetrics",upgrade="never")'
 
 RUN mkdir /build_zone
 ADD . /build_zone

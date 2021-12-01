@@ -41,7 +41,8 @@ Imports:
     tidyr,
     tidyselect,
     utils,
-    writexl
+    writexl,
+    openmetrics
 Suggests: 
     attachment,
     devtools,

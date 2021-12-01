@@ -8,12 +8,13 @@
 #'
 #' @export
 #' @importFrom shiny shinyApp
+#' @importFrom openmetrics register_shiny_metrics
 run_app <- function(install_dependencies = FALSE, launch_browser = TRUE, shiny_port = 8080, shiny_host = "0.0.0.0") {
 
   if (install_dependencies) install_app_dependencies()
-
-  shiny::shinyApp(ui = app_ui(), server = app_server, options = list(launch.browser = launch_browser, shiny.port = shiny_port, shiny.host = shiny_host))
-
+  
+  app <- shiny::shinyApp(ui = app_ui(), server = app_server, options = list(launch.browser = launch_browser, shiny.port = shiny_port, shiny.host = shiny_host))
+  openmetrics::register_shiny_metrics(app)
 }
 
 #' @keywords app
