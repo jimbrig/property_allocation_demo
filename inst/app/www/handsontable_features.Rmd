@@ -3,11 +3,7 @@ pagetitle: "rhandsontable_features"
 output: html_document
 ---
 
-<<<<<<< HEAD
-## TABLE FEATURES OVERVIEW
-=======
 ## TABLE FEATURES OVERVIEW <img src='img/logo.png' align="right" height="100" />
->>>>>>> db1a242fbcb926e155954133e7f456329aaf871e
 
 ***
 
