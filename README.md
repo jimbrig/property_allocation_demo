@@ -8,6 +8,8 @@ output: github_document
 
 # Property Allocation <img src='man/figures/logo.png' align="right" height="30.5" />
 
+[![Build and Deploy](https://github.com/jimbrig/property_allocation_demo/actions/workflows/azure-deploy.yml/badge.svg)](https://github.com/jimbrig/property_allocation_demo/actions/workflows/azure-deploy.yml)
+
 **propalloc** is an R Package housing the codebase for the R Shiny
 Property Allocation Demo Application.
 
