@@ -66,38 +66,47 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rebalance_premiums</span><span class="op">(</span>
-  <span class="va">the_data</span>,
-  <span class="va">column_name_to_rebalance</span>,
-  <span class="va">total_to_rebalance_to</span>,
-  do_keep_column_name <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rebalance_premiums</span><span class="op">(</span></span>
+<span>  <span class="va">the_data</span>,</span>
+<span>  <span class="va">column_name_to_rebalance</span>,</span>
+<span>  <span class="va">total_to_rebalance_to</span>,</span>
+<span>  do_keep_column_name <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>the_data</dt>
 <dd><p>data.frame</p></dd>
+
+
 <dt>column_name_to_rebalance</dt>
 <dd><p>character reflecting the name of the (numeric) column that is being rebalanced</p></dd>
+
+
 <dt>total_to_rebalance_to</dt>
 <dd><p>numeric</p></dd>
+
+
 <dt>do_keep_column_name</dt>
 <dd><p>boolean If FALSE, then automatically renames to "column_name_rebalanced"</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame</p>
+    
+
+<p>data.frame</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>premiums <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">rebalance_premiums</span><span class="op">(</span><span class="st">"premiums"</span>, <span class="fl">12</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>premiums <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">rebalance_premiums</span><span class="op">(</span><span class="st">"premiums"</span>, <span class="fl">12</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   premiums</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3        6</span>
-<span class="r-in"><span class="co"># Returns data.frame(premiums = c(2, 4, 6))</span></span>
+<span class="r-in"><span><span class="co"># Returns data.frame(premiums = c(2, 4, 6))</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -112,7 +121,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

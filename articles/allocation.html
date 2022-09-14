@@ -109,7 +109,7 @@
 </h2>
 <p>The first step is to ingest all of the various user-driven inputs and demo-data to form a dataset to perform the allocation with.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/load_demo_data.html">load_demo_data</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/load_demo_data.html">load_demo_data</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Specify various ‘user-defined’ inputs:</p>
 <ul>
 <li>Experience Period for Loss Run</li>
@@ -117,21 +117,21 @@
 <li>Budget guidance increase factor (a % applied to prior rates which are then used to allocate premiums)</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># specify experience period based on loss run</span>
-<span class="va">min_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">loss_run</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>
-<span class="va">max_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">loss_run</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>
-<span class="va">experience_period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">min_year</span><span class="op">:</span><span class="va">max_year</span><span class="op">)</span>
-
-<span class="va">experience_period_display</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span>
-  <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">min_year</span>, <span class="st">"-01-01"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="st">"%B %d, %Y"</span><span class="op">)</span>, <span class="st">" to "</span>,
-  <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">max_year</span>, <span class="st">"-12-31"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="st">"%B %d, %Y"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># specify percent change capping threshold</span>
-<span class="va">cap_threshold</span> <span class="op">&lt;-</span> <span class="fl">.25</span>
-
-<span class="co"># A 5% budget guidance increase factor</span>
-<span class="va">budget_guidance_percent</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># specify experience period based on loss run</span></span>
+<span><span class="va">min_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">loss_run</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
+<span><span class="va">max_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">loss_run</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
+<span><span class="va">experience_period</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">min_year</span><span class="op">:</span><span class="va">max_year</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">experience_period_display</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">min_year</span>, <span class="st">"-01-01"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="st">"%B %d, %Y"</span><span class="op">)</span>, <span class="st">" to "</span>,</span>
+<span>  <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">max_year</span>, <span class="st">"-12-31"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="st">"%B %d, %Y"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># specify percent change capping threshold</span></span>
+<span><span class="va">cap_threshold</span> <span class="op">&lt;-</span> <span class="fl">.25</span></span>
+<span></span>
+<span><span class="co"># A 5% budget guidance increase factor</span></span>
+<span><span class="va">budget_guidance_percent</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="costs-to-be-allocated">Costs to be Allocated<a class="anchor" aria-label="anchor" href="#costs-to-be-allocated"></a>
 </h3>
@@ -148,25 +148,25 @@
 <p>To do this, I utilize an internal, custom utility function <code>extract_costs_for_allocation()</code>.</p>
 <p>The resulting <strong><em>Costs for Allocation</em></strong> are:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># extract costs from renewal cost table</span>
-<span class="va">costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_costs.html">extract_costs</a></span><span class="op">(</span><span class="va">renewal_costs</span><span class="op">)</span>
-
-<span class="co"># derive current and prior overall rates and percent change</span>
-<span class="va">curr_rate</span> <span class="op">&lt;-</span> <span class="va">costs</span><span class="op">$</span><span class="va">risk_transfer</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">sov</span><span class="op">$</span><span class="va">tiv</span><span class="op">)</span>
-<span class="va">prior_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">priors</span><span class="op">$</span><span class="va">prior_risk_transfer_premium</span><span class="op">)</span> <span class="op">/</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">priors</span><span class="op">$</span><span class="va">prior_tiv</span><span class="op">)</span>
-<span class="va">pct_change</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">curr_rate</span> <span class="op">/</span> <span class="va">prior_rate</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>
-
-<span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">costs</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames_to_column</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"Cost Type"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="st">"Dollar Amount"</span> <span class="op">=</span> <span class="va">V1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">kkable</span><span class="op">(</span>currency_cols <span class="op">=</span> <span class="st">"Dollar Amount"</span>,
-         proper_cols <span class="op">=</span> <span class="st">"Cost Type"</span>,
-         caption <span class="op">=</span> <span class="st">"Extracted Costs for Allocation:"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># extract costs from renewal cost table</span></span>
+<span><span class="va">costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_costs.html">extract_costs</a></span><span class="op">(</span><span class="va">renewal_costs</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># derive current and prior overall rates and percent change</span></span>
+<span><span class="va">curr_rate</span> <span class="op">&lt;-</span> <span class="va">costs</span><span class="op">$</span><span class="va">risk_transfer</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">sov</span><span class="op">$</span><span class="va">tiv</span><span class="op">)</span></span>
+<span><span class="va">prior_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">priors</span><span class="op">$</span><span class="va">prior_risk_transfer_premium</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">priors</span><span class="op">$</span><span class="va">prior_tiv</span><span class="op">)</span></span>
+<span><span class="va">pct_change</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">curr_rate</span> <span class="op">/</span> <span class="va">prior_rate</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span></span>
+<span></span>
+<span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">costs</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames_to_column</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"Cost Type"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="st">"Dollar Amount"</span> <span class="op">=</span> <span class="va">V1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">kkable</span><span class="op">(</span>currency_cols <span class="op">=</span> <span class="st">"Dollar Amount"</span>,</span>
+<span>         proper_cols <span class="op">=</span> <span class="st">"Cost Type"</span>,</span>
+<span>         caption <span class="op">=</span> <span class="st">"Extracted Costs for Allocation:"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="derive-relativity-adjusted-tivs">Derive Relativity Adjusted TIVs<a class="anchor" aria-label="anchor" href="#derive-relativity-adjusted-tivs"></a>
@@ -175,40 +175,40 @@
 <p>Specifically, we take the user-input <em>Relativity Table</em> and apply a custom utility function <code>derive_relativity_adjusted_tivs()</code> to derive our final relativity adjusted TIVs.</p>
 <p>First, lets look at the input relativities:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rel_tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">bu_rels</span>, <span class="va">combustible_rels</span>, <span class="va">sprinkler_tier_rels</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Business Unit Relativity"</span>,
-                     <span class="st">"AOP Combustible Relativity"</span>,
-                     <span class="st">"AOP Sprinkler Tier Relativity"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">apply_labels</span>, dict <span class="op">=</span> <span class="va">dictionary</span>, dataset_name <span class="op">=</span> <span class="st">"rels"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">)</span>
-
-<span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html" class="external-link">map2</a></span><span class="op">(</span><span class="va">rel_tables</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">rel_tables</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">kkable</span><span class="op">(</span>data <span class="op">=</span> <span class="va">x</span>, caption <span class="op">=</span> <span class="va">y</span>, col_names <span class="op">=</span> <span class="cn">NULL</span>, digits <span class="op">=</span> <span class="fl">3</span>, add_digits <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">rel_tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">bu_rels</span>, <span class="va">combustible_rels</span>, <span class="va">sprinkler_tier_rels</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Business Unit Relativity"</span>,</span>
+<span>                     <span class="st">"AOP Combustible Relativity"</span>,</span>
+<span>                     <span class="st">"AOP Sprinkler Tier Relativity"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">apply_labels</span>, dict <span class="op">=</span> <span class="va">dictionary</span>, dataset_name <span class="op">=</span> <span class="st">"rels"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu">tibble</span><span class="fu">::</span><span class="va"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html" class="external-link">map2</a></span><span class="op">(</span><span class="va">rel_tables</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">rel_tables</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">kkable</span><span class="op">(</span>data <span class="op">=</span> <span class="va">x</span>, caption <span class="op">=</span> <span class="va">y</span>, col_names <span class="op">=</span> <span class="cn">NULL</span>, digits <span class="op">=</span> <span class="fl">3</span>, add_digits <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="apply-relativity-factors-to-tivs">Apply relativity factors to TIVs<a class="anchor" aria-label="anchor" href="#apply-relativity-factors-to-tivs"></a>
 </h3>
 <p>Relativities are then applied directly to each entity’s TIV. For each relativity type, a separate relativity-adjusted TIV is calculated and used as required in eithe catastrophy allocation, All Other Peril allocation, or terrorism allocation.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rels_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    relativity_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-      <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span>, <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span>, <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span>, <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>,
-      <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span><span class="op">)</span><span class="op">]</span>, <span class="va">sprinkler_tier_rels</span>, <span class="va">combustible_rels</span>
-    <span class="op">)</span>,
-    coverage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-      <span class="st">"aop"</span>, <span class="st">"cat_eq"</span>, <span class="st">"cat_wind"</span>, <span class="st">"cat_flood"</span>, <span class="st">"terrorism"</span>, <span class="st">"aop"</span>, <span class="st">"aop"</span>
-    <span class="op">)</span>,
-    sov_linker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-      <span class="st">"bu"</span>, <span class="st">"bu"</span>, <span class="st">"bu"</span>, <span class="st">"bu"</span>, <span class="st">"bu"</span>, <span class="st">"aop_sprinkler_tier"</span>, <span class="st">"aop_combustible"</span>
-    <span class="op">)</span>
-  <span class="op">)</span>
-
-<span class="va">rel_adjusted_tivs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ingest_relativities.html">ingest_relativities</a></span><span class="op">(</span><span class="va">rels_list</span>, sov <span class="op">=</span> <span class="va">sov</span><span class="op">)</span>
-
-<span class="fu">kkable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rel_adjusted_tivs</span><span class="op">)</span>,
-       proper_cols <span class="op">=</span> <span class="st">"entity_id"</span>, 
-       currency_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">rel_adjusted_tivs</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">rel_adjusted_tivs</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">rels_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    relativity_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span>, <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span>, <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span>, <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>      <span class="va">bu_rels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span><span class="op">)</span><span class="op">]</span>, <span class="va">sprinkler_tier_rels</span>, <span class="va">combustible_rels</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    coverage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      <span class="st">"aop"</span>, <span class="st">"cat_eq"</span>, <span class="st">"cat_wind"</span>, <span class="st">"cat_flood"</span>, <span class="st">"terrorism"</span>, <span class="st">"aop"</span>, <span class="st">"aop"</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    sov_linker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      <span class="st">"bu"</span>, <span class="st">"bu"</span>, <span class="st">"bu"</span>, <span class="st">"bu"</span>, <span class="st">"bu"</span>, <span class="st">"aop_sprinkler_tier"</span>, <span class="st">"aop_combustible"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">rel_adjusted_tivs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ingest_relativities.html">ingest_relativities</a></span><span class="op">(</span><span class="va">rels_list</span>, sov <span class="op">=</span> <span class="va">sov</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">kkable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rel_adjusted_tivs</span><span class="op">)</span>,</span>
+<span>       proper_cols <span class="op">=</span> <span class="st">"entity_id"</span>, </span>
+<span>       currency_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">rel_adjusted_tivs</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">rel_adjusted_tivs</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="prepare-claim-surcharges">Prepare claim surcharges<a class="anchor" aria-label="anchor" href="#prepare-claim-surcharges"></a>
@@ -216,30 +216,30 @@
 <p>For entities that have experienced claims, the client may wish to increase their allocated premium. The rules for doing so are limited in this application to: applying a % surcharge to the TIV for each claim made by the entity in a certain time period, or adding a $ surcharge to the allocated premium (at this stage in the calculation) for each claim made in a certain time period.</p>
 <p>The demo data, <code>count_buckets</code>, sets out a typical specification for such functionality.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">count_buckets</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">select</span><span class="op">(</span><span class="va">name</span><span class="op">:</span><span class="va">dollar_surcharge</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">kkable</span><span class="op">(</span>
-    col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Label"</span>, <span class="st">"Minimum"</span>, <span class="st">"Maximum"</span>, <span class="st">"Percent Surcharge"</span>, <span class="st">"Dollar Surcharge"</span><span class="op">)</span>,
-    caption <span class="op">=</span> <span class="st">"User-Defined Claim Count Bucket Surcharges"</span>,
-    currency_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"dollar_surcharge"</span><span class="op">)</span>,
-    percent_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"percent_surcharge"</span><span class="op">)</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">count_buckets</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">name</span><span class="op">:</span><span class="va">dollar_surcharge</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">kkable</span><span class="op">(</span></span>
+<span>    col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Label"</span>, <span class="st">"Minimum"</span>, <span class="st">"Maximum"</span>, <span class="st">"Percent Surcharge"</span>, <span class="st">"Dollar Surcharge"</span><span class="op">)</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"User-Defined Claim Count Bucket Surcharges"</span>,</span>
+<span>    currency_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"dollar_surcharge"</span><span class="op">)</span>,</span>
+<span>    percent_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"percent_surcharge"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>Here, <code>count_buckets</code> are applied to the loss run ready for surcharging the premiums calculated in the main part of the model:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">entity_loss_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_loss_summary.html">entity_loss_summary</a></span><span class="op">(</span><span class="va">loss_run</span>, <span class="va">count_buckets</span>, <span class="va">experience_period</span><span class="op">)</span>
-
-<span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Entity ID"</span>, 
-               <span class="va">count_buckets</span><span class="op">$</span><span class="va">name</span>,
-               <span class="st">"Total Counts"</span>, <span class="st">"Total Incurred"</span><span class="op">)</span>
-
-<span class="fu">kkable</span><span class="op">(</span><span class="va">entity_loss_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-         <span class="co"># dplyr::mutate(entity_id = toproper(entity_id)) %&gt;%</span>
-         <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">total_incurred</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-         <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, 
-       col_names <span class="op">=</span> <span class="va">col_names</span>,
-       proper_cols <span class="op">=</span> <span class="st">"entity_id"</span>,
-       currency_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">col_names</span><span class="op">)</span>,
-       caption <span class="op">=</span> <span class="st">"Summarized Loss Data by Entity (Top 10 Entities by Total Incurred)"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">entity_loss_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_loss_summary.html">entity_loss_summary</a></span><span class="op">(</span><span class="va">loss_run</span>, <span class="va">count_buckets</span>, <span class="va">experience_period</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">col_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Entity ID"</span>, </span>
+<span>               <span class="va">count_buckets</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>               <span class="st">"Total Counts"</span>, <span class="st">"Total Incurred"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">kkable</span><span class="op">(</span><span class="va">entity_loss_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>         <span class="co"># dplyr::mutate(entity_id = toproper(entity_id)) %&gt;%</span></span>
+<span>         <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">total_incurred</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, </span>
+<span>       col_names <span class="op">=</span> <span class="va">col_names</span>,</span>
+<span>       proper_cols <span class="op">=</span> <span class="st">"entity_id"</span>,</span>
+<span>       currency_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">col_names</span><span class="op">)</span>,</span>
+<span>       caption <span class="op">=</span> <span class="st">"Summarized Loss Data by Entity (Top 10 Entities by Total Incurred)"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="putting-it-all-together">Putting it all together<a class="anchor" aria-label="anchor" href="#putting-it-all-together"></a>
@@ -273,76 +273,76 @@
 <li>Perform final calculations to include expenses in the allocation.</li>
 </ol>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># merge entity data (sov, rel adjusted tivs, loss data, market and model rates,</span>
-<span class="co"># and priors)</span>
-
-<span class="va">allocation_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_entity_data.html">merge_entity_data</a></span><span class="op">(</span>
-  <span class="va">sov</span>,
-  <span class="va">rel_adjusted_tivs</span>,
-  <span class="va">entity_loss_data</span>,
-  <span class="va">rates</span>,
-  <span class="va">priors</span>
-<span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="co"># perform initial preliminary allocation (CAT first, back into AOP, terror)</span>
-  <span class="co"># this is uncapped. before surcharges, and excluding expenses</span>
-  <span class="fu"><a href="../reference/preliminary_allocation.html">preliminary_allocation</a></span><span class="op">(</span><span class="va">costs</span>, <span class="va">budget_guidance_percent</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="co"># apply surcharges</span>
-  <span class="fu"><a href="../reference/apply_surcharges.html">apply_surcharges</a></span><span class="op">(</span><span class="va">count_buckets</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="co"># adjust column names for apply threshold function</span>
-  <span class="co"># TODO: add arguments to apply threshold functions for specifying column</span>
-  <span class="co"># so don't have to add this step.</span>
-  <span class="fu">mutate</span><span class="op">(</span>
-    prior_allocated <span class="op">=</span> <span class="va">prior_risk_transfer_premium</span>,
-    prior_allocated_rate <span class="op">=</span> <span class="va">prior_allocated</span> <span class="op">/</span> <span class="va">prior_tiv</span>,
-    uncapped_allocated <span class="op">=</span> <span class="va">surcharged_premium</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="co"># apply capping using a default 25% threshold</span>
-  <span class="co"># TODO: add argument to apply threshold for whether or not to net the</span>
-  <span class="co"># total pct change or not - currently it does this</span>
-  <span class="fu"><a href="../reference/apply_threshold.html">apply_threshold</a></span><span class="op">(</span>
-    total_pct_chg <span class="op">=</span> <span class="va">pct_change</span>,
-    threshold <span class="op">=</span> <span class="va">cap_threshold</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="co"># final rebalancing and allocate expenses</span>
-  <span class="fu"><a href="../reference/allocate_expenses.html">allocate_expenses</a></span><span class="op">(</span><span class="va">costs</span>, weight_variable <span class="op">=</span> <span class="st">"tiv"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># merge entity data (sov, rel adjusted tivs, loss data, market and model rates,</span></span>
+<span><span class="co"># and priors)</span></span>
+<span></span>
+<span><span class="va">allocation_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_entity_data.html">merge_entity_data</a></span><span class="op">(</span></span>
+<span>  <span class="va">sov</span>,</span>
+<span>  <span class="va">rel_adjusted_tivs</span>,</span>
+<span>  <span class="va">entity_loss_data</span>,</span>
+<span>  <span class="va">rates</span>,</span>
+<span>  <span class="va">priors</span></span>
+<span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="co"># perform initial preliminary allocation (CAT first, back into AOP, terror)</span></span>
+<span>  <span class="co"># this is uncapped. before surcharges, and excluding expenses</span></span>
+<span>  <span class="fu"><a href="../reference/preliminary_allocation.html">preliminary_allocation</a></span><span class="op">(</span><span class="va">costs</span>, <span class="va">budget_guidance_percent</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="co"># apply surcharges</span></span>
+<span>  <span class="fu"><a href="../reference/apply_surcharges.html">apply_surcharges</a></span><span class="op">(</span><span class="va">count_buckets</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="co"># adjust column names for apply threshold function</span></span>
+<span>  <span class="co"># TODO: add arguments to apply threshold functions for specifying column</span></span>
+<span>  <span class="co"># so don't have to add this step.</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    prior_allocated <span class="op">=</span> <span class="va">prior_risk_transfer_premium</span>,</span>
+<span>    prior_allocated_rate <span class="op">=</span> <span class="va">prior_allocated</span> <span class="op">/</span> <span class="va">prior_tiv</span>,</span>
+<span>    uncapped_allocated <span class="op">=</span> <span class="va">surcharged_premium</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="co"># apply capping using a default 25% threshold</span></span>
+<span>  <span class="co"># TODO: add argument to apply threshold for whether or not to net the</span></span>
+<span>  <span class="co"># total pct change or not - currently it does this</span></span>
+<span>  <span class="fu"><a href="../reference/apply_threshold.html">apply_threshold</a></span><span class="op">(</span></span>
+<span>    total_pct_chg <span class="op">=</span> <span class="va">pct_change</span>,</span>
+<span>    threshold <span class="op">=</span> <span class="va">cap_threshold</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="co"># final rebalancing and allocate expenses</span></span>
+<span>  <span class="fu"><a href="../reference/allocate_expenses.html">allocate_expenses</a></span><span class="op">(</span><span class="va">costs</span>, weight_variable <span class="op">=</span> <span class="st">"tiv"</span><span class="op">)</span></span></code></pre></div>
 <p>And the result is:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># declutter results and output</span>
-<span class="va">allocation_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">mutate</span><span class="op">(</span>current_allocated_rate <span class="op">=</span> <span class="va">rebalanced_allocated</span> <span class="op">/</span> <span class="va">tiv</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="co"># excl expense</span>
-  <span class="fu">select</span><span class="op">(</span>
-    <span class="va">entity_id</span>,
-    <span class="va">tiv</span>,
-    <span class="va">prior_tiv</span>,
-    <span class="va">aop_adj_tiv</span><span class="op">:</span><span class="va">terrorism_adj_tiv</span>,
-    <span class="va">model_aop_rate</span>,
-    <span class="va">model_cat_eq_rate</span>,
-    <span class="va">model_cat_wind_rate</span>,
-    <span class="va">model_cat_flood_rate</span>,
-    <span class="va">model_terrorism_rate</span>,
-    <span class="va">prior_risk_transfer_premium</span>,
-    preliminary_model_premium <span class="op">=</span> <span class="va">total_model_premium_adj</span>,
-    <span class="va">surcharge</span>,
-    <span class="va">surcharged_premium</span>,
-    <span class="va">prior_allocated</span>,
-    <span class="va">prior_allocated_rate</span>,
-    <span class="va">uncapped_allocated</span>,
-    capped_allocated <span class="op">=</span> <span class="va">allocated</span>,
-    final_allocated <span class="op">=</span> <span class="va">rebalanced_allocated</span>,
-    <span class="va">current_allocated_rate</span>,
-    rate_percent_change <span class="op">=</span> <span class="va">capped_rate_percent_change</span>,
-    <span class="va">allocated_expenses</span>,
-    <span class="va">final_allocated_w_expense</span>
-  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu">kkable</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># declutter results and output</span></span>
+<span><span class="va">allocation_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>current_allocated_rate <span class="op">=</span> <span class="va">rebalanced_allocated</span> <span class="op">/</span> <span class="va">tiv</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="co"># excl expense</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    <span class="va">entity_id</span>,</span>
+<span>    <span class="va">tiv</span>,</span>
+<span>    <span class="va">prior_tiv</span>,</span>
+<span>    <span class="va">aop_adj_tiv</span><span class="op">:</span><span class="va">terrorism_adj_tiv</span>,</span>
+<span>    <span class="va">model_aop_rate</span>,</span>
+<span>    <span class="va">model_cat_eq_rate</span>,</span>
+<span>    <span class="va">model_cat_wind_rate</span>,</span>
+<span>    <span class="va">model_cat_flood_rate</span>,</span>
+<span>    <span class="va">model_terrorism_rate</span>,</span>
+<span>    <span class="va">prior_risk_transfer_premium</span>,</span>
+<span>    preliminary_model_premium <span class="op">=</span> <span class="va">total_model_premium_adj</span>,</span>
+<span>    <span class="va">surcharge</span>,</span>
+<span>    <span class="va">surcharged_premium</span>,</span>
+<span>    <span class="va">prior_allocated</span>,</span>
+<span>    <span class="va">prior_allocated_rate</span>,</span>
+<span>    <span class="va">uncapped_allocated</span>,</span>
+<span>    capped_allocated <span class="op">=</span> <span class="va">allocated</span>,</span>
+<span>    final_allocated <span class="op">=</span> <span class="va">rebalanced_allocated</span>,</span>
+<span>    <span class="va">current_allocated_rate</span>,</span>
+<span>    rate_percent_change <span class="op">=</span> <span class="va">capped_rate_percent_change</span>,</span>
+<span>    <span class="va">allocated_expenses</span>,</span>
+<span>    <span class="va">final_allocated_w_expense</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">kkable</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="driver-summary">Driver Summary<a class="anchor" aria-label="anchor" href="#driver-summary"></a>
 </h3>
 <p><code>propalloc</code> comes with functionality to split out the effects of each of the stages of premium allocation as they contribute to its change between prior and current premium allocations. This function uses argument <code>filter_vector</code> to show such a split for a subset of entities if desired.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">driver_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_driver_summary.html">prepare_driver_summary</a></span><span class="op">(</span><span class="va">allocation_data</span>, filter_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">driver_summary_bu_b_only</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_driver_summary.html">prepare_driver_summary</a></span><span class="op">(</span><span class="va">allocation_data</span>, filter_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>bu <span class="op">=</span> <span class="st">"bu_b"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">driver_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_driver_summary.html">prepare_driver_summary</a></span><span class="op">(</span><span class="va">allocation_data</span>, filter_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">driver_summary_bu_b_only</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_driver_summary.html">prepare_driver_summary</a></span><span class="op">(</span><span class="va">allocation_data</span>, filter_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>bu <span class="op">=</span> <span class="st">"bu_b"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -364,7 +364,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

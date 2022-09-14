@@ -70,17 +70,20 @@ Unit 1, Unit 10, Unit 11 (with 1's leading the default sort method).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sort_numeric</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sort_numeric</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>vec</dt>
 <dd><p>character vector to sort.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a sorted character vector, sorted by its extracted integers</p>
+    
+
+<p>a sorted character vector, sorted by its extracted integers</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -89,10 +92,10 @@ Unit 1, Unit 10, Unit 11 (with 1's leading the default sort method).</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jimbrig/propalloc" class="external-link">propalloc</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># undesired sort method</span></span>
-<span class="r-in"><span class="fu"><a href="pull_unique.html">pull_unique</a></span><span class="op">(</span><span class="va">sov</span>, <span class="st">"department"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">sort_numeric</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jimbrig/propalloc" class="external-link">propalloc</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># undesired sort method</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="pull_unique.html">pull_unique</a></span><span class="op">(</span><span class="va">sov</span>, <span class="st">"department"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">sort_numeric</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    dept_1    dept_2    dept_3    dept_4    dept_5    dept_6    dept_7    dept_8 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  "dept_1"  "dept_2"  "dept_3"  "dept_4"  "dept_5"  "dept_6"  "dept_7"  "dept_8" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    dept_9   dept_10   dept_11   dept_12   dept_13   dept_14   dept_15   dept_16 </span>
@@ -105,9 +108,9 @@ Unit 1, Unit 10, Unit 11 (with 1's leading the default sort method).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "dept_33" "dept_34" "dept_35" "dept_36" "dept_37" "dept_38" "dept_39" "dept_40" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   dept_41   dept_42   dept_43 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "dept_41" "dept_42" "dept_43" </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># correct method</span></span>
-<span class="r-in"><span class="fu"><a href="pull_unique.html">pull_unique</a></span><span class="op">(</span><span class="va">sov</span>, <span class="st">"department"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">sort_numeric</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># correct method</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="pull_unique.html">pull_unique</a></span><span class="op">(</span><span class="va">sov</span>, <span class="st">"department"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">sort_numeric</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    dept_1    dept_2    dept_3    dept_4    dept_5    dept_6    dept_7    dept_8 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  "dept_1"  "dept_2"  "dept_3"  "dept_4"  "dept_5"  "dept_6"  "dept_7"  "dept_8" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    dept_9   dept_10   dept_11   dept_12   dept_13   dept_14   dept_15   dept_16 </span>
@@ -134,7 +137,7 @@ Unit 1, Unit 10, Unit 11 (with 1's leading the default sort method).</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
