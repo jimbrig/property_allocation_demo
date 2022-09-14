@@ -1,11 +1,3 @@
----
-output: github_document
----
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-
-
 # Property Allocation <img src='man/figures/logo.png' align="right" height="30.5" />
 
 [![Build and Deploy](https://github.com/jimbrig/property_allocation_demo/actions/workflows/azure-deploy.yml/badge.svg)](https://github.com/jimbrig/property_allocation_demo/actions/workflows/azure-deploy.yml)
@@ -16,9 +8,11 @@ Property Allocation Demo Application.
 + Date: 2021-12-01
 + Demo: https://propallocation.jimbrig.com/
 
+***
+![propalloc](https://user-images.githubusercontent.com/32652297/190238392-fbc3904a-af02-4eb1-af11-addbb1b4ae47.png)
+***
+
 ## Badges
-
-
 
 <!-- badges: start -->
 ![pkgdown](https://github.com/jimbrig/propalloc/workflows/pkgdown/badge.svg)
