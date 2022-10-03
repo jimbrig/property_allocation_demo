@@ -6,7 +6,7 @@
 Property Allocation Demo Application.
 
 + Date: 2021-12-01
-+ Demo: https://propallocation.jimbrig.com/
++ Demo: https://propertyallocation.jimbrig.com/
 
 ***
 ![propalloc](https://user-images.githubusercontent.com/32652297/190238392-fbc3904a-af02-4eb1-af11-addbb1b4ae47.png)
