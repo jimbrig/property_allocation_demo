@@ -7,22 +7,49 @@ on:
     branches: [ "master", "main", "develop" ]
   workflow_dispatch:
 
-jobs:
+env:
+  GCR_REGISTRY: gcr.io
+  ACR_REGISTRY: acr.io
+  DH_REGISTRY: dockerhub.io
+  GH_REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
+jobs:
   build:
     runs-on: ubuntu-latest
-    steps:    
-      - name: Checkout
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - name: Checkout Repository
         uses: actions/checkout@v3
-      
-      - name: GHCR
-        uses: macbre/push-to-ghcr@v12
+      - name: Setup Docker BuildX
+        uses: docker/setup-buildx-action@v1
         with:
-          github_token: secrets.GITHUB_TOKEN
-          image_name: jimbrig/property_allocation_demo
-          dockerfile: ./Dockerfile
+          driver-opts: image=moby/buildkit:master          
+      - name: Login Registry - ${{env.GH_REGISTRY}}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.GH_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.GH_REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v2
+        with:
           context: .
-          repository: ghcr.io
-          docker_io_user: github.actor
-          # docker_io_token: 
-          image_tag: latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
