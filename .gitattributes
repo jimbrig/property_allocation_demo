@@ -1,0 +1,4 @@
+# set HTML to vendored to exclude from GitHub language statistics:
+*.html linguist-vendored
+
+# keeping JS and CSS for now
