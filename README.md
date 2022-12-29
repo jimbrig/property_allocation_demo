@@ -1,6 +1,6 @@
 # Property Allocation <img src='man/figures/logo.png' align="right" height="30.5" />
 
-[![Build and Deploy](https://github.com/jimbrig/property_allocation_demo/actions/workflows/azure-deploy.yml/badge.svg)](https://github.com/jimbrig/property_allocation_demo/actions/workflows/azure-deploy.yml)
+[![github](https://img.shields.io/badge/Github-jimbrig/propalloc-black.svg)](https://github.com/jimbrig/propalloc)
 
 **propalloc** is an R Package housing the codebase for the R Shiny
 Property Allocation Demo Application.
@@ -15,10 +15,11 @@ Property Allocation Demo Application.
 ## Badges
 
 <!-- badges: start -->
-![pkgdown](https://github.com/jimbrig/propalloc/workflows/pkgdown/badge.svg)
+[![Build and Deploy](https://github.com/jimbrig/property_allocation_demo/actions/workflows/azure-deploy.yml/badge.svg)](https://github.com/jimbrig/property_allocation_demo/actions/workflows/azure-deploy.yml)
+[![pkgdown](https://github.com/jimbrig/property_allocation_demo/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/jimbrig/property_allocation_demo/actions/workflows/pkgdown.yaml)
+[![pages-build-deployment](https://github.com/jimbrig/property_allocation_demo/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/jimbrig/property_allocation_demo/actions/workflows/pages/pages-build-deployment)
 [![lifecycle](https://img.shields.io/badge/Lifecycle-Maturing-darkgreen.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![package%20version](https://img.shields.io/badge/Package%20Version-1.1.0-orange.svg)](https://github.com/jimbrig/propalloc/blob/master/commits/master)
-[![github](https://img.shields.io/badge/Github-jimbrig/propalloc-black.svg)](https://github.com/jimbrig/propalloc)
 <!-- [![R build status](https://github.com/jimbrig/propalloc/workflows/R-CMD-check/badge.svg)](https://github.com/jimbrig/propalloc/actions) -->
 <!-- badges: end -->
 
