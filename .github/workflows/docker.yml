@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build Docker
 
 on:
   push:
@@ -10,20 +10,13 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
-    steps:
-    
-      # - name: Build the Docker image
-      # - uses: actions/checkout@v3
-      #  run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-      
+    steps:    
       - name: Checkout
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
       
-      - name: Build
-      - uses: macbre/push-to-ghcr@v12
+      - name: GHCR
+        uses: macbre/push-to-ghcr@v12
         with:
           github_token: secrets.GITHUB_TOKEN
           image_name: jimbrig/property_allocation_demo
