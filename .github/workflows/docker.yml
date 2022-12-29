@@ -1,0 +1,35 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master", "main", "develop" ]
+  pull_request:
+    branches: [ "master", "main", "develop" ]
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      # - name: Build the Docker image
+      # - uses: actions/checkout@v3
+      #  run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      
+      - name: Checkout
+      - uses: actions/checkout@v3
+      
+      - name: Build
+      - uses: macbre/push-to-ghcr@v12
+        with:
+          github_token: secrets.GITHUB_TOKEN
+          image_name: jimbrig/property_allocation_demo
+          dockerfile: ./Dockerfile
+          context: .
+          repository: ghcr.io
+          docker_io_user: github.actor
+          # docker_io_token: 
+          image_tag: latest
