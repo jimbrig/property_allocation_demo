@@ -33,7 +33,7 @@ app_server <- function(input, output, session) {
       element = "#tour_sidebar",
       intro = "Use the sidebar to navigate between various tabs.<br/><br/>You
       can collapse the sidebar by clicking the button to the right of the
-      Oliver Wyman logo in the header to increase screen display.",
+      logo in the header to increase screen display.",
       position = "right"
     )
   )
