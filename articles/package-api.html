@@ -85,7 +85,7 @@
 
       
 
-      </header><script src="package-api_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Package API</h1>
@@ -101,27 +101,45 @@
 <div class="section level2">
 <h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
 </h2>
-<p>This vignette provides useful technical documentation regarding the  package’s internal API nomenclature as well as its technical design practices.</p>
+<p>This vignette provides useful technical documentation regarding the
+package’s internal API nomenclature as well as its technical design
+practices.</p>
 </div>
 <div class="section level2">
 <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h2>
-<p>Functions are housed in the “R” directory and are organized into separate, distinguishable files utilizing the follwing naming procedures:</p>
+<p>Functions are housed in the “R” directory and are organized into
+separate, distinguishable files utilizing the follwing naming
+procedures:</p>
 <ul>
-<li><p>All functions should be named using an <strong>object_verb</strong> approach.</p></li>
-<li><p>Functions are split into groups based on their usage and should fall into one of the following function groups:</p></li>
+<li><p>All functions should be named using an
+<strong>object_verb</strong> approach.</p></li>
+<li><p>Functions are split into groups based on their usage and should
+fall into one of the following function groups:</p></li>
 </ul>
 <ol style="list-style-type: decimal">
-<li><p><strong>utils_</strong>: General utility/helper functions not related to shiny app</p></li>
-<li><p><strong>app_</strong>: High-Level shiny app specific functions</p></li>
-<li><p><strong>app_utils_</strong>: Utility functions specific to the shiny app</p></li>
+<li><p><strong>utils_</strong>: General utility/helper functions not
+related to shiny app</p></li>
+<li><p><strong>app_</strong>: High-Level shiny app specific
+functions</p></li>
+<li><p><strong>app_utils_</strong>: Utility functions specific to the
+shiny app</p></li>
 <li><p><strong>mod_</strong>: App modules</p></li>
-<li><p><strong>alloc</strong>: fundamental functions used in the allocation process</p></li>
+<li><p><strong>alloc</strong>: fundamental functions used in the
+allocation process</p></li>
 <li><p><strong>meta_</strong>: package metadata</p></li>
 <li><p><strong>data_</strong>: exported datasets</p></li>
-<li><p><strong>dev_</strong>: internal package development functions</p></li>
+<li><p><strong>dev_</strong>: internal package development
+functions</p></li>
 </ol>
-<p>Note that additional <em>ui</em> and <em>server</em> prefixes/suffixes are added to filenames when a function is a combination of one of the above listings but relevant only to the user-interface or server logic of the shiny app. This helps distinguish lower-level application specific functions not directly related to a module nor relevant to both the UI and Server (i.e. <em>app_utils_ui</em> houses utility functions used solely in the UI such as <em>flucol</em> or <em>icon_text</em>).</p>
+<p>Note that additional <em>ui</em> and <em>server</em>
+prefixes/suffixes are added to filenames when a function is a
+combination of one of the above listings but relevant only to the
+user-interface or server logic of the shiny app. This helps distinguish
+lower-level application specific functions not directly related to a
+module nor relevant to both the UI and Server
+(i.e. <em>app_utils_ui</em> houses utility functions used solely in the
+UI such as <em>flucol</em> or <em>icon_text</em>).</p>
 </div>
   </div>
 
@@ -142,7 +160,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

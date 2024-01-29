@@ -85,7 +85,7 @@
 
       
 
-      </header><script src="allocation_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Allocation Walkthrough</h1>
@@ -101,20 +101,25 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The purpose of this report is to walk through the various allocation procedures utilized in the shiny application.</p>
-<p>In order to provide knowledgeable insights from this report, we have supplied reasonable inputs that mimic the <em>user-driven</em> aspects of the allocation procedures.</p>
+<p>The purpose of this report is to walk through the various allocation
+procedures utilized in the shiny application.</p>
+<p>In order to provide knowledgeable insights from this report, we have
+supplied reasonable inputs that mimic the <em>user-driven</em> aspects
+of the allocation procedures.</p>
 </div>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
-<p>The first step is to ingest all of the various user-driven inputs and demo-data to form a dataset to perform the allocation with.</p>
+<p>The first step is to ingest all of the various user-driven inputs and
+demo-data to form a dataset to perform the allocation with.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/load_demo_data.html">load_demo_data</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Specify various ‘user-defined’ inputs:</p>
 <ul>
 <li>Experience Period for Loss Run</li>
 <li>Capping Threshold (%)</li>
-<li>Budget guidance increase factor (a % applied to prior rates which are then used to allocate premiums)</li>
+<li>Budget guidance increase factor (a % applied to prior rates which
+are then used to allocate premiums)</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># specify experience period based on loss run</span></span>
@@ -135,7 +140,8 @@
 <div class="section level3">
 <h3 id="costs-to-be-allocated">Costs to be Allocated<a class="anchor" aria-label="anchor" href="#costs-to-be-allocated"></a>
 </h3>
-<p>we need to extract the <strong><em>costs to be allocated</em></strong> in the model, specifically:</p>
+<p>we need to extract the <strong><em>costs to be
+allocated</em></strong> in the model, specifically:</p>
 <ol style="list-style-type: decimal">
 <li>The Total Cost Including Expenses<br>
 </li>
@@ -145,7 +151,8 @@
 </li>
 <li>The Sum of Expenses</li>
 </ol>
-<p>To do this, I utilize an internal, custom utility function <code>extract_costs_for_allocation()</code>.</p>
+<p>To do this, I utilize an internal, custom utility function
+<code>extract_costs_for_allocation()</code>.</p>
 <p>The resulting <strong><em>Costs for Allocation</em></strong> are:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extract costs from renewal cost table</span></span>
@@ -171,8 +178,13 @@
 <div class="section level3">
 <h3 id="derive-relativity-adjusted-tivs">Derive Relativity Adjusted TIVs<a class="anchor" aria-label="anchor" href="#derive-relativity-adjusted-tivs"></a>
 </h3>
-<p>This step involves taking the user-defined relativity’s and multiplying them by the initial <em>Total Insured Values</em> defined in the Schedule of Values (SOV).</p>
-<p>Specifically, we take the user-input <em>Relativity Table</em> and apply a custom utility function <code>derive_relativity_adjusted_tivs()</code> to derive our final relativity adjusted TIVs.</p>
+<p>This step involves taking the user-defined relativity’s and
+multiplying them by the initial <em>Total Insured Values</em> defined in
+the Schedule of Values (SOV).</p>
+<p>Specifically, we take the user-input <em>Relativity Table</em> and
+apply a custom utility function
+<code>derive_relativity_adjusted_tivs()</code> to derive our final
+relativity adjusted TIVs.</p>
 <p>First, lets look at the input relativities:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rel_tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">bu_rels</span>, <span class="va">combustible_rels</span>, <span class="va">sprinkler_tier_rels</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -189,7 +201,10 @@
 <div class="section level3">
 <h3 id="apply-relativity-factors-to-tivs">Apply relativity factors to TIVs<a class="anchor" aria-label="anchor" href="#apply-relativity-factors-to-tivs"></a>
 </h3>
-<p>Relativities are then applied directly to each entity’s TIV. For each relativity type, a separate relativity-adjusted TIV is calculated and used as required in eithe catastrophy allocation, All Other Peril allocation, or terrorism allocation.</p>
+<p>Relativities are then applied directly to each entity’s TIV. For each
+relativity type, a separate relativity-adjusted TIV is calculated and
+used as required in eithe catastrophy allocation, All Other Peril
+allocation, or terrorism allocation.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rels_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    relativity_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -213,8 +228,14 @@
 <div class="section level3">
 <h3 id="prepare-claim-surcharges">Prepare claim surcharges<a class="anchor" aria-label="anchor" href="#prepare-claim-surcharges"></a>
 </h3>
-<p>For entities that have experienced claims, the client may wish to increase their allocated premium. The rules for doing so are limited in this application to: applying a % surcharge to the TIV for each claim made by the entity in a certain time period, or adding a $ surcharge to the allocated premium (at this stage in the calculation) for each claim made in a certain time period.</p>
-<p>The demo data, <code>count_buckets</code>, sets out a typical specification for such functionality.</p>
+<p>For entities that have experienced claims, the client may wish to
+increase their allocated premium. The rules for doing so are limited in
+this application to: applying a % surcharge to the TIV for each claim
+made by the entity in a certain time period, or adding a $ surcharge to
+the allocated premium (at this stage in the calculation) for each claim
+made in a certain time period.</p>
+<p>The demo data, <code>count_buckets</code>, sets out a typical
+specification for such functionality.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">count_buckets</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">name</span><span class="op">:</span><span class="va">dollar_surcharge</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -224,7 +245,9 @@
 <span>    currency_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"dollar_surcharge"</span><span class="op">)</span>,</span>
 <span>    percent_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"percent_surcharge"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>Here, <code>count_buckets</code> are applied to the loss run ready for surcharging the premiums calculated in the main part of the model:</p>
+<p>Here, <code>count_buckets</code> are applied to the loss run ready
+for surcharging the premiums calculated in the main part of the
+model:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">entity_loss_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_loss_summary.html">entity_loss_summary</a></span><span class="op">(</span><span class="va">loss_run</span>, <span class="va">count_buckets</span>, <span class="va">experience_period</span><span class="op">)</span></span>
 <span></span>
@@ -250,27 +273,41 @@
 <code><a href="../reference/merge_entity_data.html">merge_entity_data()</a></code>:</li>
 </ol>
 <ul>
-<li>Apply <code>rates</code> to <code>relativity_adjusted_tivs</code> and also to <code>priors</code> (to simultaneously obtain an allocation of prior premiums)</li>
-<li>Apply <code>entity_loss_data</code> to surcharge the resulting premiums pased on <code>count_buckets</code> and the loss run experience</li>
+<li>Apply <code>rates</code> to <code>relativity_adjusted_tivs</code>
+and also to <code>priors</code> (to simultaneously obtain an allocation
+of prior premiums)</li>
+<li>Apply <code>entity_loss_data</code> to surcharge the resulting
+premiums pased on <code>count_buckets</code> and the loss run
+experience</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
 <li>
 <code><a href="../reference/preliminary_allocation.html">preliminary_allocation()</a></code>:</li>
 </ol>
 <ul>
-<li>Determine a preliminary allocation of premiums (post claim surcharges) by calibrating the total allocated premium to match those indicated in <code>costs</code>
+<li>Determine a preliminary allocation of premiums (post claim
+surcharges) by calibrating the total allocated premium to match those
+indicated in <code>costs</code>
 </li>
-<li>Also, apply <code>budget_guidance_percent</code> to prior premium rates to perform this allocation scenario</li>
+<li>Also, apply <code>budget_guidance_percent</code> to prior premium
+rates to perform this allocation scenario</li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
 <li>
 <code><a href="../reference/apply_threshold.html">apply_threshold()</a></code>:</li>
 </ol>
 <ul>
-<li>Take the preliminary allocation of premiums and enforce a threshold upon them which prevents premiums allocated in the current period deviating too far from premium allocations of the prior period. For example, if the threshold is set to 25% (<code>threshold &lt;- 0.25</code>), and if the prior premium allocated for a particular entity was 1m USD, then roughly the current premium allocation would be between 750k USD, and 1.25m USD.</li>
+<li>Take the preliminary allocation of premiums and enforce a threshold
+upon them which prevents premiums allocated in the current period
+deviating too far from premium allocations of the prior period. For
+example, if the threshold is set to 25%
+(<code>threshold &lt;- 0.25</code>), and if the prior premium allocated
+for a particular entity was 1m USD, then roughly the current premium
+allocation would be between 750k USD, and 1.25m USD.</li>
 </ul>
 <ol start="4" style="list-style-type: decimal">
-<li>Perform final calculations to include expenses in the allocation.</li>
+<li>Perform final calculations to include expenses in the
+allocation.</li>
 </ol>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># merge entity data (sov, rel adjusted tivs, loss data, market and model rates,</span></span>
@@ -339,7 +376,11 @@
 <div class="section level3">
 <h3 id="driver-summary">Driver Summary<a class="anchor" aria-label="anchor" href="#driver-summary"></a>
 </h3>
-<p><code>propalloc</code> comes with functionality to split out the effects of each of the stages of premium allocation as they contribute to its change between prior and current premium allocations. This function uses argument <code>filter_vector</code> to show such a split for a subset of entities if desired.</p>
+<p><code>propalloc</code> comes with functionality to split out the
+effects of each of the stages of premium allocation as they contribute
+to its change between prior and current premium allocations. This
+function uses argument <code>filter_vector</code> to show such a split
+for a subset of entities if desired.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">driver_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_driver_summary.html">prepare_driver_summary</a></span><span class="op">(</span><span class="va">allocation_data</span>, filter_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">driver_summary_bu_b_only</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_driver_summary.html">prepare_driver_summary</a></span><span class="op">(</span><span class="va">allocation_data</span>, filter_vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>bu <span class="op">=</span> <span class="st">"bu_b"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -364,7 +405,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

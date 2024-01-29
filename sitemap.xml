@@ -34,21 +34,6 @@
     <loc>/reference/allocation_menu_ui.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_labels.html</loc>
-  </url>
-  <url>
-    <loc>/reference/apply_relativity.html</loc>
-  </url>
-  <url>
-    <loc>/reference/apply_rels.html</loc>
-  </url>
-  <url>
-    <loc>/reference/apply_surcharges.html</loc>
-  </url>
-  <url>
-    <loc>/reference/apply_threshold.html</loc>
-  </url>
-  <url>
     <loc>/reference/app_body_ui.html</loc>
   </url>
   <url>
@@ -62,6 +47,21 @@
   </url>
   <url>
     <loc>/reference/app_ui.html</loc>
+  </url>
+  <url>
+    <loc>/reference/apply_labels.html</loc>
+  </url>
+  <url>
+    <loc>/reference/apply_relativity.html</loc>
+  </url>
+  <url>
+    <loc>/reference/apply_rels.html</loc>
+  </url>
+  <url>
+    <loc>/reference/apply_surcharges.html</loc>
+  </url>
+  <url>
+    <loc>/reference/apply_threshold.html</loc>
   </url>
   <url>
     <loc>/reference/arrange_by_entity.html</loc>
@@ -79,13 +79,13 @@
     <loc>/reference/combustible_rels.html</loc>
   </url>
   <url>
-    <loc>/reference/contacts.html</loc>
-  </url>
-  <url>
     <loc>/reference/contact_item.html</loc>
   </url>
   <url>
     <loc>/reference/contact_menu.html</loc>
+  </url>
+  <url>
+    <loc>/reference/contacts.html</loc>
   </url>
   <url>
     <loc>/reference/count_buckets.html</loc>
