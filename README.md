@@ -8,9 +8,9 @@
 **propalloc** is an R Package housing the codebase for the R Shiny
 Property Allocation Demo Application.
 
-+ Date: 2021-12-01
-+ Demo: https://propertyallocation.jimbrig.com/
-+ Docs: https://docs.jimbrig.com/property_allocation_demo/
++ Date: 2024-02-08
++ Demo: <https://propalloc.jimbrig.com/>
++ Docs: <https://docs.jimbrig.com/property_allocation_demo>
 
 ***
 ![propalloc](https://user-images.githubusercontent.com/32652297/190238392-fbc3904a-af02-4eb1-af11-addbb1b4ae47.png)
